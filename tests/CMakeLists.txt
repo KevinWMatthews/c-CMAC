@@ -3,6 +3,9 @@ enable_language(CXX)
 
 add_library(AesCmacProduction
     "${CMAKE_HOME_DIRECTORY}/include/AesCmac.h"
+    "${CMAKE_HOME_DIRECTORY}/include/AesCmacSubkeys.h"
+    "${CMAKE_HOME_DIRECTORY}/src/AesCmacSubkeys.c"
+
 )
 target_include_directories(AesCmacProduction
     PUBLIC
