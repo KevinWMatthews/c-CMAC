@@ -1,5 +1,6 @@
 extern "C"
 {
+#include "AesCmac.h"
 }
 
 #include "CppUTest/TestHarness.h"
