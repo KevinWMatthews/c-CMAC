@@ -24,6 +24,7 @@ add_executable(TestApp_AesCmac
 target_link_libraries(TestApp_AesCmac
     PRIVATE
         CppUTest
+        CppUTestExt
         ProductionLib::ProductionLib
 )
 
