@@ -1,2 +1,9 @@
 # Ignore build directories
-build*/
+build/
+
+# Ignore install directories, should you install CppUTest locally
+install/
+
+# Ignore CppUTest directory, should you create it locally.
+cpputest/
+CppUTest/
