@@ -15,6 +15,7 @@ add_library(ProductionLib::ProductionLib ALIAS AesCmacProduction)
 add_executable(TestApp_AesCmac
     RunAllTests.cpp
     Test_AesCmac.cpp
+    Test_AesCmacSubkeys.cpp
 )
 
 target_link_libraries(TestApp_AesCmac
