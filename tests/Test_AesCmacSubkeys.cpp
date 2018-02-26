@@ -55,8 +55,8 @@ TEST(aes_cmac_subkeys, generate_subkeys_for_rfc_examples)
 
     mock().expectOneCall("Aes_Calculate128")
         .withParameter("key", key)
-        .withParameter("iv", iv)
-        .withParameter("input", iv)
+        .withParameter("iv", zero)
+        .withParameter("input", zero)
         .withOutputParameterReturning("output", aes_128, sizeof(aes_128))
         .andReturnValue(0);
 

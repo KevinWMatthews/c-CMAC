@@ -1,5 +1,12 @@
 #include "AesCmacSubkeys.h"
+#include "Aes.h"
 #include <string.h>
+
+uint8_t const_Zero[16] = {
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+};
+uint8_t * zero = const_Zero;
 
 int AesCmac_GenerateSubkeys(uint8_t key[16], uint8_t K1[16], uint8_t K2[16])
 {
@@ -11,6 +18,10 @@ int AesCmac_GenerateSubkeys(uint8_t key[16], uint8_t K1[16], uint8_t K2[16])
         0xf7, 0xdd, 0xac, 0x30, 0x6a, 0xe2, 0x66, 0xcc,
         0xf9, 0x0b, 0xc1, 0x1e, 0xe4, 0x6d, 0x51, 0x3b,
     };
+    int ret;
+    unsigned char L[16] = {};
+
+    ret = Aes_Calculate128(key, const_Zero, const_Zero, L);
 
     memcpy(K1, K1_calc, 16);
     memcpy(K2, K2_calc, 16);

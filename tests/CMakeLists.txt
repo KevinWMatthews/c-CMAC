@@ -10,6 +10,7 @@ add_library(AesCmacProduction
 target_include_directories(AesCmacProduction
     PUBLIC
         "${CMAKE_HOME_DIRECTORY}/include"
+        "${CMAKE_HOME_DIRECTORY}/mocks"
 )
 SET_TARGET_PROPERTIES(AesCmacProduction PROPERTIES LINKER_LANGUAGE C)
 
@@ -19,6 +20,7 @@ add_executable(TestApp_AesCmac
     RunAllTests.cpp
     Test_AesCmac.cpp
     Test_AesCmacSubkeys.cpp
+    "${CMAKE_HOME_DIRECTORY}/mocks/Aes.cpp"
 )
 
 target_link_libraries(TestApp_AesCmac
