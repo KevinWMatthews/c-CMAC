@@ -27,3 +27,24 @@ int AesCmac_GenerateSubkeys(uint8_t key[16], uint8_t K1[16], uint8_t K2[16])
 
     return 0;
 }
+
+int AesCmac_GenerateSubkeys2(AES_KEY_128 *aes_key, uint8_t K1[16], uint8_t K2[16])
+{
+    uint8_t K1_calc[] = {
+        0xfb, 0xee, 0xd6, 0x18, 0x35, 0x71, 0x33, 0x66,
+        0x7c, 0x85, 0xe0, 0x8f, 0x72, 0x36, 0xa8, 0xde,
+    };
+    uint8_t K2_calc[] = {
+        0xf7, 0xdd, 0xac, 0x30, 0x6a, 0xe2, 0x66, 0xcc,
+        0xf9, 0x0b, 0xc1, 0x1e, 0xe4, 0x6d, 0x51, 0x3b,
+    };
+    int ret;
+    unsigned char L[16] = {};
+
+    ret = Aes_Calculate128_2( aes_key, const_Zero, sizeof(const_Zero), L, sizeof(L) );
+
+    memcpy(K1, K1_calc, 16);
+    memcpy(K2, K2_calc, 16);
+
+    return 0;
+}
