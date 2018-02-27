@@ -4,7 +4,6 @@
 #include <stdint.h>
 #include "Aes.h"
 
-int AesCmac_GenerateSubkeys(uint8_t key[16], uint8_t K1[16], uint8_t K2[16]);
-int AesCmac_GenerateSubkeys2(AES_KEY_128 *aes_key, uint8_t K1[16], uint8_t K2[16]);
+int AesCmac_GenerateSubkeys(AES_KEY_128 *aes_key, uint8_t K1[16], uint8_t K2[16]);
 
 #endif
