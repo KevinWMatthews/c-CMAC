@@ -16,14 +16,6 @@ int BitOperation_LogicalShiftLeftOne(uint8_t *input, size_t input_len, uint8_t *
 {
     int i;
 
-    /*
-     * Bits carry between bytes but not wrap around:
-     *
-     * 00000000 00000000 .. 0000000000
-     *        | |      |    |
-     *        ^ V      ^    V
-     *        ---      --..--
-     */
     // Start at the end of the array
     i = input_len - 1;
 
@@ -49,16 +41,6 @@ int BitOperation_CircularShiftLeftOne(uint8_t *input, size_t input_len, uint8_t 
 {
     int i;
 
-    /*
-     * Bits carry between bytes and wrap around:
-     * -------------------------------
-     * |                             |
-     * ^                             V
-     * 00000000 00000000 .. 0000000000
-     *        | |      |    |
-     *        ^ V      ^    V
-     *        ---      --..--
-     */
     // Start at the end of the array
     i = input_len - 1;
 
