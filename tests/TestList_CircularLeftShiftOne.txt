@@ -15,7 +15,6 @@ yields:
                                                       - This bit wraps around.
 
     One byte:
-
 bit shitfing 0 has no effect:
     0000 0000
     0000 0000
@@ -32,17 +31,16 @@ don't lose any bits:
     1111 1111
     1111 1111
 
-    Two-bytes:
-
-bit shitfing 0 has no effect:
+    Two bytes:
+bit shitfing 0's has no effect:
     0000 0000 0000 0000
     0000 0000 0000 0000
 
-bit shift 1:
-    0000 0000 0000 0001
-    0000 0000 0000 0010
+shift single bit in each byte:
+    0000 0001 0000 0001
+    0000 0010 0000 0010
 
-shift across bytes:
+shift bit across bytes:
     0000 0000 1000 0000
     0000 0001 0000 0000
 
