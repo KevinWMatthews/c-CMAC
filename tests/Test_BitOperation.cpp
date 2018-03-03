@@ -170,3 +170,20 @@ TEST(LeftShiftOne, three_bytes_single_bit_wraps_around)
     MEMCMP_EQUAL( expected, actual, sizeof(expected) );
     LONGS_EQUAL( 0, ret );
 }
+
+// This doesn't have a leading bit to wrap
+TEST(LeftShiftOne, example_from_rfc_4493)
+{
+    uint8_t input[16] = {
+        0x7d, 0xf7, 0x6b, 0x0c, 0x1a, 0xb8, 0x99, 0xb3, 0x3e, 0x42, 0xf0, 0x47, 0xb9, 0x1b, 0x54, 0x6f,
+    };
+    uint8_t expected[16] = {
+        0xfb, 0xee, 0xd6, 0x18, 0x35, 0x71, 0x33, 0x66, 0x7c, 0x85, 0xe0, 0x8f, 0x72, 0x36, 0xa8, 0xde,
+    };
+    uint8_t actual[16] = {0};
+
+    ret = BitOperation_CircularShiftLeftOne( input, sizeof(input), actual, sizeof(actual) );
+
+    MEMCMP_EQUAL( expected, actual, sizeof(expected) );
+    LONGS_EQUAL( 0, ret );
+}
