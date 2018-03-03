@@ -6,12 +6,6 @@
  */
 #define LEFT_SHIFT_ONE(byte)    ((byte) << 1)
 
-/*
- * Get the most significant bit of an 8-bit integer.
- * Right-shift all but the top bit into oblivion.
- */
-#define GET_MSBIT_8(byte)       ((byte) >> (8-1))
-
 int BitOperation_LogicalShiftLeftOne(uint8_t *input, size_t input_len, uint8_t *output, size_t output_len)
 {
     int i;

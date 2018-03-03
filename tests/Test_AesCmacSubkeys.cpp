@@ -52,6 +52,21 @@ TEST(AesCmacSubkeys, left_shift_if_MSbit_L_is_zero)
     MEMCMP_EQUAL( expected, K1, sizeof(expected) );
 }
 
+TEST(AesCmacSubkeys, left_shift_and_xor_if_MSbit_L_is_one)
+{
+    uint8_t expected[16] = {
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x87,
+    };
+    uint8_t L[16] = {0x80};
+    uint8_t K1[16] = {0};
+
+    ret = AesCmac_CalculateK1FromL( L, sizeof(L), K1, sizeof(K1) );
+
+    LONGS_EQUAL( ret, 0 );
+    MEMCMP_EQUAL( expected, K1, sizeof(expected) );
+}
+
 IGNORE_TEST(AesCmacSubkeys, generate_subkeys_for_rfc_examples)
 {
     uint8_t expected_K1[] = {

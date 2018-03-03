@@ -4,6 +4,14 @@
 #include <stdint.h>
 #include <stddef.h>
 
+
+/*
+ * Get the most significant bit of an 8-bit integer.
+ * Right-shift all but the top bit into oblivion.
+ */
+#define GET_MSBIT_8(byte)       ((byte) >> (8-1))
+
+
 /*
  * Bit shift the contents of the array one to the left.
  * No bits are lost - the most significant bit of the array wraps around

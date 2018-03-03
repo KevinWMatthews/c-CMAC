@@ -65,5 +65,8 @@ int AesCmac_GenerateSubkeys(AES_KEY_128 *aes_key, uint8_t K1[16], uint8_t K2[16]
 int AesCmac_CalculateK1FromL(uint8_t *L, size_t L_len, uint8_t *K1, size_t K1_len)
 {
     BitOperation_LogicalShiftLeftOne(L, L_len, K1, K1_len);
+    if ( GET_MSBIT_8(L[0]) )
+        K1[15] ^= 0x87;
+
     return 0;
 }
