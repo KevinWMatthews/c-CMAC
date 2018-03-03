@@ -136,6 +136,25 @@ TEST(AesCmacSubkeys, K2_left_shift_and_xor_if_MSB_K1_is_one)
     MEMCMP_EQUAL( expected, K2, sizeof(expected) );
 }
 
+TEST(AesCmacSubkeys, K2_xor_clears_bits)
+{
+    uint8_t expected[16] = {0};
+    uint8_t K1[16] = {0};
+    uint8_t K2[16] = {0};
+
+    K1[0] = MSBIT_SET;
+
+    // The xor in the K2 calculation must clear these bits.
+    K1[15] = SHIFTED_CONST_RB;
+
+    expected[15] = (SHIFTED_CONST_RB << 1) ^ CONST_RB;
+
+    ret = AesCmac_CalculateK2FromK1( K1, sizeof(K1), K2, sizeof(K2) );
+
+    LONGS_EQUAL( ret, 0 );
+    MEMCMP_EQUAL( expected, K2, sizeof(expected) );
+}
+
 IGNORE_TEST(AesCmacSubkeys, generate_subkeys_for_rfc_examples)
 {
     uint8_t expected_K1[] = {
