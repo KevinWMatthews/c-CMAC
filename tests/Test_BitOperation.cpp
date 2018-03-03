@@ -35,7 +35,7 @@ TEST(LeftShiftOne, one_byte_shift_all_zeros)
 
 TEST(LeftShiftOne, one_byte_shift_a_single_bit)
 {
-    uint8_t input[1]    = {0b1};
+    uint8_t input[1]    = {0b01};
     uint8_t expected[1] = {0b10};
     uint8_t actual[1] = {0};
 
@@ -48,7 +48,7 @@ TEST(LeftShiftOne, one_byte_shift_a_single_bit)
 TEST(LeftShiftOne, one_byte_single_bit_wraps_around)
 {
     uint8_t input[1]    = {0x80};
-    uint8_t expected[1] = {0b1};
+    uint8_t expected[1] = {0x01};
     uint8_t actual[1] = {0};
 
     ret = BitOperation_CircularShiftLeft( 1, input, sizeof(input), actual, sizeof(actual) );
@@ -86,8 +86,8 @@ TEST(LeftShiftOne, two_bytes_shift_all_zeros)
 
 TEST(LeftShiftOne, two_bytes_shift_a_single_bit)
 {
-    uint8_t input[2]    = {0b01};
-    uint8_t expected[2] = {0b10};
+    uint8_t input[2]    = {0b01, 0b01};
+    uint8_t expected[2] = {0b10, 0b10};
     uint8_t actual[2] = {0};
 
     ret = BitOperation_CircularShiftLeft( 1, input, sizeof(input), actual, sizeof(actual) );
