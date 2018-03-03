@@ -33,7 +33,6 @@ TEST(LogicalShiftLeftOne, one_byte_shift_all_zeros)
     LONGS_EQUAL( 0, ret );
 }
 
-#if 0
 TEST(LogicalShiftLeftOne, one_byte_shift_a_single_bit)
 {
     uint8_t input[1]    = {0b01};
@@ -216,4 +215,3 @@ TEST(LogicalShiftLeftOne, example_from_rfc_4493)
     MEMCMP_EQUAL( expected, actual, sizeof(expected) );
     LONGS_EQUAL( 0, ret );
 }
-#endif
