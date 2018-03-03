@@ -19,4 +19,7 @@ MSbit K1 == 1
 
 Test RFC examples
 
+Don't lose any bits - test 0xff's?
+
+
 Input sanitation?

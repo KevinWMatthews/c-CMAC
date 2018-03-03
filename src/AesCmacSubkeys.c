@@ -73,5 +73,9 @@ int AesCmac_CalculateK1FromL(uint8_t *L, size_t L_len, uint8_t *K1, size_t K1_le
 
 int AesCmac_CalculateK2FromK1(uint8_t *K1, size_t K1_len, uint8_t *K2, size_t K2_len)
 {
+    BitOperation_LogicalShiftLeftOne(K1, K1_len, K2, K2_len);
+    if ( GET_MSBIT_8(K1[0]) )
+        K2[15] ^= 0x87;
+
     return 0;
 }

@@ -103,6 +103,39 @@ TEST(AesCmacSubkeys, K2_operate_on_all_zeros_changes_no_bits)
     MEMCMP_EQUAL( expected, K2, sizeof(expected) );
 }
 
+TEST(AesCmacSubkeys, K2_left_shift_only_if_MSB_K1_is_zero)
+{
+    uint8_t expected[16] = {
+        0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02,
+        0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02,
+    };
+    uint8_t K1[16] = {
+        0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
+        0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
+    };
+    uint8_t K2[16] = {0};
+
+    ret = AesCmac_CalculateK2FromK1( K1, sizeof(K1), K2, sizeof(K2) );
+
+    LONGS_EQUAL( ret, 0 );
+    MEMCMP_EQUAL( expected, K2, sizeof(expected) );
+}
+
+TEST(AesCmacSubkeys, K2_left_shift_and_xor_if_MSB_K1_is_one)
+{
+    uint8_t expected[16] = {0};
+    uint8_t K1[16] = {0};
+    uint8_t K2[16] = {0};
+
+    K1[0] = MSBIT_SET;
+    expected[15] = CONST_RB;
+
+    ret = AesCmac_CalculateK2FromK1( K1, sizeof(K1), K2, sizeof(K2) );
+
+    LONGS_EQUAL( ret, 0 );
+    MEMCMP_EQUAL( expected, K2, sizeof(expected) );
+}
+
 IGNORE_TEST(AesCmacSubkeys, generate_subkeys_for_rfc_examples)
 {
     uint8_t expected_K1[] = {
