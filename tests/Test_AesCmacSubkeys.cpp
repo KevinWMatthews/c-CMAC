@@ -22,6 +22,10 @@ TEST_GROUP(AesCmacSubkeys)
     }
 };
 
+#define MSBIT_SET           (0x80)
+#define CONST_RB            (0x87)
+#define SHIFTED_CONST_RB    (CONST_RB >> 1)
+
 TEST(AesCmacSubkeys, operate_on_all_zeros_changes_no_bits)
 {
     uint8_t expected[16] = {0};
@@ -54,12 +58,12 @@ TEST(AesCmacSubkeys, left_shift_if_MSbit_L_is_zero)
 
 TEST(AesCmacSubkeys, left_shift_and_xor_if_MSbit_L_is_one)
 {
-    uint8_t expected[16] = {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x87,
-    };
-    uint8_t L[16] = {0x80};
+    uint8_t expected[16] = {0};
+    uint8_t L[16] = {0};
     uint8_t K1[16] = {0};
+
+    L[0] = MSBIT_SET;
+    expected[15] = CONST_RB;
 
     ret = AesCmac_CalculateK1FromL( L, sizeof(L), K1, sizeof(K1) );
 
@@ -67,21 +71,18 @@ TEST(AesCmacSubkeys, left_shift_and_xor_if_MSbit_L_is_one)
     MEMCMP_EQUAL( expected, K1, sizeof(expected) );
 }
 
-#define CONST_RB            (0x87)
-#define SHIFTED_CONST_RB    (CONST_RB >> 1)
-TEST(AesCmacSubkeys, verify_K1_uses_xor)
+TEST(AesCmacSubkeys, verify_K1_uses_xor_const_rb)
 {
-    // Set input to 0x43 = const_Rb >> 1
-    // Creating K1 will << this by 1, yielding 0x86
-    // (the LSB is replaced by 0).
-    // The XOR with const_Rb will clear this bits, except for the LSB,
-    // yielding 0x01.
     uint8_t expected[16] = {0};
     uint8_t L[16] = {0};
     uint8_t K1[16] = {0};
 
-    L[0] = 0x80;
+    L[0] = MSBIT_SET;
+
+    // The xor in the K1 calculation must clear these bits.
     L[15] = SHIFTED_CONST_RB;
+
+    // K1 calculation must use this algorithm.
     expected[15] = (SHIFTED_CONST_RB << 1) ^ CONST_RB;
 
     ret = AesCmac_CalculateK1FromL( L, sizeof(L), K1, sizeof(K1) );
