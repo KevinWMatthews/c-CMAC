@@ -168,32 +168,56 @@ public:
         const AES_KEY_128 *aes1 = (const AES_KEY_128 *)object1;
         const AES_KEY_128 *aes2 = (const AES_KEY_128 *)object2;
 
-        if (aes1->key_len != aes2->key_len)
+        SimpleString key1 = StringFromBinaryWithSize(aes1->key, aes1->key_len);
+        SimpleString key2 = StringFromBinaryWithSize(aes2->key, aes2->key_len);
+
+        SimpleString iv1 = StringFromBinaryWithSize(aes1->iv, aes1->iv_len);
+        SimpleString iv2 = StringFromBinaryWithSize(aes2->iv, aes2->iv_len);
+
+        if (key1 != key2)
+        {
             return 0;
-        if (aes1->iv_len != aes2->iv_len)
+        }
+
+        if (iv1 != iv2)
+        {
             return 0;
+        }
 
         return 1;
     }
     virtual SimpleString valueToString(const void* object)
     {
         const AES_KEY_128 *aes = (const AES_KEY_128 *)object;
-        return StringFromFormat("key: %s|key_len: %zu|iv: %s|iv_len: %zu",
-                aes->key, aes->key_len, aes->iv, aes->iv_len);
+
+        SimpleString key = StringFromBinaryWithSize(aes->key, aes->key_len);
+        SimpleString iv = StringFromBinaryWithSize(aes->iv, aes->iv_len);
+
+        return StringFrom("key: ") + key + StringFrom("; iv:") + iv;
     }
 };
 
 TEST(AesCmacSubkeys, generate_L_from_input_key_all_zeros)
 {
+    uint8_t key[16] = {0x01, 0x02};
+    uint8_t key2[16] = {0x01, 0x02};
+    // uint8_t key2[16] = {0x41, 0x42};
+    uint8_t iv[16] = {0x0f, 0x0e};
+    uint8_t iv2[16] = {0x0f, 0x0e};
+    // uint8_t iv2[16] = {0xff, 0xfe};
     Aes128Comparator comparator;
 
     AES_KEY_128 aes_params = {};
     AES_KEY_128 aes_params2 = {};
+    aes_params.key = key;
+    aes_params.iv = iv;
     aes_params.key_len = 16;
     aes_params.iv_len = 16;
 
+    aes_params2.key = key2;
+    aes_params2.iv = iv2;
     aes_params2.key_len = 16;
-    aes_params2.iv_len = 17;
+    aes_params2.iv_len = 16;
 
     mock().installComparator("AES_KEY_128", comparator);
     mock().expectOneCall("AesWrapper_Encrypt")
