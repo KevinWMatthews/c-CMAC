@@ -160,7 +160,7 @@ uint8_t const_Zero[] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 };
 
-class MyTypeComparator : public MockNamedValueComparator
+class Aes128Comparator : public MockNamedValueComparator
 {
 public:
     virtual bool isEqual(const void* object1, const void* object2)
@@ -175,15 +175,19 @@ public:
 
 TEST(AesCmacSubkeys, generate_L_from_input_key_all_zeros)
 {
-    void *object = (void*)1;
-    void *object2 = object;
-    MyTypeComparator comparator;
-    mock().installComparator("myType", comparator);
-    mock().expectOneCall("function")
-        .withParameterOfType("myType", "parameterName", object);
+    Aes128Comparator comparator;
 
-    mock().actualCall("function")
-        .withParameterOfType("myType", "parameterName", object2);
+    AES_KEY_128 aes_params = {};
+    aes_params.key_len = 16;
+    aes_params.iv_len = 16;
+
+
+    mock().installComparator("AES_KEY_128", comparator);
+    mock().expectOneCall("AesWrapper_Encrypt")
+        .withParameterOfType("AES_KEY_128", "aes_128", (void *)&aes_params);
+
+    mock().actualCall("AesWrapper_Encrypt")
+        .withParameterOfType("AES_KEY_128", "aes_128", (void *)&aes_params);
 
     mock().checkExpectations();
     mock().clear();
