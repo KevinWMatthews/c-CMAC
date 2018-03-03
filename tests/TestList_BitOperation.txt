@@ -53,3 +53,10 @@ wrap around:
 don't lose any bits:
     1111 1111 1111 1111
     1111 1111 1111 1111
+
+
+Input sanitation:
+    input is not null
+    output is not null
+    input length > 0
+    output length >= input_length

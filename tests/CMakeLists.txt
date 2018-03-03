@@ -5,7 +5,7 @@ add_library(AesCmacProduction
     "${CMAKE_HOME_DIRECTORY}/include/AesCmac.h"
     "${CMAKE_HOME_DIRECTORY}/include/AesCmacSubkeys.h"
     "${CMAKE_HOME_DIRECTORY}/src/AesCmacSubkeys.c"
-
+    "${CMAKE_HOME_DIRECTORY}/src/BitOperation.c"
 )
 target_include_directories(AesCmacProduction
     PUBLIC
