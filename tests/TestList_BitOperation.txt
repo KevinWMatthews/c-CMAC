@@ -1,0 +1,55 @@
+Shift the bits in an array to the left by one.
+
+So:
+ 0xffee..1100
+   ||      -- LSB
+   -- MSB
+is stored as:
+ 00 11 .. ee ff
+Bitshifting:
+ 0x00        0x11        0xX     0xee        0xff
+ 0b0000 0000 0b0001 0001 0bX .. 0b1110 1110 0b1111 1111
+yields:
+ 0x00        0x22               0xdd        0xfe
+ 0b0000 0000 0b0010 001X .. 0b1 0b1101 1101 0b1111 1110
+                                                      - This bit wraps around.
+
+    One byte:
+
+bit shitfing 0 has no effect:
+    0000 0000
+    0000 0000
+
+bit shift 1:
+    0000 0001
+    0000 0010
+
+wrap around:
+    1000 0000
+    0000 0001
+
+don't lose any bits:
+    1111 1111
+    1111 1111
+
+    Two-bytes:
+
+bit shitfing 0 has no effect:
+    0000 0000 0000 0000
+    0000 0000 0000 0000
+
+bit shift 1:
+    0000 0000 0000 0001
+    0000 0000 0000 0010
+
+shift across bytes:
+    0000 0000 1000 0000
+    0000 0001 0000 0000
+
+wrap around:
+    1000 0000 0000 0000
+    0000 0000 0000 0001
+
+don't lose any bits:
+    1111 1111 1111 1111
+    1111 1111 1111 1111
