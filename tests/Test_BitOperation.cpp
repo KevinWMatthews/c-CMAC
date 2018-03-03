@@ -41,3 +41,15 @@ TEST(LeftShiftOne, shift_a_single_bit)
     MEMCMP_EQUAL( expected, output, sizeof(expected) );
     LONGS_EQUAL( 0, ret );
 }
+
+TEST(LeftShiftOne, single_bit_wraps_around)
+{
+    uint8_t expected[1] = {0b1};
+    uint8_t input[1] = {0x80};
+    uint8_t output[1] = {0};
+
+    ret = BitOperation_CircularShiftLeft( 1, input, sizeof(input), output, sizeof(output) );
+
+    MEMCMP_EQUAL( expected, output, sizeof(expected) );
+    LONGS_EQUAL( 0, ret );
+}
