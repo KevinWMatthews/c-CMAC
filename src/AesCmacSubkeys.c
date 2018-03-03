@@ -1,6 +1,7 @@
 #include "AesCmacSubkeys.h"
 #include "Aes.h"
 #include <string.h>
+#include "BitOperation.h"
 
 // See RFC4493, Fig 2.2
 static uint8_t const_Zero[16] = {
@@ -63,5 +64,6 @@ int AesCmac_GenerateSubkeys(AES_KEY_128 *aes_key, uint8_t K1[16], uint8_t K2[16]
 
 int AesCmac_CalculateK1FromL(uint8_t *L, size_t L_len, uint8_t *K1, size_t K1_len)
 {
+    BitOperation_LogicalShiftLeftOne(L, L_len, K1, K1_len);
     return 0;
 }

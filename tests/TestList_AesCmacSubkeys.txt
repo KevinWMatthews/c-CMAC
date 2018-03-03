@@ -1,20 +1,21 @@
 Generate valid K1 and K2.
 
-MSbit L and MSbit K1 are both 0
+MSbit L == 0
     K1 = L << 1
-    K2 = K1 << 1
+    Verify Lshift and no XOR
 
-MSbit L = 1, MSbit K1 = 0
+MSbit L == 1
     K1 = (L << 1) XOR const_Rb
+    Verify Lshift and has XOR
+
+
+MSbit K1 == 0
     K2 = K1 << 1
+    Verify Lshift and no XOR
 
-MSbit L = 0, MSbit K1 = 1
-    K1 = (L << 1)
+MSbit K1 == 1
     K2 = (K1 << 1) XOR const_Rb
-
-MSbit L and MSbit K1 are both 1
-    K1 = (L << 1) XOR const_Rb
-    K2 = (K1 << 1) XOR const_Rb
+    Verify Lshift and has XOR
 
 Test RFC examples
 

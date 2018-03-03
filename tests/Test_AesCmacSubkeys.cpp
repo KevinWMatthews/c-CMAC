@@ -22,10 +22,28 @@ TEST_GROUP(AesCmacSubkeys)
     }
 };
 
-TEST(AesCmacSubkeys, operate_on_all_zeros)
+TEST(AesCmacSubkeys, operate_on_all_zeros_changes_no_bits)
 {
     uint8_t expected[16] = {0};
     uint8_t L[16] = {0};
+    uint8_t K1[16] = {0};
+
+    ret = AesCmac_CalculateK1FromL( L, sizeof(L), K1, sizeof(K1) );
+
+    LONGS_EQUAL( ret, 0 );
+    MEMCMP_EQUAL( expected, K1, sizeof(expected) );
+}
+
+TEST(AesCmacSubkeys, left_shift_if_MSbit_L_is_zero)
+{
+    uint8_t expected[16] = {
+        0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02,
+        0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02,
+    };
+    uint8_t L[16] = {
+        0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
+        0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
+    };
     uint8_t K1[16] = {0};
 
     ret = AesCmac_CalculateK1FromL( L, sizeof(L), K1, sizeof(K1) );
