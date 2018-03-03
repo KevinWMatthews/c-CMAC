@@ -165,11 +165,21 @@ class Aes128Comparator : public MockNamedValueComparator
 public:
     virtual bool isEqual(const void* object1, const void* object2)
     {
-        return object1 == object2;
+        const AES_KEY_128 *aes1 = (const AES_KEY_128 *)object1;
+        const AES_KEY_128 *aes2 = (const AES_KEY_128 *)object2;
+
+        if (aes1->key_len != aes2->key_len)
+            return 0;
+        if (aes1->iv_len != aes2->iv_len)
+            return 0;
+
+        return 1;
     }
     virtual SimpleString valueToString(const void* object)
     {
-        return StringFrom(object);
+        const AES_KEY_128 *aes = (const AES_KEY_128 *)object;
+        return StringFromFormat("key: %s|key_len: %zu|iv: %s|iv_len: %zu",
+                aes->key, aes->key_len, aes->iv, aes->iv_len);
     }
 };
 
@@ -178,16 +188,19 @@ TEST(AesCmacSubkeys, generate_L_from_input_key_all_zeros)
     Aes128Comparator comparator;
 
     AES_KEY_128 aes_params = {};
+    AES_KEY_128 aes_params2 = {};
     aes_params.key_len = 16;
     aes_params.iv_len = 16;
 
+    aes_params2.key_len = 16;
+    aes_params2.iv_len = 17;
 
     mock().installComparator("AES_KEY_128", comparator);
     mock().expectOneCall("AesWrapper_Encrypt")
         .withParameterOfType("AES_KEY_128", "aes_128", (void *)&aes_params);
 
     mock().actualCall("AesWrapper_Encrypt")
-        .withParameterOfType("AES_KEY_128", "aes_128", (void *)&aes_params);
+        .withParameterOfType("AES_KEY_128", "aes_128", (void *)&aes_params2);
 
     mock().checkExpectations();
     mock().clear();
