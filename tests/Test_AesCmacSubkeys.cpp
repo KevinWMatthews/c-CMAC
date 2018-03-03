@@ -67,6 +67,29 @@ TEST(AesCmacSubkeys, left_shift_and_xor_if_MSbit_L_is_one)
     MEMCMP_EQUAL( expected, K1, sizeof(expected) );
 }
 
+#define CONST_RB            (0x87)
+#define SHIFTED_CONST_RB    (CONST_RB >> 1)
+TEST(AesCmacSubkeys, verify_K1_uses_xor)
+{
+    // Set input to 0x43 = const_Rb >> 1
+    // Creating K1 will << this by 1, yielding 0x86
+    // (the LSB is replaced by 0).
+    // The XOR with const_Rb will clear this bits, except for the LSB,
+    // yielding 0x01.
+    uint8_t expected[16] = {0};
+    uint8_t L[16] = {0};
+    uint8_t K1[16] = {0};
+
+    L[0] = 0x80;
+    L[15] = SHIFTED_CONST_RB;
+    expected[15] = (SHIFTED_CONST_RB << 1) ^ CONST_RB;
+
+    ret = AesCmac_CalculateK1FromL( L, sizeof(L), K1, sizeof(K1) );
+
+    LONGS_EQUAL( ret, 0 );
+    MEMCMP_EQUAL( expected, K1, sizeof(expected) );
+}
+
 IGNORE_TEST(AesCmacSubkeys, generate_subkeys_for_rfc_examples)
 {
     uint8_t expected_K1[] = {
