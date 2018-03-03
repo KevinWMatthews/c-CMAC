@@ -96,7 +96,7 @@ TEST(LeftShiftOne, two_bytes_shift_a_single_bit)
     LONGS_EQUAL( 0, ret );
 }
 
-IGNORE_TEST(LeftShiftOne, two_bytes_shift_a_bit_between_bytes)
+TEST(LeftShiftOne, two_bytes_shift_a_bit_between_bytes)
 {
     uint8_t input[2]    = {0x00, 0x80};
     uint8_t expected[2] = {0x01, 0x00};
