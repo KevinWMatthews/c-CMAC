@@ -155,6 +155,73 @@ TEST(AesCmacSubkeys, K2_xor_clears_bits)
     MEMCMP_EQUAL( expected, K2, sizeof(expected) );
 }
 
+uint8_t const_Zero[] = {
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+};
+
+class MyTypeComparator : public MockNamedValueComparator
+{
+public:
+    virtual bool isEqual(const void* object1, const void* object2)
+    {
+        return object1 == object2;
+    }
+    virtual SimpleString valueToString(const void* object)
+    {
+        return StringFrom(object);
+    }
+};
+
+TEST(AesCmacSubkeys, generate_L_from_input_key_all_zeros)
+{
+    void *object = (void*)1;
+    void *object2 = object;
+    MyTypeComparator comparator;
+    mock().installComparator("myType", comparator);
+    mock().expectOneCall("function")
+        .withParameterOfType("myType", "parameterName", object);
+
+    mock().actualCall("function")
+        .withParameterOfType("myType", "parameterName", object2);
+
+    mock().checkExpectations();
+    mock().clear();
+    mock().removeAllComparatorsAndCopiers();
+}
+
+#if 0
+{
+    uint8_t K[16] = {0};
+    uint8_t expected[16] = {
+        0x66, 0xE9, 0x4B, 0xD4, 0xEF, 0x8A, 0x2C, 0x3B, 0x88, 0x4C, 0xFA, 0x59, 0xCA, 0x34, 0x2B, 0x2E,
+    };
+    uint8_t aes_128[16] = {
+        0x66, 0xE9, 0x4B, 0xD4, 0xEF, 0x8A, 0x2C, 0x3B, 0x88, 0x4C, 0xFA, 0x59, 0xCA, 0x34, 0x2B, 0x2E,
+    };
+    uint8_t iv[16] = {0};
+    AES_KEY_128 aes_arg = {};
+
+    aes_arg.key = aes_128,
+    aes_arg.key_len = sizeof(aes_128),
+    aes_arg.iv = iv,
+    aes_arg.iv_len = sizeof(iv),
+
+    mock().expectOneCall("Aes_Calculate128")
+        .withMemoryBufferParameter("aes_key", (const unsigned char *)&aes_arg, sizeof(aes_arg))     // Terrible hack
+        .withMemoryBufferParameter("input", const_Zero, sizeof(const_Zero))
+        .withParameter("input_len", sizeof(const_Zero))
+        .withOutputParameterReturning("output", aes_128, sizeof(aes_128))
+        .withParameter("output_len", sizeof(aes_128))
+        .andReturnValue(0);
+    ret = AesCmac_CalcualteLFromKey( K, sizeof(K), aes_128, sizeof(aes_128) );
+
+    LONGS_EQUAL( ret, 0 );
+    MEMCMP_EQUAL( expected, aes_128, sizeof(expected) );
+}
+#endif
+
+/*
 IGNORE_TEST(AesCmacSubkeys, generate_subkeys_for_rfc_examples)
 {
     uint8_t expected_K1[] = {
@@ -203,3 +270,4 @@ IGNORE_TEST(AesCmacSubkeys, generate_subkeys_for_rfc_examples)
     MEMCMP_EQUAL( expected_K1, actual_K1, sizeof(expected_K1) );
     MEMCMP_EQUAL( expected_K2, actual_K2, sizeof(expected_K2) );
 }
+*/

@@ -1,4 +1,62 @@
-Generate valid K1 and K2.
+        Generate L
+
+Will make a call to an AES library. We want to wrap this library so that we aren't directly dependent on it.
+There are choices for our wrapper library's interface:
+    AesWrapper_Init()
+
+    params = {
+        .key = &key,
+        .key_len = 16,
+        .iv = &iv,
+        .iv_len = 16,
+    };
+    AesWrapper_Encrypt(&params, &message, message_len, &output, output_len)
+
+    or
+
+    params = {
+        .key = &key,
+        .key_len = 16,
+        .iv = &iv,
+        .iv_len = 16,
+        .message = &message,
+        .message_len = 16,
+    };
+    AesWrapper_Encrypt(&params, &output, output_len)
+
+    or
+
+    params = {
+        .key = &key,
+        .key_len = 16,
+        .iv = &iv,
+        .iv_len = 16,
+        .message = &message,
+        .message_len = 16,
+        .output = &output,
+        .output_len = 16,
+    };
+    AesWrapper_Encrypt(&params)
+
+    or
+
+    AesWrapper_Init()
+    AesWrapper_SetKey(&key, key_len)
+    AesWrapper_SetIv(&iv, iv_len)
+    AesWrapper_Encrypt(&message, message_len, &output, output_len)
+
+    The latter looks easier to test - I can mock a series of functions.
+
+    The first looks nice but I don't know how to test it. Learn to install comparators.
+    This would be a good chance to learn. Try each method?
+
+    I think we need to set the IV for each call when using libgcrypt.
+    This messes up the latter method - another parameter to encrypt?
+
+
+
+
+        Generate valid K1 and K2.
 
 MSbit L == 0
     K1 = L << 1

@@ -4,12 +4,18 @@
 #include <stdint.h>
 #include <stddef.h>
 
+#define AES_128_KEY_LEN     16
+#define AES_128_IV_LEN      16
 typedef struct AES_KEY_128
 {
-    uint8_t key[16];
-    uint8_t iv[16];
+    size_t key_len;
+    uint8_t *key;
+    size_t iv_len;
+    uint8_t *iv;
 } AES_KEY_128;
 
-int Aes_Calculate128(AES_KEY_128 *aes_key, uint8_t *input, size_t input_len, uint8_t *output, size_t output_len);
+int Aes_Calculate128(AES_KEY_128 *aes_key,
+        uint8_t *input, size_t input_len,
+        uint8_t *output, size_t output_len);
 
 #endif
