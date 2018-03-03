@@ -26,7 +26,7 @@ TEST_GROUP(AesCmacSubkeys)
 #define CONST_RB            (0x87)
 #define SHIFTED_CONST_RB    (CONST_RB >> 1)
 
-TEST(AesCmacSubkeys, operate_on_all_zeros_changes_no_bits)
+TEST(AesCmacSubkeys, K1_operate_on_all_zeros_changes_no_bits)
 {
     uint8_t expected[16] = {0};
     uint8_t L[16] = {0};
@@ -89,6 +89,18 @@ TEST(AesCmacSubkeys, verify_K1_uses_xor_const_rb)
 
     LONGS_EQUAL( ret, 0 );
     MEMCMP_EQUAL( expected, K1, sizeof(expected) );
+}
+
+TEST(AesCmacSubkeys, K2_operate_on_all_zeros_changes_no_bits)
+{
+    uint8_t expected[16] = {0};
+    uint8_t K1[16] = {0};
+    uint8_t K2[16] = {0};
+
+    ret = AesCmac_CalculateK2FromK1( K1, sizeof(K1), K2, sizeof(K2) );
+
+    LONGS_EQUAL( ret, 0 );
+    MEMCMP_EQUAL( expected, K2, sizeof(expected) );
 }
 
 IGNORE_TEST(AesCmacSubkeys, generate_subkeys_for_rfc_examples)

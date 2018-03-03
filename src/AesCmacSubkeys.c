@@ -70,3 +70,8 @@ int AesCmac_CalculateK1FromL(uint8_t *L, size_t L_len, uint8_t *K1, size_t K1_le
 
     return 0;
 }
+
+int AesCmac_CalculateK2FromK1(uint8_t *K1, size_t K1_len, uint8_t *K2, size_t K2_len)
+{
+    return 0;
+}
