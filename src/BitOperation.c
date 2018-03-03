@@ -15,6 +15,7 @@ int BitOperation_CircularShiftLeft(uint8_t bits_to_shift,
         output[0] = input[0] << bits_to_shift;
 
         output[0] |= (input[1] & 0x80) && 1;
+        output[1] |= (input[0] & 0x80) && 1;
     }
 
     return 0;
