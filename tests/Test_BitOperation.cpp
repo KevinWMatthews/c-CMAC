@@ -158,3 +158,15 @@ TEST(LeftShiftOne, three_bytes_shift_a_bit_between_bytes)
     MEMCMP_EQUAL( expected, actual, sizeof(expected) );
     LONGS_EQUAL( 0, ret );
 }
+
+TEST(LeftShiftOne, three_bytes_single_bit_wraps_around)
+{
+    uint8_t input[3]    = {0x80, 0x00, 0x00};
+    uint8_t expected[3] = {0x00, 0x00, 0x01};
+    uint8_t actual[3] = {0};
+
+    ret = BitOperation_CircularShiftLeft( 1, input, sizeof(input), actual, sizeof(actual) );
+
+    MEMCMP_EQUAL( expected, actual, sizeof(expected) );
+    LONGS_EQUAL( 0, ret );
+}
