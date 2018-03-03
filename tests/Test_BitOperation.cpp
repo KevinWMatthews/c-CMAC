@@ -5,7 +5,7 @@ extern "C"
 
 #include "CppUTest/TestHarness.h"
 
-TEST_GROUP(LeftShiftOne)
+TEST_GROUP(CircularLeftShiftOne)
 {
     int ret;
 
@@ -21,7 +21,7 @@ TEST_GROUP(LeftShiftOne)
 /*
  * One byte
  */
-TEST(LeftShiftOne, one_byte_shift_all_zeros)
+TEST(CircularLeftShiftOne, one_byte_shift_all_zeros)
 {
     uint8_t input[1]    = {0};
     uint8_t expected[1] = {0};
@@ -33,7 +33,7 @@ TEST(LeftShiftOne, one_byte_shift_all_zeros)
     LONGS_EQUAL( 0, ret );
 }
 
-TEST(LeftShiftOne, one_byte_shift_a_single_bit)
+TEST(CircularLeftShiftOne, one_byte_shift_a_single_bit)
 {
     uint8_t input[1]    = {0b01};
     uint8_t expected[1] = {0b10};
@@ -45,7 +45,7 @@ TEST(LeftShiftOne, one_byte_shift_a_single_bit)
     LONGS_EQUAL( 0, ret );
 }
 
-TEST(LeftShiftOne, one_byte_single_bit_wraps_around)
+TEST(CircularLeftShiftOne, one_byte_single_bit_wraps_around)
 {
     uint8_t input[1]    = {0x80};
     uint8_t expected[1] = {0x01};
@@ -57,7 +57,7 @@ TEST(LeftShiftOne, one_byte_single_bit_wraps_around)
     LONGS_EQUAL( 0, ret );
 }
 
-TEST(LeftShiftOne, one_byte_does_not_clear_bits)
+TEST(CircularLeftShiftOne, one_byte_does_not_clear_bits)
 {
     uint8_t input[1]    = {0xff};
     uint8_t expected[1] = {0xff};
@@ -72,7 +72,7 @@ TEST(LeftShiftOne, one_byte_does_not_clear_bits)
 /*
  * Two bytes
  */
-TEST(LeftShiftOne, two_bytes_shift_all_zeros)
+TEST(CircularLeftShiftOne, two_bytes_shift_all_zeros)
 {
     uint8_t input[2]    = {0};
     uint8_t expected[2] = {0};
@@ -84,7 +84,7 @@ TEST(LeftShiftOne, two_bytes_shift_all_zeros)
     LONGS_EQUAL( 0, ret );
 }
 
-TEST(LeftShiftOne, two_bytes_shift_a_single_bit)
+TEST(CircularLeftShiftOne, two_bytes_shift_a_single_bit)
 {
     uint8_t input[2]    = {0b01, 0b01};
     uint8_t expected[2] = {0b10, 0b10};
@@ -96,7 +96,7 @@ TEST(LeftShiftOne, two_bytes_shift_a_single_bit)
     LONGS_EQUAL( 0, ret );
 }
 
-TEST(LeftShiftOne, two_bytes_shift_a_bit_between_bytes)
+TEST(CircularLeftShiftOne, two_bytes_shift_a_bit_between_bytes)
 {
     uint8_t input[2]    = {0x00, 0x80};
     uint8_t expected[2] = {0x01, 0x00};
@@ -108,7 +108,7 @@ TEST(LeftShiftOne, two_bytes_shift_a_bit_between_bytes)
     LONGS_EQUAL( 0, ret );
 }
 
-TEST(LeftShiftOne, two_bytes_single_bit_wraps_around)
+TEST(CircularLeftShiftOne, two_bytes_single_bit_wraps_around)
 {
     uint8_t input[2]    = {0x80, 0x00};
     uint8_t expected[2] = {0x00, 0x01};
@@ -123,7 +123,7 @@ TEST(LeftShiftOne, two_bytes_single_bit_wraps_around)
 /*
  * Three bytes
  */
-TEST(LeftShiftOne, three_bytes_shift_all_zeros)
+TEST(CircularLeftShiftOne, three_bytes_shift_all_zeros)
 {
     uint8_t input[3]    = {0};
     uint8_t expected[3] = {0};
@@ -135,7 +135,7 @@ TEST(LeftShiftOne, three_bytes_shift_all_zeros)
     LONGS_EQUAL( 0, ret );
 }
 
-TEST(LeftShiftOne, three_bytes_shift_a_single_bit)
+TEST(CircularLeftShiftOne, three_bytes_shift_a_single_bit)
 {
     uint8_t input[3]    = {0b01, 0b01, 0b01};
     uint8_t expected[3] = {0b10, 0b10, 0b10};
@@ -147,7 +147,7 @@ TEST(LeftShiftOne, three_bytes_shift_a_single_bit)
     LONGS_EQUAL( 0, ret );
 }
 
-TEST(LeftShiftOne, three_bytes_shift_a_bit_between_bytes)
+TEST(CircularLeftShiftOne, three_bytes_shift_a_bit_between_bytes)
 {
     uint8_t input[3]    = {0x00, 0x80, 0x80};
     uint8_t expected[3] = {0x01, 0x01, 0x00};
@@ -159,7 +159,7 @@ TEST(LeftShiftOne, three_bytes_shift_a_bit_between_bytes)
     LONGS_EQUAL( 0, ret );
 }
 
-TEST(LeftShiftOne, three_bytes_single_bit_wraps_around)
+TEST(CircularLeftShiftOne, three_bytes_single_bit_wraps_around)
 {
     uint8_t input[3]    = {0x80, 0x00, 0x00};
     uint8_t expected[3] = {0x00, 0x00, 0x01};
@@ -172,7 +172,7 @@ TEST(LeftShiftOne, three_bytes_single_bit_wraps_around)
 }
 
 // This doesn't have a leading bit to wrap
-TEST(LeftShiftOne, example_from_rfc_4493)
+TEST(CircularLeftShiftOne, example_from_rfc_4493)
 {
     uint8_t input[16] = {
         0x7d, 0xf7, 0x6b, 0x0c, 0x1a, 0xb8, 0x99, 0xb3, 0x3e, 0x42, 0xf0, 0x47, 0xb9, 0x1b, 0x54, 0x6f,
