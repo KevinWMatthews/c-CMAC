@@ -6,8 +6,10 @@ extern "C"
 #include "CppUTest/TestHarness.h"
 #include "CppUTestExt/MockSupport.h"
 
-TEST_GROUP(aes_cmac_subkeys)
+TEST_GROUP(AesCmacSubkeys)
 {
+    int ret;
+
     void setup()
     {
         mock().strictOrder();
@@ -20,8 +22,19 @@ TEST_GROUP(aes_cmac_subkeys)
     }
 };
 
+TEST(AesCmacSubkeys, operate_on_all_zeros)
+{
+    uint8_t expected[16] = {0};
+    uint8_t L[16] = {0};
+    uint8_t K1[16] = {0};
 
-TEST(aes_cmac_subkeys, generate_subkeys_for_rfc_examples)
+    ret = AesCmac_CalculateK1FromL( L, sizeof(L), K1, sizeof(K1) );
+
+    LONGS_EQUAL( ret, 0 );
+    MEMCMP_EQUAL( expected, K1, sizeof(expected) );
+}
+
+IGNORE_TEST(AesCmacSubkeys, generate_subkeys_for_rfc_examples)
 {
     uint8_t expected_K1[] = {
         0xfb, 0xee, 0xd6, 0x18, 0x35, 0x71, 0x33, 0x66,
