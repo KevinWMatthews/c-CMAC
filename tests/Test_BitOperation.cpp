@@ -120,3 +120,30 @@ TEST(LeftShiftOne, two_bytes_single_bit_wraps_around)
     LONGS_EQUAL( 0, ret );
 }
 
+/*
+ * Three bytes
+ */
+TEST(LeftShiftOne, three_bytes_shift_all_zeros)
+{
+    uint8_t input[3]    = {0};
+    uint8_t expected[3] = {0};
+    uint8_t actual[3] = {0};
+
+    ret = BitOperation_CircularShiftLeft( 1, input, sizeof(input), actual, sizeof(actual) );
+
+    MEMCMP_EQUAL( expected, actual, sizeof(expected) );
+    LONGS_EQUAL( 0, ret );
+}
+
+TEST(LeftShiftOne, three_bytes_shift_a_single_bit)
+{
+    uint8_t input[3]    = {0b01, 0b01, 0b01};
+    uint8_t expected[3] = {0b10, 0b10, 0b10};
+    uint8_t actual[3] = {0};
+
+    ret = BitOperation_CircularShiftLeft( 1, input, sizeof(input), actual, sizeof(actual) );
+
+    MEMCMP_EQUAL( expected, actual, sizeof(expected) );
+    LONGS_EQUAL( 0, ret );
+}
+
