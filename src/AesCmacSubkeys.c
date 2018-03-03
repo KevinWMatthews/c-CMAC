@@ -15,6 +15,8 @@ static uint8_t const_Rb[16] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x87,
 };
 
+#define CONST_RB    0x87
+
 /*
  * Shift the bits in an array to the left by one.
  * Bytes in the array are assumed to be stored with
@@ -66,7 +68,7 @@ int AesCmac_CalculateK1FromL(uint8_t *L, size_t L_len, uint8_t *K1, size_t K1_le
 {
     BitOperation_LogicalShiftLeftOne(L, L_len, K1, K1_len);
     if ( GET_MSBIT_8(L[0]) )
-        K1[15] ^= 0x87;
+        K1[15] ^= CONST_RB;
 
     return 0;
 }
@@ -75,7 +77,7 @@ int AesCmac_CalculateK2FromK1(uint8_t *K1, size_t K1_len, uint8_t *K2, size_t K2
 {
     BitOperation_LogicalShiftLeftOne(K1, K1_len, K2, K2_len);
     if ( GET_MSBIT_8(K1[0]) )
-        K2[15] ^= 0x87;
+        K2[15] ^= CONST_RB;
 
     return 0;
 }
