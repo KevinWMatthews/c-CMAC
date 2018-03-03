@@ -18,50 +18,92 @@ TEST_GROUP(LeftShiftOne)
     }
 };
 
+/*
+ * One byte
+ */
 TEST(LeftShiftOne, one_byte_shift_all_zeros)
 {
+    uint8_t input[1]    = {0};
     uint8_t expected[1] = {0};
-    uint8_t input[1] = {0};
-    uint8_t output[1] = {0};
+    uint8_t actual[1] = {0};
 
-    ret = BitOperation_CircularShiftLeft( 1, input, sizeof(input), output, sizeof(output) );
+    ret = BitOperation_CircularShiftLeft( 1, input, sizeof(input), actual, sizeof(actual) );
 
-    MEMCMP_EQUAL( expected, output, sizeof(expected) );
+    MEMCMP_EQUAL( expected, actual, sizeof(expected) );
     LONGS_EQUAL( 0, ret );
 }
 
 TEST(LeftShiftOne, one_byte_shift_a_single_bit)
 {
+    uint8_t input[1]    = {0b1};
     uint8_t expected[1] = {0b10};
-    uint8_t input[1] = {0b1};
-    uint8_t output[1] = {0};
+    uint8_t actual[1] = {0};
 
-    ret = BitOperation_CircularShiftLeft( 1, input, sizeof(input), output, sizeof(output) );
+    ret = BitOperation_CircularShiftLeft( 1, input, sizeof(input), actual, sizeof(actual) );
 
-    MEMCMP_EQUAL( expected, output, sizeof(expected) );
+    MEMCMP_EQUAL( expected, actual, sizeof(expected) );
     LONGS_EQUAL( 0, ret );
 }
 
 TEST(LeftShiftOne, one_byte_single_bit_wraps_around)
 {
+    uint8_t input[1]    = {0x80};
     uint8_t expected[1] = {0b1};
-    uint8_t input[1] = {0x80};
-    uint8_t output[1] = {0};
+    uint8_t actual[1] = {0};
 
-    ret = BitOperation_CircularShiftLeft( 1, input, sizeof(input), output, sizeof(output) );
+    ret = BitOperation_CircularShiftLeft( 1, input, sizeof(input), actual, sizeof(actual) );
 
-    MEMCMP_EQUAL( expected, output, sizeof(expected) );
+    MEMCMP_EQUAL( expected, actual, sizeof(expected) );
     LONGS_EQUAL( 0, ret );
 }
 
 TEST(LeftShiftOne, one_byte_does_not_clear_bits)
 {
+    uint8_t input[1]    = {0xff};
     uint8_t expected[1] = {0xff};
-    uint8_t input[1] = {0xff};
-    uint8_t output[1] = {0};
+    uint8_t actual[1] = {0};
 
-    ret = BitOperation_CircularShiftLeft( 1, input, sizeof(input), output, sizeof(output) );
+    ret = BitOperation_CircularShiftLeft( 1, input, sizeof(input), actual, sizeof(actual) );
 
-    MEMCMP_EQUAL( expected, output, sizeof(expected) );
+    MEMCMP_EQUAL( expected, actual, sizeof(expected) );
+    LONGS_EQUAL( 0, ret );
+}
+
+/*
+ * Two bytes
+ */
+TEST(LeftShiftOne, two_bytes_shift_all_zeros)
+{
+    uint8_t input[2]    = {0};
+    uint8_t expected[2] = {0};
+    uint8_t actual[2] = {0};
+
+    ret = BitOperation_CircularShiftLeft( 1, input, sizeof(input), actual, sizeof(actual) );
+
+    MEMCMP_EQUAL( expected, actual, sizeof(expected) );
+    LONGS_EQUAL( 0, ret );
+}
+
+TEST(LeftShiftOne, two_bytes_shift_a_single_bit)
+{
+    uint8_t input[2]    = {0b01};
+    uint8_t expected[2] = {0b10};
+    uint8_t actual[2] = {0};
+
+    ret = BitOperation_CircularShiftLeft( 1, input, sizeof(input), actual, sizeof(actual) );
+
+    MEMCMP_EQUAL( expected, actual, sizeof(expected) );
+    LONGS_EQUAL( 0, ret );
+}
+
+IGNORE_TEST(LeftShiftOne, two_bytes_shift_a_bit_between_bytes)
+{
+    uint8_t input[2]    = {0x00, 0x80};
+    uint8_t expected[2] = {0x01, 0x00};
+    uint8_t actual[2] = {0};
+
+    ret = BitOperation_CircularShiftLeft( 1, input, sizeof(input), actual, sizeof(actual) );
+
+    MEMCMP_EQUAL( expected, actual, sizeof(expected) );
     LONGS_EQUAL( 0, ret );
 }
