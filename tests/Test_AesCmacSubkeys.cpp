@@ -197,37 +197,30 @@ public:
     }
 };
 
+void AesWrapper_Encrypt(AES_KEY_128 *aes)
+{
+    mock().actualCall("AesWrapper_Encrypt")
+        .withParameterOfType("AES_KEY_128", "aes_128", (void *)aes);
+}
+
 TEST(AesCmacSubkeys, generate_L_from_input_key_all_zeros)
 {
-    uint8_t key[16] = {0x01, 0x02};
-    uint8_t key2[16] = {0x01, 0x02};
-    // uint8_t key2[16] = {0x41, 0x42};
-    uint8_t iv[16] = {0x0f, 0x0e};
-    uint8_t iv2[16] = {0x0f, 0x0e};
-    // uint8_t iv2[16] = {0xff, 0xfe};
     Aes128Comparator comparator;
 
     AES_KEY_128 aes_params = {};
-    AES_KEY_128 aes_params2 = {};
+    uint8_t key[16] = {};
+    uint8_t iv[16] = {};
     aes_params.key = key;
+    aes_params.key_len = sizeof(key);
     aes_params.iv = iv;
-    aes_params.key_len = 16;
-    aes_params.iv_len = 16;
-
-    aes_params2.key = key2;
-    aes_params2.iv = iv2;
-    aes_params2.key_len = 16;
-    aes_params2.iv_len = 16;
+    aes_params.iv_len = sizeof(key);
 
     mock().installComparator("AES_KEY_128", comparator);
     mock().expectOneCall("AesWrapper_Encrypt")
         .withParameterOfType("AES_KEY_128", "aes_128", (void *)&aes_params);
 
-    mock().actualCall("AesWrapper_Encrypt")
-        .withParameterOfType("AES_KEY_128", "aes_128", (void *)&aes_params2);
+    AesWrapper_Encrypt(&aes_params);
 
-    mock().checkExpectations();
-    mock().clear();
     mock().removeAllComparatorsAndCopiers();
 }
 
