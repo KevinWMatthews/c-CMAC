@@ -120,6 +120,18 @@ TEST(CircularLeftShiftOne, two_bytes_single_bit_wraps_around)
     LONGS_EQUAL( 0, ret );
 }
 
+TEST(CircularLeftShiftOne, two_bytes_does_not_clear_bits)
+{
+    uint8_t input[2]    = {0xff, 0xff};
+    uint8_t expected[2] = {0xff, 0xff};
+    uint8_t actual[2] = {0};
+
+    ret = BitOperation_CircularShiftLeftOne( input, sizeof(input), actual, sizeof(actual) );
+
+    MEMCMP_EQUAL( expected, actual, sizeof(expected) );
+    LONGS_EQUAL( 0, ret );
+}
+
 /*
  * Three bytes
  */
@@ -171,6 +183,21 @@ TEST(CircularLeftShiftOne, three_bytes_single_bit_wraps_around)
     LONGS_EQUAL( 0, ret );
 }
 
+TEST(CircularLeftShiftOne, three_bytes_does_not_clear_bits)
+{
+    uint8_t input[3]    = {0xff, 0xff, 0xff};
+    uint8_t expected[3] = {0xff, 0xff, 0xff};
+    uint8_t actual[3] = {0};
+
+    ret = BitOperation_CircularShiftLeftOne( input, sizeof(input), actual, sizeof(actual) );
+
+    MEMCMP_EQUAL( expected, actual, sizeof(expected) );
+    LONGS_EQUAL( 0, ret );
+}
+
+/*
+ * Real-world examples
+ */
 // This doesn't have a leading bit to wrap
 TEST(CircularLeftShiftOne, example_from_rfc_4493)
 {
