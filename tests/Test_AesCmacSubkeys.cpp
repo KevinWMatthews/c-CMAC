@@ -65,6 +65,8 @@ TEST_GROUP(AesCmacSubkeys)
 #define CONST_RB            (0x87)
 #define SHIFTED_CONST_RB    (CONST_RB >> 1)
 
+static uint8_t zeros[16] = {};
+
 TEST(AesCmacSubkeys, K1_operate_on_all_zeros_changes_no_bits)
 {
     uint8_t expected[16] = {0};
@@ -222,7 +224,8 @@ TEST(AesCmacSubkeys, generate_L_from_input_key_all_zeros)
         .withMemoryBufferParameter("input", zeros, sizeof(zeros))
         .withParameter("input_len", sizeof(zeros))
         .withOutputParameterReturning("output", expected, sizeof(expected))
-        .withParameter("output_len", sizeof(expected));
+        .withParameter("output_len", sizeof(expected))
+        .andReturnValue(0);
 
     ret = AesCmac_CalculateLFromK( key, sizeof(key), L, sizeof(L) );
 
@@ -230,36 +233,39 @@ TEST(AesCmacSubkeys, generate_L_from_input_key_all_zeros)
     MEMCMP_EQUAL( expected, L, sizeof(expected) );
 }
 
-#if 0
+TEST(AesCmacSubkeys, generate_L_using_rfc4933_example)
 {
-    uint8_t K[16] = {0};
     uint8_t expected[16] = {
-        0x66, 0xE9, 0x4B, 0xD4, 0xEF, 0x8A, 0x2C, 0x3B, 0x88, 0x4C, 0xFA, 0x59, 0xCA, 0x34, 0x2B, 0x2E,
+        0x7d, 0xf7, 0x6b, 0x0c, 0x1a, 0xb8, 0x99, 0xb3,
+        0x3e, 0x42, 0xf0, 0x47, 0xb9, 0x1b, 0x54, 0x6f,
     };
-    uint8_t aes_128[16] = {
-        0x66, 0xE9, 0x4B, 0xD4, 0xEF, 0x8A, 0x2C, 0x3B, 0x88, 0x4C, 0xFA, 0x59, 0xCA, 0x34, 0x2B, 0x2E,
+
+    uint8_t key[16] = {
+        0x2b, 0x7e, 0x15, 0x16, 0x28, 0xae, 0xd2, 0xa6,
+        0xab, 0xf7, 0x15, 0x88, 0x09, 0xcf, 0x4f, 0x3c,
     };
-    uint8_t iv[16] = {0};
-    AES_KEY_128 aes_arg = {};
+    uint8_t iv[16] = {};
+    AES_KEY_128 aes_params = {};
+    aes_params.key = key;
+    aes_params.key_len = sizeof(key);
+    aes_params.iv = iv;
+    aes_params.iv_len = sizeof(key);
 
-    aes_arg.key = aes_128,
-    aes_arg.key_len = sizeof(aes_128),
-    aes_arg.iv = iv,
-    aes_arg.iv_len = sizeof(iv),
+    uint8_t L[16] = {};
 
+    mock().installComparator("AES_KEY_128", comparator);
     mock().expectOneCall("Aes_Calculate128")
-        .withMemoryBufferParameter("aes_key", (const unsigned char *)&aes_arg, sizeof(aes_arg))     // Terrible hack
-        .withMemoryBufferParameter("input", const_Zero, sizeof(const_Zero))
-        .withParameter("input_len", sizeof(const_Zero))
-        .withOutputParameterReturning("output", aes_128, sizeof(aes_128))
-        .withParameter("output_len", sizeof(aes_128))
-        .andReturnValue(0);
-    ret = AesCmac_CalcualteLFromKey( K, sizeof(K), aes_128, sizeof(aes_128) );
+        .withParameterOfType("AES_KEY_128", "aes_128", (void *)&aes_params)
+        .withMemoryBufferParameter("input", zeros, sizeof(zeros))
+        .withParameter("input_len", sizeof(zeros))
+        .withOutputParameterReturning("output", expected, sizeof(expected))
+        .withParameter("output_len", sizeof(expected));
 
-    LONGS_EQUAL( ret, 0 );
-    MEMCMP_EQUAL( expected, aes_128, sizeof(expected) );
+    ret = AesCmac_CalculateLFromK( key, sizeof(key), L, sizeof(L) );
+
+    LONGS_EQUAL( 0, ret );
+    MEMCMP_EQUAL( expected, L, sizeof(expected) );
 }
-#endif
 
 /*
 IGNORE_TEST(AesCmacSubkeys, generate_subkeys_for_rfc_examples)
