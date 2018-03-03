@@ -64,8 +64,15 @@ int AesCmac_GenerateSubkeys(AES_KEY_128 *aes_key, uint8_t K1[16], uint8_t K2[16]
     return 0;
 }
 
-int AesCmac_CalcualteLFromKey(uint8_t *K, size_t K_len, uint8_t *aes_128, size_t aes_128_len)
+int AesCmac_CalculateLFromK(uint8_t *K, size_t K_len, uint8_t *L, size_t L_len)
 {
+    AES_KEY_128 aes_key =  {
+        .key = K,
+        .key_len = K_len,
+        .iv = const_Zero,
+        .iv_len = sizeof(const_Zero),
+    };
+    Aes_Calculate128(&aes_key, const_Zero, sizeof(const_Zero), L, L_len);
     return 0;
 }
 

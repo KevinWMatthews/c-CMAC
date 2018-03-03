@@ -9,7 +9,7 @@
 // Figure out what layer needs to know this detail.
 int AesCmac_GenerateSubkeys(AES_KEY_128 *aes_key, uint8_t K1[16], uint8_t K2[16]);
 
-int AesCmac_CalcualteLFromKey(uint8_t *K, size_t K_len, uint8_t *aes_128, size_t aes_128_len);
+int AesCmac_CalculateLFromK(uint8_t *K, size_t K_len, uint8_t *L, size_t L_len);
 
 int AesCmac_CalculateK1FromL(uint8_t *L, size_t L_len, uint8_t *K1, size_t K1_len);
 

@@ -6,8 +6,46 @@ extern "C"
 #include "CppUTest/TestHarness.h"
 #include "CppUTestExt/MockSupport.h"
 
+class Aes128Comparator : public MockNamedValueComparator
+{
+public:
+    virtual bool isEqual(const void* object1, const void* object2)
+    {
+        const AES_KEY_128 *aes1 = (const AES_KEY_128 *)object1;
+        const AES_KEY_128 *aes2 = (const AES_KEY_128 *)object2;
+
+        SimpleString key1 = StringFromBinaryWithSize(aes1->key, aes1->key_len);
+        SimpleString key2 = StringFromBinaryWithSize(aes2->key, aes2->key_len);
+
+        SimpleString iv1 = StringFromBinaryWithSize(aes1->iv, aes1->iv_len);
+        SimpleString iv2 = StringFromBinaryWithSize(aes2->iv, aes2->iv_len);
+
+        if (key1 != key2)
+        {
+            return 0;
+        }
+
+        if (iv1 != iv2)
+        {
+            return 0;
+        }
+
+        return 1;
+    }
+    virtual SimpleString valueToString(const void* object)
+    {
+        const AES_KEY_128 *aes = (const AES_KEY_128 *)object;
+
+        SimpleString key = StringFromBinaryWithSize(aes->key, aes->key_len);
+        SimpleString iv = StringFromBinaryWithSize(aes->iv, aes->iv_len);
+
+        return StringFrom("key: ") + key + StringFrom("; iv:") + iv;
+    }
+};
+
 TEST_GROUP(AesCmacSubkeys)
 {
+    Aes128Comparator comparator;
     int ret;
 
     void setup()
@@ -19,6 +57,7 @@ TEST_GROUP(AesCmacSubkeys)
     {
         mock().checkExpectations();
         mock().clear();
+        mock().removeAllComparatorsAndCopiers();
     }
 };
 
@@ -160,68 +199,35 @@ uint8_t const_Zero[] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 };
 
-class Aes128Comparator : public MockNamedValueComparator
-{
-public:
-    virtual bool isEqual(const void* object1, const void* object2)
-    {
-        const AES_KEY_128 *aes1 = (const AES_KEY_128 *)object1;
-        const AES_KEY_128 *aes2 = (const AES_KEY_128 *)object2;
-
-        SimpleString key1 = StringFromBinaryWithSize(aes1->key, aes1->key_len);
-        SimpleString key2 = StringFromBinaryWithSize(aes2->key, aes2->key_len);
-
-        SimpleString iv1 = StringFromBinaryWithSize(aes1->iv, aes1->iv_len);
-        SimpleString iv2 = StringFromBinaryWithSize(aes2->iv, aes2->iv_len);
-
-        if (key1 != key2)
-        {
-            return 0;
-        }
-
-        if (iv1 != iv2)
-        {
-            return 0;
-        }
-
-        return 1;
-    }
-    virtual SimpleString valueToString(const void* object)
-    {
-        const AES_KEY_128 *aes = (const AES_KEY_128 *)object;
-
-        SimpleString key = StringFromBinaryWithSize(aes->key, aes->key_len);
-        SimpleString iv = StringFromBinaryWithSize(aes->iv, aes->iv_len);
-
-        return StringFrom("key: ") + key + StringFrom("; iv:") + iv;
-    }
-};
-
-void AesWrapper_Encrypt(AES_KEY_128 *aes)
-{
-    mock().actualCall("AesWrapper_Encrypt")
-        .withParameterOfType("AES_KEY_128", "aes_128", (void *)aes);
-}
-
 TEST(AesCmacSubkeys, generate_L_from_input_key_all_zeros)
 {
-    Aes128Comparator comparator;
+    uint8_t expected[16] = {
+        0x66, 0xE9, 0x4B, 0xD4, 0xEF, 0x8A, 0x2C, 0x3B, 0x88, 0x4C, 0xFA, 0x59, 0xCA, 0x34, 0x2B, 0x2E,
+    };
+    uint8_t zeros[16] = {};
 
-    AES_KEY_128 aes_params = {};
     uint8_t key[16] = {};
     uint8_t iv[16] = {};
+    AES_KEY_128 aes_params = {};
     aes_params.key = key;
     aes_params.key_len = sizeof(key);
     aes_params.iv = iv;
     aes_params.iv_len = sizeof(key);
 
+    uint8_t L[16] = {};
+
     mock().installComparator("AES_KEY_128", comparator);
-    mock().expectOneCall("AesWrapper_Encrypt")
-        .withParameterOfType("AES_KEY_128", "aes_128", (void *)&aes_params);
+    mock().expectOneCall("Aes_Calculate128")
+        .withParameterOfType("AES_KEY_128", "aes_128", (void *)&aes_params)
+        .withMemoryBufferParameter("input", zeros, sizeof(zeros))
+        .withParameter("input_len", sizeof(zeros))
+        .withOutputParameterReturning("output", expected, sizeof(expected))
+        .withParameter("output_len", sizeof(expected));
 
-    AesWrapper_Encrypt(&aes_params);
+    ret = AesCmac_CalculateLFromK( key, sizeof(key), L, sizeof(L) );
 
-    mock().removeAllComparatorsAndCopiers();
+    LONGS_EQUAL( 0, ret );
+    MEMCMP_EQUAL( expected, L, sizeof(expected) );
 }
 
 #if 0
