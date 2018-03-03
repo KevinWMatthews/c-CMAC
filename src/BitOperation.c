@@ -12,6 +12,11 @@
  */
 #define GET_MSBIT_8(byte)       ((byte) >> (8-1))
 
+int BitOperation_LogicalShiftLeftOne(uint8_t *input, size_t input_len, uint8_t *output, size_t output_len)
+{
+    return 0;
+}
+
 /*
  * Assume for now that a uint8_t is exactly 8 bits wide.
  * Streamline this function to work only on 8-bit unsigned integers.
