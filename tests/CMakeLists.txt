@@ -20,6 +20,7 @@ add_executable(TestApp_AesCmac
     RunAllTests.cpp
     Test_AesCmac.cpp
     Test_AesCmacSubkeys.cpp
+    Test_BitOperation.cpp
     "${CMAKE_HOME_DIRECTORY}/mocks/Aes.cpp"
 )
 

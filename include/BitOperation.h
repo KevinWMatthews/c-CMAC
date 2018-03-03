@@ -1,0 +1,4 @@
+#ifndef BIT_OPERATION_INCLUDED
+#define BIT_OPERATION_INCLUDED
+
+#endif
