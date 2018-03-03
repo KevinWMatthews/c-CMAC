@@ -1,0 +1,21 @@
+Generate valid K1 and K2.
+
+MSbit L and MSbit K1 are both 0
+    K1 = L << 1
+    K2 = K1 << 1
+
+MSbit L = 1, MSbit K1 = 0
+    K1 = (L << 1) XOR const_Rb
+    K2 = K1 << 1
+
+MSbit L = 0, MSbit K1 = 1
+    K1 = (L << 1)
+    K2 = (K1 << 1) XOR const_Rb
+
+MSbit L and MSbit K1 are both 1
+    K1 = (L << 1) XOR const_Rb
+    K2 = (K1 << 1) XOR const_Rb
+
+Test RFC examples
+
+Input sanitation?
