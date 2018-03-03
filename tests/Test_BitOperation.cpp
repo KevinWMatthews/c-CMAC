@@ -18,7 +18,7 @@ TEST_GROUP(LeftShiftOne)
     }
 };
 
-TEST(LeftShiftOne, shift_on_zero_byte_has_no_effect)
+TEST(LeftShiftOne, one_byte_shift_all_zeros)
 {
     uint8_t expected[1] = {0};
     uint8_t input[1] = {0};
@@ -30,7 +30,7 @@ TEST(LeftShiftOne, shift_on_zero_byte_has_no_effect)
     LONGS_EQUAL( 0, ret );
 }
 
-TEST(LeftShiftOne, shift_a_single_bit)
+TEST(LeftShiftOne, one_byte_shift_a_single_bit)
 {
     uint8_t expected[1] = {0b10};
     uint8_t input[1] = {0b1};
@@ -42,7 +42,7 @@ TEST(LeftShiftOne, shift_a_single_bit)
     LONGS_EQUAL( 0, ret );
 }
 
-TEST(LeftShiftOne, single_bit_wraps_around)
+TEST(LeftShiftOne, one_byte_single_bit_wraps_around)
 {
     uint8_t expected[1] = {0b1};
     uint8_t input[1] = {0x80};
@@ -54,7 +54,7 @@ TEST(LeftShiftOne, single_bit_wraps_around)
     LONGS_EQUAL( 0, ret );
 }
 
-TEST(LeftShiftOne, does_not_lose_bits)
+TEST(LeftShiftOne, one_byte_does_not_clear_bits)
 {
     uint8_t expected[1] = {0xff};
     uint8_t input[1] = {0xff};
