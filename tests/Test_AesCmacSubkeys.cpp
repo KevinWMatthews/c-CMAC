@@ -259,7 +259,8 @@ TEST(AesCmacSubkeys, generate_L_using_rfc4933_example)
         .withMemoryBufferParameter("input", zeros, sizeof(zeros))
         .withParameter("input_len", sizeof(zeros))
         .withOutputParameterReturning("output", expected, sizeof(expected))
-        .withParameter("output_len", sizeof(expected));
+        .withParameter("output_len", sizeof(expected))
+        .andReturnValue(0);
 
     ret = AesCmac_CalculateLFromK( key, sizeof(key), L, sizeof(L) );
 
