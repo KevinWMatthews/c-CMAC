@@ -24,6 +24,7 @@ add_executable(TestApp_AesCmac
     Test_AesCmacSubkeys.cpp
     Test_CircularShiftLeftOne.cpp
     Test_LogicalShiftLeftOne.cpp
+    Test_Xor.cpp
     "${CMAKE_HOME_DIRECTORY}/mocks/Aes.cpp"
 )
 
