@@ -1,0 +1,35 @@
+1)
+    (K1,K2) := Generate_Subkey(K);
+
+2)
+    n := ceil(len/const_Bsize);
+
+3)
+    if n = 0
+    then
+        n := 1;
+        flag := false;
+    else
+        if len mod const_Bsize is 0
+        then flag := true;
+        else flag := false;
+
+4)
+    if flag is true
+    then M_last := M_n XOR K1;
+    else M_last := padding(M_n) XOR K2;
+
+5)
+    X := const_Zero;
+
+6)
+    for i := 1 to n-1 do
+    begin
+        Y := X XOR M_i;
+        X := AES-128(K,Y);
+    end
+    Y := M_last XOR X;
+    T := AES-128(K,Y);
+
+7)
+    return T;
