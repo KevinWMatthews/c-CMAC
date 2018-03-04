@@ -1,7 +1,9 @@
 enable_language(C)
 enable_language(CXX)
 
+# Do we include AesCmac.h here?
 add_library(AesCmacProduction
+    "${CMAKE_HOME_DIRECTORY}/src/AesCmac.c"
     "${CMAKE_HOME_DIRECTORY}/include/AesCmac.h"
     "${CMAKE_HOME_DIRECTORY}/include/AesCmacSubkeys.h"
     "${CMAKE_HOME_DIRECTORY}/src/AesCmacSubkeys.c"

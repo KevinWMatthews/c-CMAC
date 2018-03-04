@@ -12,12 +12,14 @@ static uint8_t const_Zero[16] = {
 // See RFC4493, Fig 2.2
 #define CONST_RB    0x87
 
-int AesCmac_GenerateSubkeys(uint8_t aes_key[16], uint8_t K1[16], uint8_t K2[16])
+int AesCmac_GenerateSubkeys(uint8_t aes_key[16], size_t aes_key_len,
+        uint8_t K1[16], size_t K1_len,
+        uint8_t K2[16], size_t K2_len)
 {
     unsigned char L[16] = {0};
-    AesCmac_CalculateLFromK( aes_key, 16, L, sizeof(L) );
-    AesCmac_CalculateK1FromL( L, sizeof(L), K1, 16 );
-    AesCmac_CalculateK2FromK1( K1, 16, K2, 16 );
+    AesCmac_CalculateLFromK( aes_key, aes_key_len, L, sizeof(L) );
+    AesCmac_CalculateK1FromL( L, sizeof(L), K1, K1_len );
+    AesCmac_CalculateK2FromK1( K1, 16, K2, K2_len );
     return 0;
 }
 

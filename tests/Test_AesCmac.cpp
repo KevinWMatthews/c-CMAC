@@ -5,7 +5,7 @@ extern "C"
 
 #include "CppUTest/TestHarness.h"
 
-TEST_GROUP(aes_cmac)
+TEST_GROUP(AesCmac)
 {
     void setup()
     {
@@ -16,8 +16,7 @@ TEST_GROUP(aes_cmac)
     }
 };
 
-#if 0
-IGNORE_TEST(aes_cmac, verify_rfc_example_1)
+TEST(AesCmac, rfc_4493_example_1_message_length_0)
 {
     unsigned char expected[] = {
         0xbb, 0x1d, 0x69, 0x29, 0xe9, 0x59, 0x37, 0x28,
@@ -27,14 +26,14 @@ IGNORE_TEST(aes_cmac, verify_rfc_example_1)
         0x2b, 0x7e, 0x15, 0x16, 0x28, 0xae, 0xd2, 0xa6,
         0xab, 0xf7, 0x15, 0x88, 0x09, 0xcf, 0x4f, 0x3c,
     };
-    unsigned char message[] = "";
-    size_t length = 0;
-    int ret = 42;
-    unsigned char actual[16] = {};
+    unsigned char *message = NULL;
+    size_t message_len = 0;
 
-    ret = AesCmac_Calculate128(key, message, length, actual);
+    int ret = 42;
+    unsigned char cmac[16] = {};
+
+    ret = AesCmac_Calculate128( key, sizeof(key), message, message_len, cmac, sizeof(cmac) );
 
     LONGS_EQUAL( ret, 0 );
-    MEMCMP_EQUAL( expected, actual, sizeof(expected) );
+    MEMCMP_EQUAL( expected, cmac, sizeof(expected) );
 }
-#endif

@@ -304,7 +304,9 @@ TEST(AesCmacSubkeys, generate_subkeys_for_rfc_examples)
         .withParameter("output_len", sizeof(L))
         .andReturnValue(0);
 
-    ret = AesCmac_GenerateSubkeys(key, actual_K1, actual_K2);
+    ret = AesCmac_GenerateSubkeys(key, sizeof(key),
+            actual_K1, sizeof(actual_K1),
+            actual_K2, sizeof(actual_K2));
 
     LONGS_EQUAL( ret, 0 );
     MEMCMP_EQUAL( expected_K1, actual_K1, sizeof(expected_K1) );
