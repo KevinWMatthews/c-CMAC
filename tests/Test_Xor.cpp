@@ -86,3 +86,46 @@ TEST(Xor, xor_set_bits_from_both_inputs)
     LONGS_EQUAL( 0, ret );
     MEMCMP_EQUAL( expected, output, sizeof(expected) );
 }
+
+/*
+ * Two bytes
+ */
+TEST(Xor, xor_on_two_bytes_of_zeros)
+{
+    uint8_t expected[2] = {0};
+    uint8_t input1[2] = {0};
+    uint8_t input2[2] = {0};
+    uint8_t output[2] = {0};
+
+    ret = BitOperation_Xor(input1, input2, 2, output);
+
+    LONGS_EQUAL( 0, ret );
+    MEMCMP_EQUAL( expected, output, sizeof(expected) );
+}
+
+TEST(Xor, xor_on_two_bytes_of_ones)
+{
+    uint8_t expected[2] = {0};
+    uint8_t input1[2] = {0xff, 0xff};
+    uint8_t input2[2] = {0xff, 0xff};
+    uint8_t output[2] = {0};
+
+    ret = BitOperation_Xor(input1, input2, 2, output);
+
+    LONGS_EQUAL( 0, ret );
+    MEMCMP_EQUAL( expected, output, sizeof(expected) );
+}
+
+// Should we perform separate operations on each nibble?
+TEST(Xor, xor_on_two_bytes_operates_on_both_bytes)
+{
+    uint8_t expected[2] = {0x00, 0xff};
+    uint8_t input1[2] = {0xff, 0x00};
+    uint8_t input2[2] = {0xff, 0xff};
+    uint8_t output[2] = {0};
+
+    ret = BitOperation_Xor(input1, input2, 2, output);
+
+    LONGS_EQUAL( 0, ret );
+    MEMCMP_EQUAL( expected, output, sizeof(expected) );
+}
