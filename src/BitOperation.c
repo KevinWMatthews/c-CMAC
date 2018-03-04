@@ -54,5 +54,6 @@ int BitOperation_CircularShiftLeftOne(uint8_t *input, size_t input_len, uint8_t 
 
 int BitOperation_Xor(uint8_t *input1, uint8_t *input2, size_t len, uint8_t *output)
 {
+    output[0] = input1[0] ^  input2[0];
     return 0;
 }
