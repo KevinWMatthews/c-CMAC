@@ -23,7 +23,7 @@ int AesCmac_Calculate128(uint8_t key[16], size_t key_len,
     // Step 4
     // Padding: set the first bit, then it's zeros all the way down.
     unsigned char M_last[16] = {0x80};
-    // BitOperation_XOR(M_last, K2, 16, M_last);
+    // BitOperation_Xor(M_last, K2, 16, M_last);
 
     unsigned char cmac_calc[] = {
         0xbb, 0x1d, 0x69, 0x29, 0xe9, 0x59, 0x37, 0x28,

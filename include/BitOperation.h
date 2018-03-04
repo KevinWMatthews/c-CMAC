@@ -4,6 +4,9 @@
 #include <stdint.h>
 #include <stddef.h>
 
+/*
+ * Perform bitwise operations on byte arrays.
+ */
 
 /*
  * Get the most significant bit of an 8-bit integer.
@@ -41,5 +44,7 @@ int BitOperation_CircularShiftLeftOne(uint8_t *input, size_t input_len, uint8_t 
  * 00000000 00000000 .. 00000000
  */
 int BitOperation_LogicalShiftLeftOne(uint8_t *input, size_t input_len, uint8_t *output, size_t output_len);
+
+int BitOperation_Xor(uint8_t *input1, uint8_t *input2, size_t len, uint8_t *output);
 
 #endif
