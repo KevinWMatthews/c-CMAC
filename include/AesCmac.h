@@ -16,4 +16,6 @@ size_t calculate_n_blocks(size_t message_length);
 
 int set_is_complete_block(size_t *n_blocks, bool *is_complete_block_flag);
 
+int set_last_block_for_incomplete(uint8_t M_n[16], uint8_t K2[16], uint8_t M_last[16]);
+
 #endif

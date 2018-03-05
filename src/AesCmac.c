@@ -1,6 +1,7 @@
 #include "AesCmac.h"
 #include <string.h>
 #include "AesCmacSubkeys.h"
+#include "BitOperation.h"
 
 int AesCmac_Calculate128(uint8_t key[16], size_t key_len,
         uint8_t *message, size_t message_len,
@@ -24,9 +25,9 @@ int AesCmac_Calculate128(uint8_t key[16], size_t key_len,
     ret = set_is_complete_block(&n, &is_complete_block);
 
     // Step 4
-    // Padding: set the first bit, then it's zeros all the way down.
-    unsigned char M_last[16] = {0x80};
-    // BitOperation_Xor(M_last, K2, 16, M_last);
+    unsigned char M_n[16] = {0};        // This will need to be a function...
+    unsigned char M_last[16] = {0};
+    ret = set_last_block_for_incomplete(M_n, K2, M_last);
 
     unsigned char cmac_calc[] = {
         0xbb, 0x1d, 0x69, 0x29, 0xe9, 0x59, 0x37, 0x28,
@@ -46,5 +47,12 @@ int set_is_complete_block(size_t *n_blocks, bool *is_complete_block_flag)
     *n_blocks = 1;
     *is_complete_block_flag = false;
 
+    return 0;
+}
+
+int set_last_block_for_incomplete(uint8_t M_n[16], uint8_t K2[16], uint8_t M_last[16])
+{
+    M_last[0] = 0x80;       // Hack for padding - set first bit, the rest are 0's
+    BitOperation_Xor(M_last, K2, 16, M_last);
     return 0;
 }
