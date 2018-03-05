@@ -8,7 +8,7 @@ int AesCmac_Calculate128(uint8_t key[16], size_t key_len,
 {
     unsigned char K1[16] = {0};
     unsigned char K2[16] = {0};
-    unsigned int n;
+    size_t n;
     int ret;
 
     // Step 1
@@ -17,6 +17,7 @@ int AesCmac_Calculate128(uint8_t key[16], size_t key_len,
             K2, sizeof(K2) );
 
     // Step 2
+    n = calculate_n_blocks(message_len);
 
     // Step 3
 
@@ -30,5 +31,10 @@ int AesCmac_Calculate128(uint8_t key[16], size_t key_len,
         0x7f, 0xa3, 0x7d, 0x12, 0x9b, 0x75, 0x67, 0x46,
     };
     memcpy(aes_cmac, cmac_calc, sizeof(cmac_calc));
+    return 0;
+}
+
+size_t calculate_n_blocks(size_t message_length)
+{
     return 0;
 }
