@@ -38,5 +38,5 @@ SimpleString Aes128Comparator::valueToString(const void* object)
     SimpleString key = StringFromBinaryWithSize(aes->key, aes->key_len);
     SimpleString iv = StringFromBinaryWithSize(aes->iv, aes->iv_len);
 
-    return StringFrom("key: ") + key + StringFrom("; iv:") + iv;
+    return StringFrom("key: ") + key + StringFrom("; iv: ") + iv;
 }

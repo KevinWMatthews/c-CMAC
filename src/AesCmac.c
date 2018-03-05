@@ -3,6 +3,8 @@
 #include "AesCmacSubkeys.h"
 #include "BitOperation.h"
 
+static uint8_t const_Zero[16];
+
 int AesCmac_Calculate128(uint8_t key[16], size_t key_len,
         uint8_t *message, size_t message_len,
         uint8_t *aes_cmac, size_t aes_cmac_len)
@@ -79,5 +81,14 @@ int finish_cbc_mac_1(uint8_t M_last[16], uint8_t X[16], uint8_t Y[16])
 
 int finish_cbc_mac_2(uint8_t aes_key[16], uint8_t Y[16], uint8_t T[16])
 {
+    //TODO pass this as a parameter?
+    AES_KEY_128 key = {
+        .key = aes_key,
+        .key_len = 16,
+        .iv = const_Zero,
+        .iv_len = sizeof(const_Zero)
+    };
+    Aes_Calculate128(&key, Y, 16, T, 16);
+
     return 0;
 }

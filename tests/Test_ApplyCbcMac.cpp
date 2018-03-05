@@ -1,25 +1,34 @@
 extern "C"
 {
 #include "AesCmac.h"
+#include "Aes.h"
 }
 
 #include "CppUTest/TestHarness.h"
 #include "CppUTestExt/MockSupport.h"
+#include "Aes128Comparator.h"
 
 TEST_GROUP(ApplyCbcMac)
 {
+    Aes128Comparator comparator;
     size_t n_blocks;
     bool is_complete_block_flag;
     int ret;
 
     void setup()
     {
+        mock().strictOrder();
     }
 
     void teardown()
     {
+        mock().checkExpectations();
+        mock().clear();
+        mock().removeAllComparatorsAndCopiers();
     }
 };
+
+static uint8_t zeros[16] = {};
 
 TEST(ApplyCbcMac, apply_to_zero_length_message)
 {
@@ -53,7 +62,7 @@ TEST(ApplyCbcMac, finish_zero_length_message_part_1)
     MEMCMP_EQUAL( expected, Y, sizeof(expected) );
 }
 
-IGNORE_TEST(ApplyCbcMac, finish_zero_length_message_part_2)
+TEST(ApplyCbcMac, finish_zero_length_message_part_2)
 {
     uint8_t key[16] = {};
     uint8_t Y[16] = {0x80};
@@ -64,10 +73,27 @@ IGNORE_TEST(ApplyCbcMac, finish_zero_length_message_part_2)
         0x3A, 0xD7, 0x8E, 0x72, 0x6C, 0x1E, 0xC0, 0x2B,
         0x7E, 0xBF, 0xE9, 0x2B, 0x23, 0xD9, 0xEC, 0x34,
     };
+    // Values for mocks
+    AES_KEY_128 aes_params = {};
+    aes_params.key = key;
+    aes_params.key_len = sizeof(key);
+    aes_params.iv = zeros;
+    aes_params.iv_len = sizeof(zeros);
 
-    // mock().expectOneCall("Aes_Calculate128")
+
+
+    mock().installComparator("AES_KEY_128", comparator);
+    mock().expectOneCall("Aes_Calculate128")
+        .withParameterOfType("AES_KEY_128", "aes_128", &aes_params)
+        .withMemoryBufferParameter("input", Y, sizeof(Y))
+        .withParameter("input_len", sizeof(Y))
+        .withOutputParameterReturning("output", expected, sizeof(expected))
+        .withParameter("output_len", sizeof(expected))
+        .andReturnValue(0);
+
     ret = finish_cbc_mac_2(key, Y, T);
 
+    mock().checkExpectations();
     LONGS_EQUAL( 0, ret );
     MEMCMP_EQUAL( expected, T, sizeof(expected) );
 }
