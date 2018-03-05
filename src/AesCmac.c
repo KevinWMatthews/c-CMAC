@@ -9,6 +9,7 @@ int AesCmac_Calculate128(uint8_t key[16], size_t key_len,
     unsigned char K1[16] = {0};
     unsigned char K2[16] = {0};
     size_t n;
+    bool is_complete_block;
     int ret;
 
     // Step 1
@@ -20,6 +21,7 @@ int AesCmac_Calculate128(uint8_t key[16], size_t key_len,
     n = calculate_n_blocks(message_len);
 
     // Step 3
+    ret = set_is_complete_block(&n, &is_complete_block);
 
     // Step 4
     // Padding: set the first bit, then it's zeros all the way down.
@@ -36,5 +38,13 @@ int AesCmac_Calculate128(uint8_t key[16], size_t key_len,
 
 size_t calculate_n_blocks(size_t message_length)
 {
+    return 0;
+}
+
+int set_is_complete_block(size_t *n_blocks, bool *is_complete_block_flag)
+{
+    *n_blocks = 1;
+    *is_complete_block_flag = false;
+
     return 0;
 }
