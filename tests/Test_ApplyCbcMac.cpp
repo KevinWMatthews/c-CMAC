@@ -56,10 +56,16 @@ TEST(ApplyCbcMac, finish_zero_length_message_part_1)
 IGNORE_TEST(ApplyCbcMac, finish_zero_length_message_part_2)
 {
     uint8_t key[16] = {};
-    uint8_t Y[16] = {};
+    uint8_t Y[16] = {0x80};
     uint8_t T[16] = {};
-    uint8_t expected[16] = {};
 
+    // Calculated expected using online tool
+    uint8_t expected[16] = {
+        0x3A, 0xD7, 0x8E, 0x72, 0x6C, 0x1E, 0xC0, 0x2B,
+        0x7E, 0xBF, 0xE9, 0x2B, 0x23, 0xD9, 0xEC, 0x34,
+    };
+
+    // mock().expectOneCall("Aes_Calculate128")
     ret = finish_cbc_mac_2(key, Y, T);
 
     LONGS_EQUAL( 0, ret );
