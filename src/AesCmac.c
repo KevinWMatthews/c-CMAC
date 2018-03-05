@@ -32,6 +32,9 @@ int AesCmac_Calculate128(uint8_t key[16], size_t key_len,
     // Step 5
     unsigned char X[16] = {0};
 
+    // Step 6
+    // ret = apply_cbc_mac(message, message_len, key, T);
+
     unsigned char cmac_calc[] = {
         0xbb, 0x1d, 0x69, 0x29, 0xe9, 0x59, 0x37, 0x28,
         0x7f, 0xa3, 0x7d, 0x12, 0x9b, 0x75, 0x67, 0x46,
@@ -57,5 +60,10 @@ int set_last_block_for_incomplete(uint8_t M_n[16], uint8_t K2[16], uint8_t M_las
 {
     M_last[0] = 0x80;       // Hack for padding - set first bit, the rest are 0's
     BitOperation_Xor(M_last, K2, 16, M_last);
+    return 0;
+}
+
+int apply_cbc_mac(uint8_t *message, size_t message_len, uint8_t aes_key[16], uint8_t t[16])
+{
     return 0;
 }

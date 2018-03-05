@@ -25,6 +25,7 @@ add_executable(TestApp_AesCmac
     Test_CalculateNBlocks.cpp
     Test_CalculateIsCompleteBlock.cpp
     Test_SetLastBlock.cpp
+    Test_ApplyCbcMac.cpp
     Test_CircularShiftLeftOne.cpp
     Test_LogicalShiftLeftOne.cpp
     Test_Xor.cpp
