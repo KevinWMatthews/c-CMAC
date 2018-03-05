@@ -29,10 +29,7 @@ int AesCmac_Calculate128(uint8_t key[16], size_t key_len,
     unsigned char M_last[16] = {0};
     ret = set_last_block_for_incomplete(M_n, K2, M_last);
 
-    // Step 5
-    unsigned char X[16] = {0};
-
-    // Step 6
+    // Step 5, 6
     // ret = apply_cbc_mac(message, message_len, key, T);
 
     unsigned char cmac_calc[] = {
@@ -63,7 +60,19 @@ int set_last_block_for_incomplete(uint8_t M_n[16], uint8_t K2[16], uint8_t M_las
     return 0;
 }
 
-int apply_cbc_mac(uint8_t *message, size_t message_len, uint8_t aes_key[16], uint8_t t[16])
+int apply_cbc_mac(uint8_t aes_key[16], uint8_t *message, size_t n_blocks, uint8_t X[16], uint8_t Y[16])
+{
+
+    return 0;
+}
+
+int finish_cbc_mac_1(uint8_t M_last[16], uint8_t X[16], uint8_t Y[16])
+{
+    BitOperation_Xor(M_last, X, 16, Y);
+    return 0;
+}
+
+int finish_cbc_mac_2(uint8_t aes_key[16], uint8_t Y[16], uint8_t T[16])
 {
     return 0;
 }
