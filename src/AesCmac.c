@@ -34,14 +34,17 @@ int AesCmac_Calculate128(uint8_t key[16], size_t key_len,
     unsigned char M_last[16] = {0};
     ret = set_last_block_for_incomplete(M_n, K2, M_last);
 
-    // Step 5, 6
-    // ret = apply_cbc_mac(message, message_len, key, T);
+    // Step 5
+    unsigned char X[16] = {0};
 
-    unsigned char cmac_calc[] = {
-        0xbb, 0x1d, 0x69, 0x29, 0xe9, 0x59, 0x37, 0x28,
-        0x7f, 0xa3, 0x7d, 0x12, 0x9b, 0x75, 0x67, 0x46,
-    };
-    memcpy(aes_cmac, cmac_calc, sizeof(cmac_calc));
+    // Step 6
+    unsigned char Y[16] = {0};
+    ret = apply_cbc_mac(key, message, n, X, Y);
+    ret = finish_cbc_mac_1(M_last, X, Y);
+    unsigned char T[16] = {0};
+    ret = finish_cbc_mac_2(key, Y, T);
+
+    memcpy(aes_cmac, T, 16);
     return 0;
 }
 

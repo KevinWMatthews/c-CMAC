@@ -6,43 +6,7 @@ extern "C"
 
 #include "CppUTest/TestHarness.h"
 #include "CppUTestExt/MockSupport.h"
-
-class Aes128Comparator : public MockNamedValueComparator
-{
-public:
-    virtual bool isEqual(const void* object1, const void* object2)
-    {
-        const AES_KEY_128 *aes1 = (const AES_KEY_128 *)object1;
-        const AES_KEY_128 *aes2 = (const AES_KEY_128 *)object2;
-
-        SimpleString key1 = StringFromBinaryWithSize(aes1->key, aes1->key_len);
-        SimpleString key2 = StringFromBinaryWithSize(aes2->key, aes2->key_len);
-
-        SimpleString iv1 = StringFromBinaryWithSize(aes1->iv, aes1->iv_len);
-        SimpleString iv2 = StringFromBinaryWithSize(aes2->iv, aes2->iv_len);
-
-        if (key1 != key2)
-        {
-            return 0;
-        }
-
-        if (iv1 != iv2)
-        {
-            return 0;
-        }
-
-        return 1;
-    }
-    virtual SimpleString valueToString(const void* object)
-    {
-        const AES_KEY_128 *aes = (const AES_KEY_128 *)object;
-
-        SimpleString key = StringFromBinaryWithSize(aes->key, aes->key_len);
-        SimpleString iv = StringFromBinaryWithSize(aes->iv, aes->iv_len);
-
-        return StringFrom("key: ") + key + StringFrom("; iv:") + iv;
-    }
-};
+#include "Aes128Comparator.h"
 
 static uint8_t zeros[16] = {};
 
@@ -85,12 +49,15 @@ TEST(AesCmac, rfc_4493_example_1_message_length_0)
     aes_params.key_len = sizeof(key);
     aes_params.iv = zeros;
     aes_params.iv_len = sizeof(zeros);
+    // Manually calculate L
     uint8_t L[16] = {
         0x7d, 0xf7, 0x6b, 0x0c, 0x1a, 0xb8, 0x99, 0xb3,
         0x3e, 0x42, 0xf0, 0x47, 0xb9, 0x1b, 0x54, 0x6f,
     };
 
     mock().installComparator("AES_KEY_128", comparator);
+
+    // Step 1: Calculate L from key
     mock().expectOneCall("Aes_Calculate128")
         .withParameterOfType("AES_KEY_128", "aes_128", &aes_params)
         .withMemoryBufferParameter("input", zeros, sizeof(zeros))
@@ -99,6 +66,25 @@ TEST(AesCmac, rfc_4493_example_1_message_length_0)
         .withParameter("output_len", sizeof(L))
         .andReturnValue(0);
 
+    // Step 6: Calculate T from Y
+    // Capture value from mock failure
+    uint8_t Y[16] = {
+        0x77, 0xDD, 0xAC, 0x30, 0x6A, 0xE2, 0x66, 0xCC,
+        0xF9, 0x0B, 0xC1, 0x1E, 0xE4, 0x6D, 0x51, 0x3B,
+    };
+    // Manually calculate from Y
+    uint8_t T[16] = {
+        0xBB, 0x1D, 0x69, 0x29, 0xE9, 0x59, 0x37, 0x28,
+        0x7F, 0xA3, 0x7D, 0x12, 0x9B, 0x75, 0x67, 0x46,
+    };
+
+    mock().expectOneCall("Aes_Calculate128")
+        .withParameterOfType("AES_KEY_128", "aes_128", &aes_params)
+        .withMemoryBufferParameter("input", Y, sizeof(Y))
+        .withParameter("input_len", sizeof(Y))
+        .withOutputParameterReturning("output", T, sizeof(T))
+        .withParameter("output_len", sizeof(T))
+        .andReturnValue(0);
 
     ret = AesCmac_Calculate128( key, sizeof(key), message, message_len, cmac, sizeof(cmac) );
 
