@@ -25,7 +25,10 @@ int AesCmac_Calculate128(uint8_t key[16], size_t key_len,
     ret = set_is_complete_block(&n, &is_complete_block);
 
     // Step 4
+    // Given a message of n blocks, get the nth block.
+    // For now we have a zero-length message, so it will be all padding.
     unsigned char M_n[16] = {0};        // This will need to be a function...
+
     unsigned char M_last[16] = {0};
     ret = set_last_block_for_incomplete(M_n, K2, M_last);
 
@@ -55,8 +58,10 @@ int set_is_complete_block(size_t *n_blocks, bool *is_complete_block_flag)
 
 int set_last_block_for_incomplete(uint8_t M_n[16], uint8_t K2[16], uint8_t M_last[16])
 {
-    M_last[0] = 0x80;       // Hack for padding - set first bit, the rest are 0's
-    BitOperation_Xor(M_last, K2, 16, M_last);
+    // Hack for padding - set first bit, the rest are 0's
+    uint8_t padded_M_n[16] = {0x80};
+
+    BitOperation_Xor(padded_M_n, K2, 16, M_last);
     return 0;
 }
 
