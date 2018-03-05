@@ -29,6 +29,9 @@ int AesCmac_Calculate128(uint8_t key[16], size_t key_len,
     unsigned char M_last[16] = {0};
     ret = set_last_block_for_incomplete(M_n, K2, M_last);
 
+    // Step 5
+    unsigned char X[16] = {0};
+
     unsigned char cmac_calc[] = {
         0xbb, 0x1d, 0x69, 0x29, 0xe9, 0x59, 0x37, 0x28,
         0x7f, 0xa3, 0x7d, 0x12, 0x9b, 0x75, 0x67, 0x46,
