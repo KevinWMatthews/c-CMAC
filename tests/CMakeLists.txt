@@ -30,6 +30,7 @@ add_executable(TestApp_AesCmac
     Test_LogicalShiftLeftOne.cpp
     Test_Xor.cpp
     "${CMAKE_HOME_DIRECTORY}/mocks/Aes.cpp"
+    "${CMAKE_HOME_DIRECTORY}/mocks/Aes128Comparator.cpp"
 )
 
 target_link_libraries(TestApp_AesCmac
