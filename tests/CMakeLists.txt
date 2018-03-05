@@ -22,6 +22,7 @@ add_executable(TestApp_AesCmac
     RunAllTests.cpp
     Test_AesCmac.cpp
     Test_AesCmacSubkeys.cpp
+    Test_CalculateNBlocks.cpp
     Test_CircularShiftLeftOne.cpp
     Test_LogicalShiftLeftOne.cpp
     Test_Xor.cpp
