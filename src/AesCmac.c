@@ -30,8 +30,9 @@ int AesCmac_Calculate128(uint8_t key[16], size_t key_len,
     // Given a message of n blocks, get the nth block.
     // For now we have a zero-length message, so it will be all padding.
     unsigned char M_n[16] = {0};        // This will need to be a function...
-
     unsigned char M_last[16] = {0};
+
+    ret = get_nth_block(message, message_len, n, M_last);
     ret = set_last_block_for_incomplete(M_n, K2, M_last);
 
     // Step 5
@@ -58,6 +59,16 @@ int set_is_complete_block(size_t *n_blocks, bool *is_complete_block_flag)
     *n_blocks = 1;
     *is_complete_block_flag = false;
 
+    return 0;
+}
+
+int get_nth_block(uint8_t M[16], size_t M_len, size_t block_num, uint8_t M_n[16])
+{
+    memset(M_n, 0, 16);
+    if (block_num > 1)  // Only accomodates 0-length message
+    {
+        return -1;
+    }
     return 0;
 }
 

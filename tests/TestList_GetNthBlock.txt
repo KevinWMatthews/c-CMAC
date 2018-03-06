@@ -1,0 +1,3 @@
+Fail if block number is off the end of the message?
+Do we need the message length?
+Do we need M_n length?

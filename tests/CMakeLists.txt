@@ -24,6 +24,7 @@ add_executable(TestApp_AesCmac
     Test_AesCmacSubkeys.cpp
     Test_CalculateNBlocks.cpp
     Test_CalculateIsCompleteBlock.cpp
+    Test_GetNthBlock.cpp
     Test_SetLastBlock.cpp
     Test_ApplyCbcMac.cpp
     Test_CircularShiftLeftOne.cpp
