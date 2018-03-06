@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.5)
 
 project(AesCmac VERSION 0.0.1)
 
+enable_language(C)
+
 # Specify CMake version 3.5 to enable:
 #   CMP0028 - Double colon in target name means ALIAS or IMPORTED target.
 cmake_policy(VERSION 3.5)
@@ -12,6 +14,8 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 
 set(CPPUTEST_HOME /usr/local CACHE STRING "Location where CppUTest is installed")
 option(COMPILE_TESTS "Compile unit tests" OFF)
+
+add_subdirectory(src)
 
 if(COMPILE_TESTS)
     enable_testing()
