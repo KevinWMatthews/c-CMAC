@@ -13,7 +13,7 @@
  * 129 bits => 2 blocks
  * If the message length is 0, the number of blocks is set to 1.
  */
-size_t calculate_n_blocks(size_t message_length);
+size_t set_n_blocks(size_t message_length);
 
 /* Calculate if the last block of a message is complete.
  *

@@ -12,7 +12,7 @@ int AesCmac_Calculate128(uint8_t key[16], size_t key_len,
 // Expose operations of steps for testing.
 // Will move to a different module?
 
-size_t calculate_n_blocks(size_t message_length);
+size_t set_n_blocks(size_t message_length);
 
 int set_is_complete_block(size_t *n_blocks, bool *is_complete_block_flag);
 

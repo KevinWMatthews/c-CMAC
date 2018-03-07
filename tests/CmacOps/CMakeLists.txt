@@ -3,7 +3,7 @@ enable_language(CXX)
 add_executable(TestApp_CmacOps
     RunAllTests.cpp
     Test_AesCmacSubkeys.cpp
-    Test_CalculateNBlocks.cpp
+    Test_SetNBlocks.cpp
     Test_CalculateIsCompleteBlock.cpp
     Test_GetNthBlock.cpp
     Test_SetLastBlock.cpp
