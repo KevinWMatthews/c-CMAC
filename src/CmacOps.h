@@ -5,21 +5,25 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-/* Calculate the number of blocks in a message and if the last block is complete..
+/* Calculate the number of blocks in a message.
  *
- * Each block is 128 bits (16 bytes).
- * If the message length is precisely divisible by 16, the is complete block flag is not set.
- * If the message contains trailing bits, the final block is considered to be incomplete.
- * The block number is rounded up and and the is complete block flag is set.
- * For example,
- * 128 bits => 1 block, is_complete_block_flag = 0
- * 129 bits => 2 blcoks, is_complete_block_flag = 1
+ * Returns the number of 128-bit (16-byte) blocks in the given message.
+ * If the block contains trailing bits, the block number is rounded up. For example,
+ * 128 bits => 1 block
+ * 129 bits => 2 blocks
  * If the message length is 0, the number of blocks is set to 1.
- *
- * See RFC4493 for specification.
  */
 size_t calculate_n_blocks(size_t message_length);
-//TODO combine these functions
+
+/* Calculate if the last block of a message is complete.
+ *
+ * If the message length is precisely divisible by 16, the block is complete. The is complete block flag is not set.
+ * If the message contains trailing bits, the final block is incomplete. The is complete block flag is set.
+ * For example
+ * 127 bits => is_complete_block_flag = 0
+ * 128 bits => is_complete_block_flag = 1
+ * 129 bits => is_complete_block_flag = 0
+ */
 int set_is_complete_block(size_t *n_blocks, bool *is_complete_block_flag);
 
 /* Get the nth block in the message
