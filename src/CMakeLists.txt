@@ -1,24 +1,23 @@
 add_library(ByteArrayOps
     "${CMAKE_HOME_DIRECTORY}/src/BitOperation.c"
 )
+# Not sure about including the src/ directory...
 target_include_directories(ByteArrayOps
     PUBLIC
-        "${CMAKE_HOME_DIRECTORY}/include"
+        "${CMAKE_HOME_DIRECTORY}/src"
 )
 add_library(ByteArrayOpsLib::ByteArrayOpsLib ALIAS ByteArrayOps)
 
 
-# TODO Extract source code...
 add_library(CmacOps
     "${CMAKE_HOME_DIRECTORY}/src/CmacOps.h"
     "${CMAKE_HOME_DIRECTORY}/src/CmacOps.c"
-    "${CMAKE_HOME_DIRECTORY}/include/AesCmacSubkeys.h"
-    "${CMAKE_HOME_DIRECTORY}/src/AesCmac.c"
+    "${CMAKE_HOME_DIRECTORY}/src/AesCmacSubkeys.h"
     "${CMAKE_HOME_DIRECTORY}/src/AesCmacSubkeys.c"
 )
 target_include_directories(CmacOps
     PUBLIC
-        "${CMAKE_HOME_DIRECTORY}/include"
+        "${CMAKE_HOME_DIRECTORY}/src"
 )
 target_link_libraries(CmacOps
     PRIVATE
