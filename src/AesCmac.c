@@ -27,7 +27,7 @@ int AesCmac_Calculate128(uint8_t key[16], size_t key_len,
     // Step 4
     // Given a message of n blocks, get the nth block.
     // For now we have a zero-length message, so it will be all padding.
-    unsigned char M_n[16] = {0};        // This will need to be a function...
+    unsigned char M_n[16] = {0};
     unsigned char M_last[16] = {0};
 
     ret = CmacOps_GetNthBlock(message, message_len, n, M_n);
@@ -43,6 +43,7 @@ int AesCmac_Calculate128(uint8_t key[16], size_t key_len,
     unsigned char T[16] = {0};
     ret = CmacOps_FinishCbcMac2(key, Y, T);
 
+    // Step 7
     memcpy(aes_cmac, T, 16);
     return 0;
 }
