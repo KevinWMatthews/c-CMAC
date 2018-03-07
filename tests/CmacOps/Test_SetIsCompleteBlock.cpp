@@ -6,7 +6,7 @@ extern "C"
 #include "CppUTest/TestHarness.h"
 #include "CppUTestExt/MockSupport.h"
 
-TEST_GROUP(CalculateIsCompleteBlock)
+TEST_GROUP(SetIsCompleteBlock)
 {
     size_t n_blocks;
     bool is_complete_block_flag;
@@ -21,7 +21,7 @@ TEST_GROUP(CalculateIsCompleteBlock)
     }
 };
 
-TEST(CalculateIsCompleteBlock, message_length_zero_is_not_complete_block)
+TEST(SetIsCompleteBlock, message_length_zero_is_not_complete_block)
 {
     is_complete_block_flag = true;      // Set it to the wrong value
 
