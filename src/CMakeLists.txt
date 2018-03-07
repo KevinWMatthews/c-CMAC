@@ -10,6 +10,8 @@ add_library(ByteArrayOpsLib::ByteArrayOpsLib ALIAS ByteArrayOps)
 
 # TODO Extract source code...
 add_library(CmacOps
+    "${CMAKE_HOME_DIRECTORY}/src/CmacOps.h"
+    "${CMAKE_HOME_DIRECTORY}/src/CmacOps.c"
     "${CMAKE_HOME_DIRECTORY}/include/AesCmacSubkeys.h"
     "${CMAKE_HOME_DIRECTORY}/src/AesCmac.c"
     "${CMAKE_HOME_DIRECTORY}/src/AesCmacSubkeys.c"
