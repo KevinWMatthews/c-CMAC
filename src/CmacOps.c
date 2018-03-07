@@ -10,12 +10,9 @@ size_t get_n_blocks(size_t message_length)
     return 1;
 }
 
-int get_is_complete_block(size_t *n_blocks, bool *is_complete_block_flag)
+bool get_is_complete_block(size_t message_length)
 {
-    *n_blocks = 1;
-    *is_complete_block_flag = false;
-
-    return 0;
+    return false;
 }
 
 int get_nth_block(uint8_t M[16], size_t M_len, size_t block_num, uint8_t M_n[16])

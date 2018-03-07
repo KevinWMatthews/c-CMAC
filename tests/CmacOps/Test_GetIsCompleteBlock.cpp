@@ -8,9 +8,8 @@ extern "C"
 
 TEST_GROUP(GetIsCompleteBlock)
 {
-    size_t n_blocks;
+    size_t message_length;
     bool is_complete_block_flag;
-    int ret;
 
     void setup()
     {
@@ -21,13 +20,12 @@ TEST_GROUP(GetIsCompleteBlock)
     }
 };
 
-TEST(GetIsCompleteBlock, message_length_zero_is_not_complete_block)
+TEST(GetIsCompleteBlock, zero_length_message_is_not_complete_block)
 {
     is_complete_block_flag = true;      // Set it to the wrong value
+    message_length = 0;
 
-    ret = get_is_complete_block(&n_blocks, &is_complete_block_flag);
+    is_complete_block_flag = get_is_complete_block(message_length);
 
-    LONGS_EQUAL( 0, ret );
-    LONGS_EQUAL( 1, n_blocks );
     LONGS_EQUAL( false, is_complete_block_flag );
 }
