@@ -5,7 +5,7 @@
 
 static uint8_t const_Zero[16];
 
-size_t set_n_blocks(size_t message_length)
+size_t get_n_blocks(size_t message_length)
 {
     return 1;
 }

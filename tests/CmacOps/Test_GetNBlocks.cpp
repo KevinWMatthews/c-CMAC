@@ -24,6 +24,6 @@ TEST_GROUP(SetNBlocks)
 TEST(SetNBlocks, zero_length_message_has_one_block)
 {
     message_length = 0;
-    n_blocks = set_n_blocks(message_length);
+    n_blocks = get_n_blocks(message_length);
     LONGS_EQUAL( 1, n_blocks );
 }

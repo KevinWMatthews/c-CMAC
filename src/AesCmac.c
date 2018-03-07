@@ -19,7 +19,7 @@ int AesCmac_Calculate128(uint8_t key[16], size_t key_len,
             K2, sizeof(K2) );
 
     // Step 2
-    n = set_n_blocks(message_len);
+    n = get_n_blocks(message_len);
 
     // Step 3
     ret = set_is_complete_block(&n, &is_complete_block);
