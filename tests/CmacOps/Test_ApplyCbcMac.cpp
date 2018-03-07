@@ -40,7 +40,7 @@ TEST(ApplyCbcMac, apply_to_zero_length_message)
 
     // A zero-length message is treated as having n=1.
     // See RFC 4493, step 3.
-    ret = apply_cbc_mac(key, NULL, 1, X, Y);
+    ret = CmacOps_ApplyCbcMac(key, NULL, 1, X, Y);
 
     LONGS_EQUAL( 0, ret );
 
@@ -56,7 +56,7 @@ TEST(ApplyCbcMac, finish_zero_length_message_part_1)
     uint8_t Y[16] = {};
     uint8_t expected[16] = {0x80};
 
-    ret = finish_cbc_mac_1(M_last, X, Y);
+    ret = CmacOps_FinishCbcMac1(M_last, X, Y);
 
     LONGS_EQUAL( 0, ret );
     MEMCMP_EQUAL( expected, Y, sizeof(expected) );
@@ -91,7 +91,7 @@ TEST(ApplyCbcMac, finish_zero_length_message_part_2)
         .withParameter("output_len", sizeof(expected))
         .andReturnValue(0);
 
-    ret = finish_cbc_mac_2(key, Y, T);
+    ret = CmacOps_FinishCbcMac2(key, Y, T);
 
     mock().checkExpectations();
     LONGS_EQUAL( 0, ret );

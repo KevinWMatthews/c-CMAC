@@ -26,7 +26,7 @@ TEST(SetLastBlock, pad_and_xor_incomplete_block_zeros)
     uint8_t M_last[16] = {};
     uint8_t expected[16] = {0x80};
 
-    ret = set_last_block_for_incomplete(M_n, K2, M_last);
+    ret = CmacOps_SetLastBlockForIncomplete(M_n, K2, M_last);
 
     LONGS_EQUAL( 0, ret );
     MEMCMP_EQUAL( expected, M_last, sizeof(expected) );
@@ -45,7 +45,7 @@ TEST(SetLastBlock, pad_and_xor_incomplete_block_ffs)
         0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
     };
 
-    ret = set_last_block_for_incomplete(M_n, K2, M_last);
+    ret = CmacOps_SetLastBlockForIncomplete(M_n, K2, M_last);
 
     LONGS_EQUAL( 0, ret );
     MEMCMP_EQUAL( expected, M_last, sizeof(expected) );

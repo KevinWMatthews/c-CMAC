@@ -13,7 +13,7 @@
  * 129 bits => 2 blocks
  * If the message length is 0, the number of blocks is set to 1.
  */
-size_t get_n_blocks(size_t message_length);
+size_t CmacOps_GetNBlocks(size_t message_length);
 
 /* Calculate if the last block of a message is complete.
  *
@@ -24,14 +24,14 @@ size_t get_n_blocks(size_t message_length);
  * 128 bits => is_complete_block_flag = 1
  * 129 bits => is_complete_block_flag = 0
  */
-bool get_is_complete_block(size_t message_length);
+bool CmacOps_GetIsCompleteBlock(size_t message_length);
 
 /* Get the nth block in the message
  *
  * For the given message M, get nth block where n is given by the (1-indexed!) block number.
  * Value is returned in M_n.
  */
-int get_nth_block(uint8_t M[16], size_t M_len, size_t block_num, uint8_t M_n[16]);
+int CmacOps_GetNthBlock(uint8_t M[16], size_t M_len, size_t block_num, uint8_t M_n[16]);
 
 /* Calculate the XOR of the last message block.
  *
@@ -41,7 +41,7 @@ int get_nth_block(uint8_t M[16], size_t M_len, size_t block_num, uint8_t M_n[16]
  * If the block is incomplete, XOR using K2.
  *TODO if the block is complete, XOR using K1.
  */
-int set_last_block_for_incomplete(uint8_t M_n[16], uint8_t K2[16], uint8_t M_last[16]);
+int CmacOps_SetLastBlockForIncomplete(uint8_t M_n[16], uint8_t K2[16], uint8_t M_last[16]);
 // Later will have set_last_block_for_complete() or something
 
 /* Apply the basic CMC-MAC algorithm to all but the last block of the message.
@@ -49,19 +49,19 @@ int set_last_block_for_incomplete(uint8_t M_n[16], uint8_t K2[16], uint8_t M_las
  * XORs and AES-128 encrypts each block (according to the CBC-MAC spec?).
  * The AES-CMAC is still incomplete; the two finishing steps must be applied.
  */
-int apply_cbc_mac(uint8_t aes_key[16], uint8_t *message, size_t n_blocks, uint8_t X[16], uint8_t Y[16]);
+int CmacOps_ApplyCbcMac(uint8_t aes_key[16], uint8_t *message, size_t n_blocks, uint8_t X[16], uint8_t Y[16]);
 
 /* Apply first finishing step of the CBC-MAC.
  *
  * The last block is a special case: use M_last instead of M_n.
  */
-int finish_cbc_mac_1(uint8_t M_last[16], uint8_t X[16], uint8_t Y[16]);
+int CmacOps_FinishCbcMac1(uint8_t M_last[16], uint8_t X[16], uint8_t Y[16]);
 
 /* Apply second finishing step of the CBC-MAC.
  *
  * Perform final AES-128 encryption.
  * T is the CMC-MAC result.
  */
-int finish_cbc_mac_2(uint8_t aes_key[16], uint8_t Y[16], uint8_t T[16]);
+int CmacOps_FinishCbcMac2(uint8_t aes_key[16], uint8_t Y[16], uint8_t T[16]);
 
 #endif
