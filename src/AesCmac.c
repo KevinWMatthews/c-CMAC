@@ -9,7 +9,7 @@ int AesCmac_Calculate128(uint8_t key[16], size_t key_len,
 {
     unsigned char K1[16] = {0};
     unsigned char K2[16] = {0};
-    size_t n;
+    size_t n_blocks;
     bool is_complete_block;
     int ret;
 
@@ -19,7 +19,7 @@ int AesCmac_Calculate128(uint8_t key[16], size_t key_len,
             K2, sizeof(K2) );
 
     // Step 2
-    n = CmacOps_GetNBlocks(message_len);
+    n_blocks = CmacOps_GetNBlocks(message_len);
 
     // Step 3
     is_complete_block = CmacOps_GetIsCompleteBlock(message_len);
@@ -30,7 +30,7 @@ int AesCmac_Calculate128(uint8_t key[16], size_t key_len,
     unsigned char M_n[16] = {0};
     unsigned char M_last[16] = {0};
 
-    ret = CmacOps_GetNthBlock(message, message_len, n, M_n);
+    ret = CmacOps_GetNthBlock(message, message_len, n_blocks, M_n);
     ret = CmacOps_SetLastBlockForIncomplete(M_n, K2, M_last);
 
     // Step 5
@@ -38,7 +38,7 @@ int AesCmac_Calculate128(uint8_t key[16], size_t key_len,
 
     // Step 6
     unsigned char Y[16] = {0};
-    ret = CmacOps_ApplyCbcMac(key, message, n, X, Y);
+    ret = CmacOps_ApplyCbcMac(key, message, n_blocks, X, Y);
     ret = CmacOps_FinishCbcMac1(M_last, X, Y);
     unsigned char T[16] = {0};
     ret = CmacOps_FinishCbcMac2(key, Y, T);
