@@ -30,7 +30,7 @@ int AesCmac_Calculate128(uint8_t key[16], size_t key_len,
     unsigned char M_n[16] = {0};        // This will need to be a function...
     unsigned char M_last[16] = {0};
 
-    ret = CmacOps_GetNthBlock(message, message_len, n, M_last);
+    ret = CmacOps_GetNthBlock(message, message_len, n, M_n);
     ret = CmacOps_SetLastBlockForIncomplete(M_n, K2, M_last);
 
     // Step 5
