@@ -14,7 +14,7 @@ int AesCmac_Calculate128(uint8_t key[16], size_t key_len,
 
 size_t get_n_blocks(size_t message_length);
 
-int set_is_complete_block(size_t *n_blocks, bool *is_complete_block_flag);
+int get_is_complete_block(size_t *n_blocks, bool *is_complete_block_flag);
 
 // Get the nth block from message M and put it in M_n.
 // For a zero-lenght message, clears M_n.

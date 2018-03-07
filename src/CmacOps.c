@@ -10,7 +10,7 @@ size_t get_n_blocks(size_t message_length)
     return 1;
 }
 
-int set_is_complete_block(size_t *n_blocks, bool *is_complete_block_flag)
+int get_is_complete_block(size_t *n_blocks, bool *is_complete_block_flag)
 {
     *n_blocks = 1;
     *is_complete_block_flag = false;

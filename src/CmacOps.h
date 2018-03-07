@@ -24,7 +24,7 @@ size_t get_n_blocks(size_t message_length);
  * 128 bits => is_complete_block_flag = 1
  * 129 bits => is_complete_block_flag = 0
  */
-int set_is_complete_block(size_t *n_blocks, bool *is_complete_block_flag);
+int get_is_complete_block(size_t *n_blocks, bool *is_complete_block_flag);
 
 /* Get the nth block in the message
  *
