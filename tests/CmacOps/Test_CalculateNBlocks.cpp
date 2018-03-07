@@ -9,6 +9,8 @@ extern "C"
 TEST_GROUP(CalculateNBlocks)
 {
     size_t n_blocks;
+    size_t message_length;
+    int ret;
 
     void setup()
     {
@@ -19,9 +21,9 @@ TEST_GROUP(CalculateNBlocks)
     }
 };
 
-TEST(CalculateNBlocks, has_zero_blocks_with_message_length_zero)
+TEST(CalculateNBlocks, zero_length_message_has_one_block)
 {
-    size_t message_length = 0;
+    message_length = 0;
     n_blocks = calculate_n_blocks(message_length);
-    LONGS_EQUAL( 0, message_length );
+    LONGS_EQUAL( 1, n_blocks );
 }

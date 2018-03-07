@@ -7,7 +7,7 @@ static uint8_t const_Zero[16];
 
 size_t calculate_n_blocks(size_t message_length)
 {
-    return 0;
+    return 1;
 }
 
 int set_is_complete_block(size_t *n_blocks, bool *is_complete_block_flag)

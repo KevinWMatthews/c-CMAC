@@ -1,6 +1,7 @@
 #include "AesCmac.h"
 #include <string.h>
 #include "AesCmacSubkeys.h"
+#include "CmacOps.h"
 
 int AesCmac_Calculate128(uint8_t key[16], size_t key_len,
         uint8_t *message, size_t message_len,
