@@ -1,3 +1,6 @@
+This module should directly use libgcrypt and make sure it actually works.
+
+
         Use case
 AesCmac:
     Subkeys:
@@ -21,6 +24,7 @@ CmacAes(msg)
 Long-term we may pull AesWrapper_Init() and AesWrapper_Uninit() out of
 CmacAes() calculation and into its own initialization functions.
 We don't need this now.
+
 
 
 Initialize the library

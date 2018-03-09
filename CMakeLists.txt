@@ -21,6 +21,7 @@ option(USE_LIBGCRYPT "Use libgcrypt for AES-128" ON)
 set(LIBGCRYPT_HOME /usr/local CACHE PATH "Location where libgcrypt is installed")
 if (USE_LIBGCRYPT)
     list(APPEND CMAKE_PREFIX_PATH "${LIBGCRYPT_HOME}")
+    add_subdirectory(libAes128)
 endif()
 
 option(COMPILE_TESTS "Compile unit tests" OFF)

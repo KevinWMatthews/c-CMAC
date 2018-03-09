@@ -10,6 +10,7 @@ target_link_libraries(TestApp_AesLibgcrypt
         CppUTest
         CppUTestExt
         ${LIBGCRYPT_LIBS}
+        Aes128::Aes128
 )
 
 add_test(

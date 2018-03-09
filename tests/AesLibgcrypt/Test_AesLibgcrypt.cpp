@@ -1,5 +1,6 @@
 extern "C"
 {
+#include "Aes128.h"
 }
 
 #include "CppUTest/TestHarness.h"
@@ -7,6 +8,8 @@ extern "C"
 
 TEST_GROUP(AesLibgcrypt)
 {
+    int ret;
+
     void setup()
     {
     }
@@ -16,7 +19,8 @@ TEST_GROUP(AesLibgcrypt)
     }
 };
 
-TEST(AesLibgcrypt, wiring_check)
+TEST(AesLibgcrypt, initialize_libgcrypt)
 {
-    FAIL("start here");
+    ret = Aes128_Initialize();
+    LONGS_EQUAL( AES128_SUCCESS, ret );
 }
