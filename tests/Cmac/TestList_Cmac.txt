@@ -1,0 +1,2 @@
+Compare my results with those of libgcrypt:
+    GCRY_MAC_CMAC_AES

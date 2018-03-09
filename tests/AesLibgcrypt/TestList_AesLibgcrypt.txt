@@ -1,0 +1,82 @@
+        Use case
+AesCmac:
+    Subkeys:
+        subkeys = Aes128(K=user, IV=0, input=0)
+    CBC:
+        output = Aes128(K=user, IV=0, input=block[i])
+
+We will want:
+CmacAes(msg)
+    AesWrapper_Init()
+    aes_key = AesWrapper_Create(key=user, iv=0)
+    generate_subkeys(aes_key)
+        AesWrapper_Encrypt(aes_key, 0)
+    apply_cbc(aes_key, msg)
+        msg.each_block do
+            AesWrapper_Encrypt(aes_key, input=block[i])
+        done
+    AesWrapper_Destroy()
+    AesWrapper_Uninit()
+
+Long-term we may pull AesWrapper_Init() and AesWrapper_Uninit() out of
+CmacAes() calculation and into its own initialization functions.
+We don't need this now.
+
+
+Initialize the library
+    check version
+        const char * gcry_check_version (const char *req_version)
+    disable/enable secure memory
+        gcry_error_t gcry_control (enum gcry_ctl_cmds cmd, ...)
+        GCRYCTL_DISABLE_SECMEM
+    tell library that initializatio is finished
+        gcry_error_t gcry_control (enum gcry_ctl_cmds cmd, ...)
+        GCRYCTL_INITIALIZATION_FINISHED
+
+Create a crypto handle
+    gcry_error_t gcry_cipher_open (gcry_cipher_hd_t *hd, int algo, int mode, unsigned int flags)
+    GCRY_CIPHER_AES128
+    GCRY_CIPHER_MODE_CBC
+
+Destroy a crypto handle
+    void gcry_cipher_close (gcry_cipher_hd_t h)
+
+Set aes key and IV
+    gcry_error_t gcry_cipher_setkey (gcry_cipher_hd_t h, const void *k, size_t l)
+    gcry_error_t gcry_cipher_setiv (gcry_cipher_hd_t h, const void *k, size_t l)
+
+Encrypt data
+    gcry_error_t gcry_cipher_encrypt (gcry_cipher_hd_t h, unsigned char *out, size_t outsize, const unsigned char *in, size_t inlen)
+
+Decrypt data
+    gcry_error_t gcry_cipher_decrypt (gcry_cipher_hd_t h, unsigned char *out, size_t outsize, const unsigned char *in, size_t inlen)
+
+Final?
+    Is this needed for the final encrypted/decrypted block?
+    gcry_error_t gcry_cipher_final (gcry_cipher_hd_t h)
+
+Parse error codes from the library
+    Does this require any initialization?
+    code
+        const char * gcry_strerror (gcry_error_t err)
+        gcry_err_code_t gcry_err_code (gcry_error_t err)
+    source
+        const char * gcry_strsource (gcry_error_t err)
+        gcry_err_source_t gcry_err_source (gcry_error_t err)
+    descriptive string?
+
+It is possible to create a progress handler, but we likely won't need this.
+
+Error handler
+    libgcrypt provides an error handler callback. Rad.
+    Can we use an error handler to tear down the library for us?
+    That would be awesome!
+        void gcry_set_fatalerror_handler (gcry_handler_error_t func_error, void *cb_data)
+
+Logging handler
+    I'm curious to see what messages libgcrypt would log.
+    void gcry_set_log_handler (gcry_handler_log_t func_log, void *cb_data)
+
+
+
+
