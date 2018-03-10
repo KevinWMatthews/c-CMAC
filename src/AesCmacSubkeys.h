@@ -2,7 +2,7 @@
 #define AES_CMAC_SUBKEYS_INCLUDED
 
 #include <stdint.h>
-#include "Aes.h"
+#include "Aes128.h"
 
 int AesCmac_GenerateSubkeys(uint8_t aes_key[16], size_t aes_key_len,
         uint8_t K1[16], size_t K1_len,

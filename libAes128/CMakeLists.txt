@@ -8,11 +8,10 @@ target_include_directories(Aes128
     PUBLIC
         "${CMAKE_CURRENT_LIST_DIR}"
 )
-target_link_libraries(Aes128
-    PRIVATE
-        ${LIBGCRYPT_LIBS}
-)
 set_target_properties(Aes128 PROPERTIES
     LINKER_LANGUAGE C
+)
+target_link_libraries(Aes128
+    PRIVATE
 )
 add_library(Aes128::Aes128 ALIAS Aes128)

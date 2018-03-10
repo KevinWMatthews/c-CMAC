@@ -1,5 +1,5 @@
-#ifndef AES_INCLUDED
-#define AES_INCLUDED
+#ifndef AES_128_INCLUDED
+#define AES_128_INCLUDED
 
 #include <stdint.h>
 #include <stddef.h>
