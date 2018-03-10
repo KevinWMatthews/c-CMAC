@@ -13,5 +13,6 @@ set_target_properties(Aes128 PROPERTIES
 )
 target_link_libraries(Aes128
     PRIVATE
+        libgcrypt::libgcrypt
 )
 add_library(Aes128::Aes128 ALIAS Aes128)

@@ -1,36 +1,74 @@
-
-
-
-
-
-# libgcrypt does not ship with pkgconfig or CMake support.
-# Instead, it provides a custom executable, libgcrypt-config.
-# This execytabke knows all of libgcrypt's installation details ships in the bin/ directory.
-# It is detailed in the libgcrypt documentation.
+#.rst
+# Findlibgcrypt
+# -------------
+# Find the libgcrypt cryptography library.
 #
-# You can run libgcrypt-config with options such as:
+# IMPORTED Targets
+# ^^^^^^^^^^^^^^^^
+# This module defines the `IMPORTED` targets:
+#
+# ``libgcrypt::libgcrypt``
+#  Defined if libgcrypt has been found.
+#
+# Result Variables
+# ^^^^^^^^^^^^^^^^
+# This module sets the following variables:
+#
+# ``LIBGCRYPT_FOUND``
+#   True if libgcrypt hsa been found.
+#   If false, do not try to use libgcrypt.
+#
+# ``libgcrypt_INCLUDE_DIR``
+#   The directory containing libgcrypt headers.
+#
+# ``libgcrypt_LIBRARY``
+#   The libraries needed to use libgcrypt.
+#
+
+
+find_path(libgcrypt_INCLUDE_DIR
+    NAMES gcrypt.h
+    DOC "The libgcrypt include directory"
+)
+mark_as_advanced(libgcrypt_INCLUDE_DIR)
+
+find_library(libgcrypt_LIBRARY
+    NAMES gcrypt
+    DOC "The libgcrypt library"
+)
+mark_as_advanced(libgcrypt_LIBRARY)
+
+# libgcrypt-config is an executable that provides information about the libgcrypt build and installation.
+# It can be run with options such as:
+#   --version
 #   --libs
 #   --cflags
 #   --prefix
+find_program(libgcrypt_CONFIG_EXECUTABLE
+    NAMES libgcrypt-config
+    DOC "The libgcrypt configuration executable. Provides libgcrypt package information."
+)
 
+if(libgcrypt_CONFIG_EXECUTABLE)
+    execute_process(COMMAND ${libgcrypt_CONFIG_EXECUTABLE} --version
+        OUTPUT_VARIABLE libgcrypt_VERSION
+        ERROR_QUIET
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+endif()
+unset(libgcrypt_CONFIG_EXECUTABLE)
 
-# find_program(LIBGCRYPT_CONFIG_EXECUTABLE libgcrypt-config
-    # DOC "libgcrypt-config executable. Contains libgcrypt package information (instead of pkgconfig)."
-# )
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(libgcrypt
+    REQUIRED_VARS libgcrypt_LIBRARY libgcrypt_INCLUDE_DIR
+    VERSION_VAR libgcrypt_VERSION
+)
 
-# if(NOT LIBGCRYPT_CONFIG_EXECUTABLE)
-#     message(FATAL_ERROR "libgcrypt-config not found in LIBGCRYPT_HOME: ${LIBGCRYPT_HOME}")
-# endif()
-
-# execute_process(
-#     COMMAND ${LIBGCRYPT_CONFIG_EXECUTABLE} --libs
-#     RESULT_VARIABLE LIBGCRYPT_CONFIG_ERROR
-#     OUTPUT_VARIABLE LIBGCRYPT_LIBS
-#     OUTPUT_STRIP_TRAILING_WHITESPACE
-# )
-
-# if(LIBGCRYPT_CONFIG_ERROR)
-#     message(FATAL_ERROR "${LIBGCRYPT_CONFIG_EXECUTABLE} failed")
-# endif()
-
-mark_as_advanced(LIBGCRYPT_CONFIG_EXECUTABLE)
+if(LIBGCRYPT_FOUND AND NOT TARGET libgcrypt::libgcrypt)
+    add_library(libgcrypt::libgcrypt UNKNOWN IMPORTED)
+    set_target_properties(libgcrypt::libgcrypt PROPERTIES
+        IMPORTED_LINK_INTERFACE_LANGUAGES "C"
+        IMPORTED_LOCATION "${libgcrypt_LIBRARY}"
+        INTERFACE_INCLUDE_DIRECTORIES "${libgcrypt_INCLUDE_DIR}"
+    )
+endif()

@@ -15,13 +15,9 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 
 option(USE_LIBGCRYPT "Use libgcrypt for AES-128" ON)
-
-# I can't figure  out how to make a dependent option
-# CMAKE_DEPENDENT_OPTION can not be found by cmake
 set(LIBGCRYPT_HOME /usr/local CACHE PATH "Location where libgcrypt is installed")
 if (USE_LIBGCRYPT)
     list(APPEND CMAKE_PREFIX_PATH "${LIBGCRYPT_HOME}")
-    add_subdirectory(libAes128)
 endif()
 
 option(COMPILE_TESTS "Compile unit tests" OFF)
@@ -30,18 +26,16 @@ if(COMPILE_TESTS)
     list(APPEND CMAKE_PREFIX_PATH "${CPPUTEST_HOME}")
 endif()
 
-# add_subdirectory(src)
-
 if(USE_LIBGCRYPT)
     find_package(libgcrypt 1.8.2 REQUIRED)
-    #TODO add_subdirectory for tests and src
+    add_subdirectory(libAes128)
+    #TODO add_subdirectory for tests
 endif()
+
+# add_subdirectory(src)
 
 if(COMPILE_TESTS)
     enable_testing()
-
-    message(STATUS "Searching for CppUTest in CPPUTEST_HOME: ${CPPUTEST_HOME}")
     find_package(CppUTest 3.8 REQUIRED)
-
     add_subdirectory(tests)
 endif()

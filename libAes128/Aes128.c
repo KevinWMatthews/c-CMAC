@@ -1,5 +1,5 @@
 #include "Aes128.h"
-// #include <gcrypt.h>
+#include <gcrypt.h>
 
 typedef struct AES128_STRUCT
 {
