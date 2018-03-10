@@ -32,7 +32,7 @@ if(USE_LIBGCRYPT)
     #TODO add_subdirectory for tests
 endif()
 
-# add_subdirectory(src)
+add_subdirectory(src)
 
 if(COMPILE_TESTS)
     enable_testing()
