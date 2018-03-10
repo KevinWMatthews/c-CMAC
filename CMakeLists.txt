@@ -30,7 +30,7 @@ if(COMPILE_TESTS)
     list(APPEND CMAKE_PREFIX_PATH "${CPPUTEST_HOME}")
 endif()
 
-add_subdirectory(src)
+# add_subdirectory(src)
 
 if(USE_LIBGCRYPT)
     find_package(libgcrypt 1.8.2 REQUIRED)
