@@ -9,7 +9,6 @@ target_link_libraries(TestApp_AesLibgcrypt
     PRIVATE
         CppUTest
         CppUTestExt
-        ${LIBGCRYPT_LIBS}
         Aes128::Aes128
 )
 

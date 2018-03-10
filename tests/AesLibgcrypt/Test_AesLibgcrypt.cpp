@@ -14,18 +14,23 @@ TEST_GROUP(AesLibgcrypt)
     void setup()
     {
         aes = NULL;
+        mock().strictOrder();
     }
 
     void teardown()
     {
+        mock().checkExpectations();
+        mock().clear();
     }
 };
 
 TEST(AesLibgcrypt, initialize_libgcrypt)
 {
+    mock().expectOneCall("gcry_check_version");
     ret = Aes128_Initialize();
     LONGS_EQUAL( AES128_SUCCESS, ret );
 }
+
 
 TEST(AesLibgcrypt, create_aes_handle)
 {
