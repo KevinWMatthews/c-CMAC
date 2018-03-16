@@ -6,7 +6,8 @@
 
 typedef enum
 {
-    AES128_SUCCESS      = 0,
+    AES128_SUCCESS      =  0,
+    AES128_FAILURE      = -1,
 } AES128_RETURN_CODE;
 AES128_RETURN_CODE Aes128_Initialize(void);
 

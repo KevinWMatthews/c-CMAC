@@ -26,7 +26,9 @@ TEST_GROUP(AesLibgcrypt)
 
 TEST(AesLibgcrypt, initialize_libgcrypt)
 {
-    mock().expectOneCall("gcry_check_version");
+    mock().expectOneCall("gcry_check_version")
+        .withParameter("req_version", "1.8.2")
+        .andReturnValue("1.8.2");
     ret = Aes128_Initialize();
     LONGS_EQUAL( AES128_SUCCESS, ret );
 }
