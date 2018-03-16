@@ -1,8 +1,8 @@
 enable_language(C)
 
 add_library(Aes128
-    "${CMAKE_CURRENT_LIST_DIR}/Aes128.h"
-    "${CMAKE_CURRENT_LIST_DIR}/Aes128.c"
+    Aes128.h
+    Aes128_Libgcrypt.c
 )
 target_include_directories(Aes128
     PUBLIC
