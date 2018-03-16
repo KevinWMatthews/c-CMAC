@@ -1,13 +1,13 @@
 enable_language(CXX)
 
-add_executable(TestApp_ByteArrayOps
+add_executable(UnitTests_ByteArrayOps
     RunAllTests.cpp
     Test_CircularShiftLeftOne.cpp
     Test_LogicalShiftLeftOne.cpp
     Test_Xor.cpp
 )
 
-target_link_libraries(TestApp_ByteArrayOps
+target_link_libraries(UnitTests_ByteArrayOps
     PRIVATE
         CppUTest
         CppUTestExt
@@ -16,5 +16,5 @@ target_link_libraries(TestApp_ByteArrayOps
 
 add_test(
     NAME Test_ByteArrayOps
-    COMMAND TestApp_ByteArrayOps
+    COMMAND UnitTests_ByteArrayOps
 )

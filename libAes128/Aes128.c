@@ -33,7 +33,7 @@ AES128_RETURN_CODE Aes128_Initialize(void)
      * GCRYCTL_DISABLE_SECMEM
      *      Disables the use of secure memory
      */
-    gcry_control(GCRYCTL_DISABLE_SECMEM);
+    gcry_control(GCRYCTL_DISABLE_SECMEM, 0);
 
     return AES128_SUCCESS;
 }

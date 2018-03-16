@@ -1,6 +1,6 @@
 enable_language(CXX)
 
-add_executable(TestApp_CmacOps
+add_executable(UnitTests_CmacOps
     RunAllTests.cpp
     Test_AesCmacSubkeys.cpp
     Test_GetNBlocks.cpp
@@ -12,7 +12,7 @@ add_executable(TestApp_CmacOps
     "${CMAKE_HOME_DIRECTORY}/mocks/Aes128Comparator.cpp"
 )
 
-target_link_libraries(TestApp_CmacOps
+target_link_libraries(UnitTests_CmacOps
     PRIVATE
         CppUTest
         CppUTestExt
@@ -21,5 +21,5 @@ target_link_libraries(TestApp_CmacOps
 
 add_test(
     NAME Test_CmacOps
-    COMMAND TestApp_CmacOps
+    COMMAND UnitTests_CmacOps
 )
