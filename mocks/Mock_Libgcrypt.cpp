@@ -13,3 +13,10 @@ const char * gcry_check_version (const char *req_version)
     // Or this:
     // return mock().stringReturnValue();
 }
+
+gcry_error_t gcry_control (enum gcry_ctl_cmds cmd, ...)
+{
+    return mock().actualCall("gcry_control")
+        .withParameter("cmd", cmd)
+        .returnIntValue();
+}

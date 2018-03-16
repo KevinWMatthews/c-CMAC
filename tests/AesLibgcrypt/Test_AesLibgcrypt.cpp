@@ -1,6 +1,7 @@
 extern "C"
 {
 #include "Aes128.h"
+#include <gcrypt.h>
 }
 
 #include "CppUTest/TestHarness.h"
@@ -29,6 +30,10 @@ TEST(AesLibgcrypt, initialize_libgcrypt)
     mock().expectOneCall("gcry_check_version")
         .withParameter("req_version", "1.8.2")
         .andReturnValue("1.8.2");
+
+    mock().expectOneCall("gcry_control")
+        .withParameter("cmd", GCRYCTL_DISABLE_SECMEM);//, 0;
+
     ret = Aes128_Initialize();
     LONGS_EQUAL( AES128_SUCCESS, ret );
 }

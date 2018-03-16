@@ -25,6 +25,16 @@ AES128_RETURN_CODE Aes128_Initialize(void)
      */
     actual_version = gcry_check_version(LIBGCRYPT_REQURIED_VERSION);
 
+    /*
+     * gcry_error_t gcry_control (enum gcry_ctl_cmds cmd, ...)
+     *
+     * Set general libgcrypt behavior.
+     *
+     * GCRYCTL_DISABLE_SECMEM
+     *      Disables the use of secure memory
+     */
+    gcry_control(GCRYCTL_DISABLE_SECMEM);
+
     return AES128_SUCCESS;
 }
 
