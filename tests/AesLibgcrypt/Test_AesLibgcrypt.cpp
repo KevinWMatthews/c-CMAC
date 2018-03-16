@@ -25,6 +25,8 @@ TEST_GROUP(AesLibgcrypt)
     }
 };
 
+#define LIBGCRYPT_SUCCESS       0
+
 TEST(AesLibgcrypt, initialize_libgcrypt)
 {
     mock().expectOneCall("gcry_check_version")
@@ -32,7 +34,9 @@ TEST(AesLibgcrypt, initialize_libgcrypt)
         .andReturnValue("1.8.2");
 
     mock().expectOneCall("gcry_control")
-        .withParameter("cmd", GCRYCTL_DISABLE_SECMEM);//, 0;
+        .withParameter("cmd", GCRYCTL_DISABLE_SECMEM)
+        // Not sure if/how to test varargs. Not needed since it's NULL.
+        .andReturnValue(LIBGCRYPT_SUCCESS);
 
     ret = Aes128_Initialize();
     LONGS_EQUAL( AES128_SUCCESS, ret );

@@ -42,6 +42,8 @@ Fail to initialize the library
     check version
         returns null if version is too old
         Need to put this in a mock test file?
+    gcry_control
+        What does it return on failure?
 
 Create a crypto handle
     gcry_error_t gcry_cipher_open (gcry_cipher_hd_t *hd, int algo, int mode, unsigned int flags)
