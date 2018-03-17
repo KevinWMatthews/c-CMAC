@@ -4,8 +4,8 @@
 #include <stdint.h>
 #include <stddef.h>
 
-#define AES_128_KEY_LEN     16
-#define AES_128_IV_LEN      16
+#define AES128_KEY_LEN     16
+#define AES128_IV_LEN      16
 typedef struct AES_KEY_128
 {
     size_t key_len;

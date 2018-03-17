@@ -4,6 +4,10 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#define AES128_KEY_LEN      16
+#define AES128_IV_LEN       16
+#define AES128_BLOCK_LEN    16
+
 typedef enum
 {
     AES128_SUCCESS                  =  0,

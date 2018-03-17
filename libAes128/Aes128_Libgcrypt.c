@@ -57,9 +57,9 @@ AES128_RETURN_CODE Aes128_Create(AES128_CREATE_PARAMS *params, AES128_HANDLE * a
     if (aes_handle == NULL)
         return AES128_NULL_POINTER;
 
-    if (params->key_len != 16)
+    if (params->key_len != AES128_KEY_LEN)
         return AES128_INVALID_KEY_LENGTH;
-    if (params->iv_len != 16)
+    if (params->iv_len != AES128_IV_LEN)
         return AES128_INVALID_IV_LENGTH;
 
     /*
@@ -124,7 +124,7 @@ AES128_RETURN_CODE Aes128_Encrypt(AES128_CRYPTO_PARAMS *params, uint8_t *output,
     if (output == NULL)
         return AES128_NULL_POINTER;
 
-    if (params->input_len != 16)
+    if (params->input_len != AES128_BLOCK_LEN)
         return AES128_INVALID_INPUT_LENGTH;
     if (output_len < params->input_len)
         return AES128_INVALID_OUTPUT_LENGTH;
