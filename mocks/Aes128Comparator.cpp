@@ -33,10 +33,10 @@ bool Aes128Comparator::isEqual(const void* object1, const void* object2)
 
 SimpleString Aes128Comparator::valueToString(const void* object)
 {
-    const AES_KEY_128 *aes = (const AES_KEY_128 *)object;
+    const AES_KEY_128 *aes_handle = (const AES_KEY_128 *)object;
 
-    SimpleString key = StringFromBinaryWithSize(aes->key, aes->key_len);
-    SimpleString iv = StringFromBinaryWithSize(aes->iv, aes->iv_len);
+    SimpleString key = StringFromBinaryWithSize(aes_handle->key, aes_handle->key_len);
+    SimpleString iv = StringFromBinaryWithSize(aes_handle->iv, aes_handle->iv_len);
 
     return StringFrom("key: ") + key + StringFrom("; iv: ") + iv;
 }

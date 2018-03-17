@@ -44,7 +44,7 @@ AES128_RETURN_CODE Aes128_Initialize(void)
     return AES128_SUCCESS;
 }
 
-AES128_RETURN_CODE Aes128_Create(AES128_CREATE_PARAMS *params, AES128 * aes_handle)
+AES128_RETURN_CODE Aes128_Create(AES128_CREATE_PARAMS *params, AES128_HANDLE * aes_handle)
 {
     gcry_error_t gcry_error;
 
@@ -106,7 +106,7 @@ AES128_RETURN_CODE Aes128_Create(AES128_CREATE_PARAMS *params, AES128 * aes_hand
     return AES128_SUCCESS;
 }
 
-void Aes128_Destroy(AES128 * self)
+void Aes128_Destroy(AES128_HANDLE * self)
 {
     return;
 }

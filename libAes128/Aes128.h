@@ -16,7 +16,7 @@ typedef enum
 } AES128_RETURN_CODE;
 AES128_RETURN_CODE Aes128_Initialize(void);
 
-typedef struct AES128_STRUCT * AES128;
+typedef struct AES128_STRUCT * AES128_HANDLE;
 
 typedef struct AES128_CREATE_PARAMS
 {
@@ -25,13 +25,13 @@ typedef struct AES128_CREATE_PARAMS
     size_t iv_len;
     uint8_t *iv;
 } AES128_CREATE_PARAMS;
-AES128_RETURN_CODE Aes128_Create(AES128_CREATE_PARAMS *params, AES128 *aes_handle);
+AES128_RETURN_CODE Aes128_Create(AES128_CREATE_PARAMS *params, AES128_HANDLE *aes_handle);
 
-void Aes128_Destroy(AES128 * self);
+void Aes128_Destroy(AES128_HANDLE * self);
 
 typedef struct AES128_CRYPTO_PARAMS
 {
-    AES128 aes_handle;
+    AES128_HANDLE aes_handle;
     size_t input_len;
     uint8_t *input;
 } AES128_CRYPTO_PARAMS;

@@ -53,7 +53,7 @@ Create a crypto handle
 Destroy a crypto handle
     void gcry_cipher_close (gcry_cipher_hd_t h)
 
-Set aes key and IV
+Set aes_handle key and IV
     gcry_error_t gcry_cipher_setkey (gcry_cipher_hd_t h, const void *k, size_t l)
     gcry_error_t gcry_cipher_setiv (gcry_cipher_hd_t h, const void *k, size_t l)
 

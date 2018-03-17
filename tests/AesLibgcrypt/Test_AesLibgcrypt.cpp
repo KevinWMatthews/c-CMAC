@@ -8,13 +8,13 @@ extern "C"
 
 TEST_GROUP(AesLibgcrypt)
 {
-    AES128 aes;
+    AES128_HANDLE aes_handle;
     AES128_CREATE_PARAMS create_params;
     int ret;
 
     void setup()
     {
-        aes = NULL;
+        aes_handle = NULL;
     }
 
     void teardown()
@@ -30,25 +30,25 @@ TEST(AesLibgcrypt, initialize)
 
 TEST(AesLibgcrypt, destroy_aes_handle)
 {
-    Aes128_Destroy(&aes);
-    CHECK_TRUE( aes == NULL );
+    Aes128_Destroy(&aes_handle);
+    CHECK_TRUE( aes_handle == NULL );
 }
 
 TEST(AesLibgcrypt, create_fails_with_null_params)
 {
-    ret = Aes128_Create(NULL, &aes);
+    ret = Aes128_Create(NULL, &aes_handle);
     LONGS_EQUAL( AES128_NULL_POINTER, ret );
-    CHECK_TRUE( aes == NULL );
+    CHECK_TRUE( aes_handle == NULL );
 }
 
 TEST(AesLibgcrypt, create_fails_with_null_key)
 {
     create_params.key = NULL;
 
-    ret = Aes128_Create(&create_params, &aes);
+    ret = Aes128_Create(&create_params, &aes_handle);
 
     LONGS_EQUAL( AES128_NULL_POINTER, ret );
-    CHECK_TRUE( aes == NULL );
+    CHECK_TRUE( aes_handle == NULL );
 }
 
 TEST(AesLibgcrypt, create_fails_with_null_iv)
@@ -57,10 +57,10 @@ TEST(AesLibgcrypt, create_fails_with_null_iv)
     create_params.key = key;
     create_params.iv = NULL;
 
-    ret = Aes128_Create(&create_params, &aes);
+    ret = Aes128_Create(&create_params, &aes_handle);
 
     LONGS_EQUAL( AES128_NULL_POINTER, ret );
-    CHECK_TRUE( aes == NULL );
+    CHECK_TRUE( aes_handle == NULL );
 }
 
 TEST(AesLibgcrypt, create_fails_with_null_aes)
@@ -83,7 +83,7 @@ TEST(AesLibgcrypt, create_fails_with_invalid_key_length)
     create_params.key_len = sizeof(key);
     create_params.iv = iv;
 
-    ret = Aes128_Create(&create_params, &aes);
+    ret = Aes128_Create(&create_params, &aes_handle);
 
     LONGS_EQUAL( AES128_INVALID_KEY, ret );
 }
@@ -97,7 +97,7 @@ TEST(AesLibgcrypt, create_fails_with_invalid_iv_length)
     create_params.iv = iv;
     create_params.iv_len = sizeof(iv);
 
-    ret = Aes128_Create(&create_params, &aes);
+    ret = Aes128_Create(&create_params, &aes_handle);
 
     LONGS_EQUAL( AES128_INVALID_IV, ret );
 }
@@ -112,10 +112,10 @@ TEST(AesLibgcrypt, create_aes_handle)
     create_params.iv_len = sizeof(iv);
 
 
-    ret = Aes128_Create(&create_params, &aes);
+    ret = Aes128_Create(&create_params, &aes_handle);
 
     LONGS_EQUAL( AES128_SUCCESS, ret );
-    CHECK_TRUE( aes != NULL );
+    CHECK_TRUE( aes_handle != NULL );
 }
 
 //TODO close cipher handle
@@ -123,7 +123,7 @@ TEST(AesLibgcrypt, create_aes_handle)
 
 TEST_GROUP(AesLibgcrypt_Encrypt)
 {
-    AES128 aes_handle;
+    AES128_HANDLE aes_handle;
     AES128_CREATE_PARAMS create_params;
     AES128_CRYPTO_PARAMS encrypt_params;
     uint8_t zeros[16];
