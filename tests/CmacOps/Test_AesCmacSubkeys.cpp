@@ -8,7 +8,7 @@ extern "C"
 #include "CppUTestExt/MockSupport.h"
 #include "Aes128Comparator.h"
 
-class Comparator_Aes128_WriteParams : public MockNamedValueComparator
+class Comparator_Aes128_CreateParams : public MockNamedValueComparator
 {
 public:
     virtual bool isEqual(const void* object1, const void* object2)
@@ -32,8 +32,15 @@ public:
 
     virtual SimpleString valueToString(const void* object)
     {
-        //TODO Expand this...
-        return StringFrom(object);
+        if (object == NULL)
+            return StringFrom("NULL");
+
+        const AES128_CREATE_PARAMS *params = (const AES128_CREATE_PARAMS *)object;
+
+        SimpleString key = StringFromBinaryWithSize(params->key, params->key_len);
+        SimpleString iv = StringFromBinaryWithSize(params->iv, params->iv_len);
+
+        return StringFrom("key: ") + key + StringFrom("; iv: ") + iv;
     }
 };
 
@@ -59,14 +66,19 @@ public:
 
     virtual SimpleString valueToString(const void* object)
     {
-        //TODO Expand this...
-        return StringFrom(object);
+        const AES128_CRYPTO_PARAMS *params = (const AES128_CRYPTO_PARAMS *)object;
+
+        Comparator_Aes128_CreateParams comp;
+        SimpleString aes_handle = comp.valueToString(params->aes_handle);
+        SimpleString input = StringFromBinaryWithSize(params->input, params->input_len);
+        return StringFrom("AES handle: ") + aes_handle + StringFrom("; input: ") + input;
     }
 };
 
 TEST_GROUP(AesCmacSubkeys)
 {
     Aes128Comparator comparator;
+    Comparator_Aes128_CreateParams create_comparator;
     Comparator_Aes128_CryptoParams crypto_comparator;
     int ret;
 
@@ -256,6 +268,7 @@ TEST(AesCmacSubkeys, generate_L_from_input_key_all_zeros)
         .withParameter("aes_handle", &aes_handle)
         .andReturnValue(AES128_SUCCESS);
 
+    mock().installComparator("AES128_CREATE_PARAMS", create_comparator);    //?
     mock().installComparator("AES128_CRYPTO_PARAMS", crypto_comparator);
     mock().expectOneCall("Aes128_Encrypt")
         .withParameterOfType("AES128_CRYPTO_PARAMS", "params", &crypto_params)
