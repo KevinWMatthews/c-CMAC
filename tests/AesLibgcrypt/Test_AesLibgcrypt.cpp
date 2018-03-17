@@ -50,7 +50,7 @@ TEST(AesLibgcrypt, create_aes_handle)
     CHECK_TRUE( aes != NULL );
 }
 
-TEST(AesLibgcrypt, create_failes_with_null_key)
+TEST(AesLibgcrypt, create_fails_with_null_key)
 {
     AES128_IV iv = {};
     uint8_t iv_buffer[16] = {};
@@ -59,7 +59,37 @@ TEST(AesLibgcrypt, create_failes_with_null_key)
     iv.length = sizeof(iv_buffer);
 
     ret = Aes128_Create(NULL, &iv, &aes);
-    LONGS_EQUAL( AES128_FAILURE, ret );
+    LONGS_EQUAL( AES128_NULL_POINTER, ret );
+    CHECK_TRUE( aes == NULL );
+}
+
+TEST(AesLibgcrypt, create_fails_with_null_iv)
+{
+    AES128_KEY key = {};
+    uint8_t key_buffer[16] = {};
+
+    key.buffer = key_buffer;
+    key.length = sizeof(key_buffer);
+
+    ret = Aes128_Create(&key, NULL, &aes);
+    LONGS_EQUAL( AES128_NULL_POINTER, ret );
+    CHECK_TRUE( aes == NULL );
+}
+
+TEST(AesLibgcrypt, create_fails_with_null_aes)
+{
+    AES128_KEY key = {};
+    uint8_t key_buffer[16] = {};
+    AES128_IV iv = {};
+    uint8_t iv_buffer[16] = {};
+
+    key.buffer = key_buffer;
+    key.length = sizeof(key_buffer);
+    iv.buffer = iv_buffer;
+    iv.length = sizeof(iv_buffer);
+
+    ret = Aes128_Create(&key, &iv, NULL);
+    LONGS_EQUAL( AES128_NULL_POINTER, ret );
     CHECK_TRUE( aes == NULL );
 }
 

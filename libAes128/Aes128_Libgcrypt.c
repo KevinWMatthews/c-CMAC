@@ -48,6 +48,13 @@ AES128_RETURN_CODE Aes128_Create(AES128_KEY * key, AES128_IV * iv, AES128 * self
 {
     gcry_error_t gcry_error;
 
+    if (key == NULL)
+        return AES128_NULL_POINTER;
+    if (iv == NULL)
+        return AES128_NULL_POINTER;
+    if (self == NULL)
+        return AES128_NULL_POINTER;
+
     /*
      * gcry_error_t gcry_cipher_open (gcry_cipher_hd_t *hd, int algo, int mode, unsigned int flags)
      *
