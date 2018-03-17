@@ -8,6 +8,35 @@ extern "C"
 #include "CppUTestExt/MockSupport.h"
 #include "Aes128Comparator.h"
 
+class Comparator_Aes128_WriteParams : public MockNamedValueComparator
+{
+public:
+    virtual bool isEqual(const void* object1, const void* object2)
+    {
+        const AES128_CREATE_PARAMS *params1 = (const AES128_CREATE_PARAMS *)object1;
+        const AES128_CREATE_PARAMS *params2 = (const AES128_CREATE_PARAMS *)object2;
+
+        SimpleString key1 = StringFromBinaryWithSize(params1->key, params1->key_len);
+        SimpleString key2 = StringFromBinaryWithSize(params2->key, params2->key_len);
+
+        SimpleString iv1 = StringFromBinaryWithSize(params1->iv, params1->iv_len);
+        SimpleString iv2 = StringFromBinaryWithSize(params2->iv, params2->iv_len);
+
+        if (key1 != key2)
+            return 0;
+        if (iv1 != iv2)
+            return 0;
+
+        return 1;
+    }
+
+    virtual SimpleString valueToString(const void* object)
+    {
+        //TODO Expand this...
+        return StringFrom(object);
+    }
+};
+
 class Comparator_Aes128_CryptoParams : public MockNamedValueComparator
 {
 public:
@@ -16,10 +45,11 @@ public:
         const AES128_CRYPTO_PARAMS *params1 = (const AES128_CRYPTO_PARAMS *)object1;
         const AES128_CRYPTO_PARAMS *params2 = (const AES128_CRYPTO_PARAMS *)object2;
 
-        //TODO need to create a comparator for the AES handles...
-
         SimpleString input1 = StringFromBinaryWithSize(params1->input, params1->input_len);
         SimpleString input2 = StringFromBinaryWithSize(params2->input, params2->input_len);
+
+        if (params1->aes_handle != params2->aes_handle)
+            return 0;
 
         if (input1 != input2)
             return 0;
@@ -29,6 +59,7 @@ public:
 
     virtual SimpleString valueToString(const void* object)
     {
+        //TODO Expand this...
         return StringFrom(object);
     }
 };
