@@ -16,7 +16,7 @@ typedef struct AES128_STRUCT * AES128;
 typedef struct AES128_KEY
 {
     size_t key_len;
-    uint8_t key;
+    uint8_t *key;
 } AES128_KEY;
 typedef struct AES128_IV
 {
@@ -26,5 +26,7 @@ typedef struct AES128_IV
 AES128 Aes128_Create(AES128_KEY * key, AES128_IV * iv);
 
 void Aes128_Destroy(AES128 * self);
+
+AES128_RETURN_CODE Aes128_Encrypt(AES128 self, uint8_t * input, size_t input_len, uint8_t * output, size_t output_len);
 
 #endif
