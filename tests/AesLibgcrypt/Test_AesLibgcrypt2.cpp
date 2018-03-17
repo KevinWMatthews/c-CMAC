@@ -27,6 +27,12 @@ TEST(AesLibgcrypt2, initialize)
     LONGS_EQUAL( AES128_SUCCESS, ret );
 }
 
+TEST(AesLibgcrypt2, destroy_aes_handle)
+{
+    Aes128_Destroy(&aes);
+    CHECK_TRUE( aes == NULL );
+}
+
 TEST(AesLibgcrypt2, create_aes_handle)
 {
     AES128_KEY key = {};
