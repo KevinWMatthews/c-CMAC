@@ -35,6 +35,12 @@ AES128_RETURN_CODE Aes128_Initialize(void)
      */
     gcry_control(GCRYCTL_DISABLE_SECMEM, 0);
 
+    /*
+     * GCRYCTL_INITIALIZATION_FINISHED
+     *      This command tells the library that the application has finished the initialization.
+     */
+    gcry_control(GCRYCTL_INITIALIZATION_FINISHED, 0);
+
     return AES128_SUCCESS;
 }
 

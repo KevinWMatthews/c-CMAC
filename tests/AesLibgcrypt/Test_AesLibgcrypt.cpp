@@ -37,6 +37,10 @@ TEST(AesLibgcrypt, initialize_libgcrypt)
         // Not sure if/how to test varargs. Not needed since it's NULL.
         .andReturnValue(GPG_ERR_NO_ERROR);
 
+    mock().expectOneCall("gcry_control")
+        .withParameter("cmd", GCRYCTL_INITIALIZATION_FINISHED)
+        .andReturnValue(GPG_ERR_NO_ERROR);
+
     ret = Aes128_Initialize();
     LONGS_EQUAL( AES128_SUCCESS, ret );
 }
