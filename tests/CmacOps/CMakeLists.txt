@@ -17,6 +17,7 @@ target_link_libraries(UnitTests_CmacOps
         CppUTest
         CppUTestExt
         CmacOpsLib::CmacOpsLib
+        MockAes128::MockAes128
 )
 
 add_test(

@@ -1,6 +1,7 @@
 extern "C"
 {
 #include "AesCmacSubkeys.h"
+#include "Aes128.h"
 }
 
 #include "CppUTest/TestHarness.h"
@@ -176,6 +177,24 @@ TEST(AesCmacSubkeys, generate_L_from_input_key_all_zeros)
     aes_params.iv_len = sizeof(key);
 
     uint8_t L[16] = {};
+
+    AES128_HANDLE aes_handle = NULL;
+    AES128_CREATE_PARAMS create_params = {};
+    create_params.key = key;
+    create_params.key_len = sizeof(key);
+    create_params.iv = iv;
+    create_params.iv_len = sizeof(key);
+
+
+    mock().expectOneCall("Aes128_Initialize")
+        .andReturnValue(AES128_SUCCESS);
+    mock().expectOneCall("Aes128_Create")
+        .withParameter("params", &create_params)
+        .withParameter("aes_handle", &aes_handle)
+        .andReturnValue(AES128_SUCCESS);
+
+    Aes128_Initialize();
+    Aes128_Create(&create_params, &aes_handle);
 
     mock().installComparator("AES_KEY_128", comparator);
     mock().expectOneCall("Aes_Calculate128")
