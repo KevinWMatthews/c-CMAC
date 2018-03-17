@@ -23,7 +23,7 @@ AES128_RETURN_CODE Aes128_Create(AES128_CREATE_PARAMS *params, AES128_HANDLE *ae
 AES128_RETURN_CODE Aes128_Encrypt(AES128_CRYPTO_PARAMS *params, uint8_t *output, size_t output_len)
 {
     mock().actualCall("Aes128_Encrypt")
-        .withParameter("params", params)
+        .withParameterOfType("AES128_CRYPTO_PARAMS", "params", params)
         .withOutputParameter("output", output)
         .withParameter("output_len", output_len);
     return (AES128_RETURN_CODE)mock().intReturnValue();

@@ -8,9 +8,35 @@ extern "C"
 #include "CppUTestExt/MockSupport.h"
 #include "Aes128Comparator.h"
 
+class Comparator_Aes128_CryptoParams : public MockNamedValueComparator
+{
+public:
+    virtual bool isEqual(const void* object1, const void* object2)
+    {
+        const AES128_CRYPTO_PARAMS *params1 = (const AES128_CRYPTO_PARAMS *)object1;
+        const AES128_CRYPTO_PARAMS *params2 = (const AES128_CRYPTO_PARAMS *)object2;
+
+        //TODO need to create a comparator for the AES handles...
+
+        SimpleString input1 = StringFromBinaryWithSize(params1->input, params1->input_len);
+        SimpleString input2 = StringFromBinaryWithSize(params2->input, params2->input_len);
+
+        if (input1 != input2)
+            return 0;
+
+        return 1;
+    }
+
+    virtual SimpleString valueToString(const void* object)
+    {
+        return StringFrom(object);
+    }
+};
+
 TEST_GROUP(AesCmacSubkeys)
 {
     Aes128Comparator comparator;
+    Comparator_Aes128_CryptoParams crypto_comparator;
     int ret;
 
     void setup()
@@ -199,9 +225,9 @@ TEST(AesCmacSubkeys, generate_L_from_input_key_all_zeros)
         .withParameter("aes_handle", &aes_handle)
         .andReturnValue(AES128_SUCCESS);
 
-    // Do we need a comparator here? We may if the function assembles the write parameters
+    mock().installComparator("AES128_CRYPTO_PARAMS", crypto_comparator);
     mock().expectOneCall("Aes128_Encrypt")
-        .withParameter("params", &crypto_params)
+        .withParameterOfType("AES128_CRYPTO_PARAMS", "params", &crypto_params)
         .withOutputParameterReturning("output", expected, sizeof(expected))
         .withParameter("output_len", sizeof(expected))
         .andReturnValue(AES128_SUCCESS);
@@ -210,22 +236,6 @@ TEST(AesCmacSubkeys, generate_L_from_input_key_all_zeros)
     Aes128_Create(&create_params, &aes_handle);
 
     ret = AesCmac_CalculateLFromK_( aes_handle, L, sizeof(L) );
-    // Aes128_Encrypt(&crypto_params, L, sizeof(L));
-    LONGS_EQUAL( 0, ret );
-    MEMCMP_EQUAL( expected, L, sizeof(expected) );
-
-
-
-    mock().installComparator("AES_KEY_128", comparator);
-    mock().expectOneCall("Aes_Calculate128")
-        .withParameterOfType("AES_KEY_128", "aes_128", (void *)&aes_params)
-        .withMemoryBufferParameter("input", zeros, sizeof(zeros))
-        .withParameter("input_len", sizeof(zeros))
-        .withOutputParameterReturning("output", expected, sizeof(expected))
-        .withParameter("output_len", sizeof(expected))
-        .andReturnValue(0);
-
-    ret = AesCmac_CalculateLFromK( key, sizeof(key), L, sizeof(L) );
 
     LONGS_EQUAL( 0, ret );
     MEMCMP_EQUAL( expected, L, sizeof(expected) );
