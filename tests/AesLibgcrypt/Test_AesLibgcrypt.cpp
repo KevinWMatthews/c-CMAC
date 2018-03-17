@@ -163,7 +163,7 @@ TEST_GROUP(AesLibgcrypt_Encrypt)
 
 TEST(AesLibgcrypt_Encrypt, encrypt_fails_with_null_params)
 {
-    ret = Aes128_Encrypt2( NULL, output, sizeof(output) );
+    ret = Aes128_Encrypt( NULL, output, sizeof(output) );
     LONGS_EQUAL( AES128_NULL_POINTER, ret );
 }
 
@@ -171,7 +171,7 @@ TEST(AesLibgcrypt_Encrypt, encrypt_fails_with_null_aes_handle)
 {
     encrypt_params.aes_handle = NULL;
 
-    ret = Aes128_Encrypt2( &encrypt_params, output, sizeof(output) );
+    ret = Aes128_Encrypt( &encrypt_params, output, sizeof(output) );
 
     LONGS_EQUAL( AES128_NULL_POINTER, ret );
 }
@@ -181,7 +181,7 @@ TEST(AesLibgcrypt_Encrypt, encrypt_fails_with_null_input)
     encrypt_params.aes_handle = aes_handle;
     encrypt_params.input = NULL;
 
-    ret = Aes128_Encrypt2( &encrypt_params, output, sizeof(output) );
+    ret = Aes128_Encrypt( &encrypt_params, output, sizeof(output) );
 
     LONGS_EQUAL( AES128_NULL_POINTER, ret );
 }
@@ -195,7 +195,7 @@ TEST(AesLibgcrypt_Encrypt, encrypt_fails_with_invalid_input_length)
     encrypt_params.input = input;
     encrypt_params.input_len = sizeof(input);
 
-    ret = Aes128_Encrypt2( &encrypt_params, output, sizeof(output) );
+    ret = Aes128_Encrypt( &encrypt_params, output, sizeof(output) );
 
     LONGS_EQUAL( AES128_INVALID_INPUT_LENGTH, ret );
 }
@@ -207,7 +207,7 @@ TEST(AesLibgcrypt_Encrypt, encrypt_fails_with_null_output)
     encrypt_params.aes_handle = aes_handle;
     encrypt_params.input = input;
 
-    ret = Aes128_Encrypt2( &encrypt_params, NULL, sizeof(output) );
+    ret = Aes128_Encrypt( &encrypt_params, NULL, sizeof(output) );
 
     LONGS_EQUAL( AES128_NULL_POINTER, ret );
 }
@@ -221,7 +221,7 @@ TEST(AesLibgcrypt_Encrypt, encrypt_fails_with_output_shorter_than_input)
     encrypt_params.input = input;
     encrypt_params.input_len = sizeof(input);
 
-    ret = Aes128_Encrypt2( &encrypt_params, short_output, sizeof(short_output) );
+    ret = Aes128_Encrypt( &encrypt_params, short_output, sizeof(short_output) );
 
     LONGS_EQUAL( AES128_INVALID_OUTPUT_LENGTH, ret );
 }
@@ -239,7 +239,7 @@ TEST(AesLibgcrypt_Encrypt, encrypt_message_0_key_0_iv_0)
     encrypt_params.input_len = sizeof(input);
 
     // Encrypt
-    ret = Aes128_Encrypt2( &encrypt_params, output, sizeof(output) );
+    ret = Aes128_Encrypt( &encrypt_params, output, sizeof(output) );
 
     // Check against value calculated from a known-good source.
     LONGS_EQUAL( AES128_SUCCESS, ret );

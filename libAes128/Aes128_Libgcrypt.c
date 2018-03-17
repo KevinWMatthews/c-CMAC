@@ -111,7 +111,7 @@ void Aes128_Destroy(AES128_HANDLE * self)
     return;
 }
 
-AES128_RETURN_CODE Aes128_Encrypt2(AES128_CRYPTO_PARAMS *params, uint8_t *output, size_t output_len)
+AES128_RETURN_CODE Aes128_Encrypt(AES128_CRYPTO_PARAMS *params, uint8_t *output, size_t output_len)
 {
     gcry_error_t gcry_error;
 

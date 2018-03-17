@@ -35,6 +35,6 @@ typedef struct AES128_CRYPTO_PARAMS
     size_t input_len;
     uint8_t *input;
 } AES128_CRYPTO_PARAMS;
-AES128_RETURN_CODE Aes128_Encrypt2(AES128_CRYPTO_PARAMS *params, uint8_t *output, size_t output_len);
+AES128_RETURN_CODE Aes128_Encrypt(AES128_CRYPTO_PARAMS *params, uint8_t *output, size_t output_len);
 
 #endif
