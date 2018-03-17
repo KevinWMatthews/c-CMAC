@@ -248,7 +248,7 @@ TEST(AesLibgcrypt_Encrypt, encrypt_message_0_key_0_iv_0)
 }
 
 
-TEST_GROUP(AesLibgcrypt_EncryptExamples)
+TEST_GROUP(AesLibgcrypt_EncryptKnown)
 {
     AES128_HANDLE aes_handle;
     AES128_CREATE_PARAMS create_params;
@@ -267,7 +267,7 @@ TEST_GROUP(AesLibgcrypt_EncryptExamples)
     }
 };
 
-TEST(AesLibgcrypt_EncryptExamples, example_from_rfc4493)
+TEST(AesLibgcrypt_EncryptKnown, example_from_rfc4493)
 {
     uint8_t expected[16] = {
         0x7d, 0xf7, 0x6b, 0x0c, 0x1a, 0xb8, 0x99, 0xb3,
