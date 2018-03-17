@@ -58,9 +58,36 @@ AES128 Aes128_Create(AES128_KEY * key, AES128_IV * iv)
      *      enum gcry_cipher_modes
      *      gcry_cipher_flags, or can be set to 0
      *
-     * Returns 0 on success or a non-zero error code on error.
+     * Returns 0 on success and a non-zero error code on error.
      */
     gcry_error = gcry_cipher_open(&aes128.gcrypt_handle, GCRY_CIPHER_AES128, GCRY_CIPHER_MODE_CBC, 0);
+    if (gcry_error)
+        return NULL;
+
+    /*
+     * gcry_error_t gcry_cipher_setkey (gcry_cipher_hd_t h, const void *k, size_t l)
+     *
+     * Set the key k used for encryption or decryption in the context denoted by the handle h.
+     * Can the key go out of scope?
+     *
+     * Returns 0 on success and a non-zero error code on error.
+     */
+    gcry_error = gcry_cipher_setkey(aes128.gcrypt_handle, key->buffer, key->length);
+    if (gcry_error)
+        return NULL;
+
+    /*
+     * gcry_error_t gcry_cipher_setiv (gcry_cipher_hd_t h, const void *k, size_t l)
+     *
+     * Set the initialization vector used for encryption or decryption.
+     * The vector is passed as the buffer K of length l bytes and copied to internal data structures.
+     *
+     * Returns 0 on success and a non-zero error code on error.
+     */
+    gcry_error = gcry_cipher_setiv(aes128.gcrypt_handle, iv->buffer, iv->length);
+    if (gcry_error)
+        return NULL;
+
     return &aes128;
 }
 
@@ -80,12 +107,9 @@ AES128_RETURN_CODE Aes128_Encrypt(AES128 self, uint8_t * input, size_t input_len
      *
      * Returns 0 on success or a non-zero error code on error.
      */
-    gcry_error = gcry_cipher_encrypt(0, output, output_len, input, input_len);
+    gcry_error = gcry_cipher_encrypt(self->gcrypt_handle, output, output_len, input, input_len);
+    if (gcry_error)
+        return AES128_FAILURE;
 
-    uint8_t hard_coded_result[16] = {
-        0x66, 0xE9, 0x4B, 0xD4, 0xEF, 0x8A, 0x2C, 0x3B,
-        0x88, 0x4C, 0xFA, 0x59, 0xCA, 0x34, 0x2B, 0x2E,
-    };
-    memcpy(output, hard_coded_result, sizeof(hard_coded_result));
     return AES128_SUCCESS;
 }

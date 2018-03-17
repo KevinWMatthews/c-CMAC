@@ -15,13 +15,13 @@ typedef struct AES128_STRUCT * AES128;
 
 typedef struct AES128_KEY
 {
-    size_t key_len;
-    uint8_t *key;
+    size_t length;
+    uint8_t *buffer;
 } AES128_KEY;
 typedef struct AES128_IV
 {
-    size_t iv_len;
-    uint8_t *iv;
+    size_t length;
+    uint8_t *buffer;
 } AES128_IV;
 AES128 Aes128_Create(AES128_KEY * key, AES128_IV * iv);
 
