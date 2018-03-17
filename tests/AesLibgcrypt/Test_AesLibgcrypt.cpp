@@ -9,6 +9,7 @@ extern "C"
 TEST_GROUP(AesLibgcrypt)
 {
     AES128 aes;
+    AES128_CREATE_PARAMS create_params;
     int ret;
 
     void setup()
@@ -33,69 +34,93 @@ TEST(AesLibgcrypt, destroy_aes_handle)
     CHECK_TRUE( aes == NULL );
 }
 
-TEST(AesLibgcrypt, create_aes_handle)
+TEST(AesLibgcrypt, create_fails_with_null_params)
 {
-    AES128_KEY key = {};
-    uint8_t key_buffer[16] = {};
-    AES128_IV iv = {};
-    uint8_t iv_buffer[16] = {};
-
-    key.buffer = key_buffer;
-    key.length = sizeof(key_buffer);
-    iv.buffer = iv_buffer;
-    iv.length = sizeof(iv_buffer);
-
-    ret = Aes128_Create(&key, &iv, &aes);
-    LONGS_EQUAL( AES128_SUCCESS, ret );
-    CHECK_TRUE( aes != NULL );
+    ret = Aes128_Create(NULL, &aes);
+    LONGS_EQUAL( AES128_NULL_POINTER, ret );
+    CHECK_TRUE( aes == NULL );
 }
 
 TEST(AesLibgcrypt, create_fails_with_null_key)
 {
-    AES128_IV iv = {};
-    uint8_t iv_buffer[16] = {};
+    create_params.key = NULL;
 
-    iv.buffer = iv_buffer;
-    iv.length = sizeof(iv_buffer);
+    ret = Aes128_Create(&create_params, &aes);
 
-    ret = Aes128_Create(NULL, &iv, &aes);
     LONGS_EQUAL( AES128_NULL_POINTER, ret );
     CHECK_TRUE( aes == NULL );
 }
 
 TEST(AesLibgcrypt, create_fails_with_null_iv)
 {
-    AES128_KEY key = {};
-    uint8_t key_buffer[16] = {};
+    uint8_t key[16] = {};
+    create_params.key = key;
+    create_params.iv = NULL;
 
-    key.buffer = key_buffer;
-    key.length = sizeof(key_buffer);
+    ret = Aes128_Create(&create_params, &aes);
 
-    ret = Aes128_Create(&key, NULL, &aes);
     LONGS_EQUAL( AES128_NULL_POINTER, ret );
     CHECK_TRUE( aes == NULL );
 }
 
 TEST(AesLibgcrypt, create_fails_with_null_aes)
 {
-    AES128_KEY key = {};
-    uint8_t key_buffer[16] = {};
-    AES128_IV iv = {};
-    uint8_t iv_buffer[16] = {};
+    uint8_t key[16] = {};
+    uint8_t iv[16] = {};
+    create_params.key = key;
+    create_params.iv = iv;
 
-    key.buffer = key_buffer;
-    key.length = sizeof(key_buffer);
-    iv.buffer = iv_buffer;
-    iv.length = sizeof(iv_buffer);
+    ret = Aes128_Create(&create_params, NULL);
 
-    ret = Aes128_Create(&key, &iv, NULL);
     LONGS_EQUAL( AES128_NULL_POINTER, ret );
-    CHECK_TRUE( aes == NULL );
+}
+
+TEST(AesLibgcrypt, create_fails_with_invalid_key_length)
+{
+    uint8_t key[16-1] = {};
+    uint8_t iv[16] = {};
+    create_params.key = key;
+    create_params.key_len = sizeof(key);
+    create_params.iv = iv;
+
+    ret = Aes128_Create(&create_params, &aes);
+
+    LONGS_EQUAL( AES128_INVALID_KEY, ret );
+}
+
+TEST(AesLibgcrypt, create_fails_with_invalid_iv_length)
+{
+    uint8_t key[16] = {};
+    uint8_t iv[16-1] = {};
+    create_params.key = key;
+    create_params.key_len = sizeof(key);
+    create_params.iv = iv;
+    create_params.iv_len = sizeof(iv);
+
+    ret = Aes128_Create(&create_params, &aes);
+
+    LONGS_EQUAL( AES128_INVALID_IV, ret );
+}
+
+TEST(AesLibgcrypt, create_aes_handle)
+{
+    uint8_t key[16] = {};
+    uint8_t iv[16] = {};
+    create_params.key = key;
+    create_params.key_len = sizeof(key);
+    create_params.iv = iv;
+    create_params.iv_len = sizeof(iv);
+
+
+    ret = Aes128_Create(&create_params, &aes);
+
+    LONGS_EQUAL( AES128_SUCCESS, ret );
+    CHECK_TRUE( aes != NULL );
 }
 
 //TODO close cipher handle
 
-TEST(AesLibgcrypt, encrypt_message_0_key_0_iv_0)
+IGNORE_TEST(AesLibgcrypt, encrypt_message_0_key_0_iv_0)
 {
     uint8_t expected[16] = {
         0x66, 0xE9, 0x4B, 0xD4, 0xEF, 0x8A, 0x2C, 0x3B,
@@ -106,21 +131,18 @@ TEST(AesLibgcrypt, encrypt_message_0_key_0_iv_0)
     uint8_t actual[16] = {0};
     size_t actual_len = sizeof(actual);
 
-    AES128_KEY key = {};
-    uint8_t key_buffer[16] = {};
-    AES128_IV iv = {};
-    uint8_t iv_buffer[16] = {};
+    uint8_t key[16] = {};
+    uint8_t iv[16] = {};
+    create_params.key = key;
+    create_params.key_len = sizeof(key);
+    create_params.iv = iv;
+    create_params.iv_len = sizeof(iv);
 
     // Init
-    key.buffer = key_buffer;
-    key.length = sizeof(key_buffer);
-    iv.buffer = iv_buffer;
-    iv.length = sizeof(iv_buffer);
-
     Aes128_Initialize();
 
     // Create
-    Aes128_Create(&key, &iv, &aes);
+    Aes128_Create(&create_params, &aes);
 
     // Encrypt
     ret = Aes128_Encrypt(aes, msg, msg_len, actual, actual_len);

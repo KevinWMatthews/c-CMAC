@@ -44,16 +44,23 @@ AES128_RETURN_CODE Aes128_Initialize(void)
     return AES128_SUCCESS;
 }
 
-AES128_RETURN_CODE Aes128_Create(AES128_KEY * key, AES128_IV * iv, AES128 * self)
+AES128_RETURN_CODE Aes128_Create(AES128_CREATE_PARAMS *params, AES128 * aes_handle)
 {
     gcry_error_t gcry_error;
 
-    if (key == NULL)
+    if (params == NULL)
         return AES128_NULL_POINTER;
-    if (iv == NULL)
+    if (params->key == NULL)
         return AES128_NULL_POINTER;
-    if (self == NULL)
+    if (params->iv == NULL)
         return AES128_NULL_POINTER;
+    if (aes_handle == NULL)
+        return AES128_NULL_POINTER;
+
+    if (params->key_len != 16)
+        return AES128_INVALID_KEY;
+    if (params->iv_len != 16)
+        return AES128_INVALID_IV;
 
     /*
      * gcry_error_t gcry_cipher_open (gcry_cipher_hd_t *hd, int algo, int mode, unsigned int flags)
@@ -79,7 +86,7 @@ AES128_RETURN_CODE Aes128_Create(AES128_KEY * key, AES128_IV * iv, AES128 * self
      *
      * Returns 0 on success and a non-zero error code on error.
      */
-    gcry_error = gcry_cipher_setkey(aes128.gcrypt_handle, key->buffer, key->length);
+    gcry_error = gcry_cipher_setkey(aes128.gcrypt_handle, params->key, params->key_len);
     if (gcry_error)
         return AES128_FAILURE;
 
@@ -91,11 +98,11 @@ AES128_RETURN_CODE Aes128_Create(AES128_KEY * key, AES128_IV * iv, AES128 * self
      *
      * Returns 0 on success and a non-zero error code on error.
      */
-    gcry_error = gcry_cipher_setiv(aes128.gcrypt_handle, iv->buffer, iv->length);
+    gcry_error = gcry_cipher_setiv(aes128.gcrypt_handle, params->iv, params->iv_len);
     if (gcry_error)
         return AES128_FAILURE;
 
-    *self = &aes128;
+    *aes_handle = &aes128;
     return AES128_SUCCESS;
 }
 
