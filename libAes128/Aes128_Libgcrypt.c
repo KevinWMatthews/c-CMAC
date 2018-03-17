@@ -111,30 +111,35 @@ void Aes128_Destroy(AES128 * self)
     return;
 }
 
-AES128_RETURN_CODE Aes128_Encrypt(AES128 self, uint8_t * input, size_t input_len, uint8_t * output, size_t output_len)
+AES128_RETURN_CODE Aes128_Encrypt2(AES128_CRYPTO_PARAMS *params, uint8_t *output, size_t output_len)
 {
     gcry_error_t gcry_error;
 
-    /*
-     * gcry_error_t gcry_cipher_encrypt (gcry_cipher_hd_t h, unsigned char *out, size_t outsize, const unsigned char *in, size_t inlen)
-     *
-     * Encrypt the plaintext in and fill out with the result.
-     *
-     * Returns 0 on success or a non-zero error code on error.
-     */
-    gcry_error = gcry_cipher_encrypt(self->gcrypt_handle, output, output_len, input, input_len);
-    if (gcry_error)
-        return AES128_FAILURE;
-
-    return AES128_SUCCESS;
-}
-
-AES128_RETURN_CODE Aes128_Encrypt2(AES128_CRYPTO_PARAMS *params, uint8_t *output, size_t output_len)
-{
     if (params == NULL)
         return AES128_NULL_POINTER;
     if (params->aes_handle == NULL)
         return AES128_NULL_POINTER;
+    if (params->input == NULL)
+        return AES128_NULL_POINTER;
+    if (output == NULL)
+        return AES128_NULL_POINTER;
 
-    return 42;
+    if (params->input_len != 16)
+        return AES128_INVALID_INPUT;
+    if (output_len < params->input_len)
+        return AES128_INVALID_OUTPUT;
+
+    /*
+     * gcry_error_t gcry_cipher_encrypt (gcry_cipher_hd_t h, unsigned char *out, size_t outsize, const unsigned char *in, size_t inlen)
+     *
+     * Encrypt in.
+     * Fill out with the result.
+     *
+     * Returns 0 on success or a non-zero error code on error.
+     */
+    gcry_error = gcry_cipher_encrypt(params->aes_handle->gcrypt_handle, output, output_len, params->input, params->input_len);
+    if (gcry_error)
+        return AES128_FAILURE;
+
+    return AES128_SUCCESS;
 }
