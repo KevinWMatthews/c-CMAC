@@ -8,6 +8,8 @@
 #define AES128_IV_LEN       16
 #define AES128_BLOCK_LEN    16
 
+typedef struct AES128_STRUCT * AES128_HANDLE;
+
 typedef enum
 {
     AES128_SUCCESS                  =  0,
@@ -18,10 +20,20 @@ typedef enum
     AES128_INVALID_INPUT_LENGTH     = -5,
     AES128_INVALID_OUTPUT_LENGTH    = -6,
 } AES128_RETURN_CODE;
+
+
+/*
+ * Initialize the underlying crypto library before use
+ */
 AES128_RETURN_CODE Aes128_Initialize(void);
 
-typedef struct AES128_STRUCT * AES128_HANDLE;
 
+/*
+ * Create an AES128 crypto handle.
+ * Must specify a key and initialization vector.
+ *
+ * Only one handle may be created at a time!
+ */
 typedef struct AES128_CREATE_PARAMS
 {
     size_t key_len;
@@ -31,8 +43,17 @@ typedef struct AES128_CREATE_PARAMS
 } AES128_CREATE_PARAMS;
 AES128_RETURN_CODE Aes128_Create(AES128_CREATE_PARAMS *params, AES128_HANDLE *aes_handle);
 
-void Aes128_Destroy(AES128_HANDLE * self);
 
+/*
+ * Destroy an AES128 crypto handle and set the pointer to NULL.
+ */
+void Aes128_Destroy(AES128_HANDLE *self);
+
+
+/*
+ * Encrypt the input text using the given AES128 handle (key and IV).
+ * Puts the result in output.
+ */
 typedef struct AES128_CRYPTO_PARAMS
 {
     AES128_HANDLE aes_handle;
