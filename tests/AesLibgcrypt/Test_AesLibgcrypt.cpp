@@ -55,10 +55,10 @@ TEST(AesLibgcrypt, create_aes_handle)
     CHECK_TRUE( aes != NULL );
 }
 
-IGNORE_TEST(AesLibgcrypt, destroy_aes_handle)
+TEST(AesLibgcrypt, destroy_aes_handle)
 {
-    // Aes128_Destroy(&aes);
-    // CHECK_TRUE( aes == NULL );
+    Aes128_Destroy(&aes);
+    CHECK_TRUE( aes == NULL );
 }
 
 IGNORE_TEST(AesLibgcrypt, encrypt_message_0_key_0_iv_0)

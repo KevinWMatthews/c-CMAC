@@ -48,3 +48,8 @@ AES128 Aes128_Create(AES128_KEY * key, AES128_IV * iv)
 {
     return &aes128;
 }
+
+void Aes128_Destroy(AES128 * self)
+{
+    return;
+}

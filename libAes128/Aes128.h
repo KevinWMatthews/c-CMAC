@@ -25,4 +25,6 @@ typedef struct AES128_IV
 } AES128_IV;
 AES128 Aes128_Create(AES128_KEY * key, AES128_IV * iv);
 
+void Aes128_Destroy(AES128 * self);
+
 #endif
