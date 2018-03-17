@@ -3,7 +3,6 @@ enable_language(CXX)
 add_executable(UnitTests_AesLibgcrypt
     RunAllTests.cpp
     Test_AesLibgcrypt.cpp
-    "${CMAKE_HOME_DIRECTORY}/mocks/Mock_Libgcrypt.cpp"
 )
 
 target_link_libraries(UnitTests_AesLibgcrypt
