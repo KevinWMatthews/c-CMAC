@@ -6,13 +6,13 @@
 
 typedef enum
 {
-    AES128_SUCCESS              =  0,
-    AES128_FAILURE              = -1,
-    AES128_NULL_POINTER         = -2,
-    AES128_INVALID_KEY          = -3,
-    AES128_INVALID_IV           = -4,
-    AES128_INVALID_INPUT        = -5,
-    AES128_INVALID_OUTPUT       = -6,
+    AES128_SUCCESS                  =  0,
+    AES128_FAILURE                  = -1,
+    AES128_NULL_POINTER             = -2,
+    AES128_INVALID_KEY_LENGTH       = -3,
+    AES128_INVALID_IV_LENGTH        = -4,
+    AES128_INVALID_INPUT_LENGTH     = -5,
+    AES128_INVALID_OUTPUT_LENGTH    = -6,
 } AES128_RETURN_CODE;
 AES128_RETURN_CODE Aes128_Initialize(void);
 

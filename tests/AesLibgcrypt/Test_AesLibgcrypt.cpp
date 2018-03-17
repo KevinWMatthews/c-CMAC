@@ -85,7 +85,7 @@ TEST(AesLibgcrypt, create_fails_with_invalid_key_length)
 
     ret = Aes128_Create(&create_params, &aes_handle);
 
-    LONGS_EQUAL( AES128_INVALID_KEY, ret );
+    LONGS_EQUAL( AES128_INVALID_KEY_LENGTH, ret );
 }
 
 TEST(AesLibgcrypt, create_fails_with_invalid_iv_length)
@@ -99,7 +99,7 @@ TEST(AesLibgcrypt, create_fails_with_invalid_iv_length)
 
     ret = Aes128_Create(&create_params, &aes_handle);
 
-    LONGS_EQUAL( AES128_INVALID_IV, ret );
+    LONGS_EQUAL( AES128_INVALID_IV_LENGTH, ret );
 }
 
 TEST(AesLibgcrypt, create_aes_handle)
@@ -185,7 +185,7 @@ TEST(AesLibgcrypt_Encrypt, encrypt_fails_with_invalid_input_length)
 
     ret = Aes128_Encrypt2( &encrypt_params, output, sizeof(output) );
 
-    LONGS_EQUAL( AES128_INVALID_INPUT, ret );
+    LONGS_EQUAL( AES128_INVALID_INPUT_LENGTH, ret );
 }
 
 TEST(AesLibgcrypt_Encrypt, encrypt_fails_with_null_output)
@@ -211,7 +211,7 @@ TEST(AesLibgcrypt_Encrypt, encrypt_fails_with_output_shorter_than_input)
 
     ret = Aes128_Encrypt2( &encrypt_params, short_output, sizeof(short_output) );
 
-    LONGS_EQUAL( AES128_INVALID_OUTPUT, ret );
+    LONGS_EQUAL( AES128_INVALID_OUTPUT_LENGTH, ret );
 }
 
 TEST(AesLibgcrypt_Encrypt, encrypt_message_0_key_0_iv_0)

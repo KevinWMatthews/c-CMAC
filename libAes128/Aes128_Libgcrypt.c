@@ -58,9 +58,9 @@ AES128_RETURN_CODE Aes128_Create(AES128_CREATE_PARAMS *params, AES128_HANDLE * a
         return AES128_NULL_POINTER;
 
     if (params->key_len != 16)
-        return AES128_INVALID_KEY;
+        return AES128_INVALID_KEY_LENGTH;
     if (params->iv_len != 16)
-        return AES128_INVALID_IV;
+        return AES128_INVALID_IV_LENGTH;
 
     /*
      * gcry_error_t gcry_cipher_open (gcry_cipher_hd_t *hd, int algo, int mode, unsigned int flags)
@@ -125,9 +125,9 @@ AES128_RETURN_CODE Aes128_Encrypt2(AES128_CRYPTO_PARAMS *params, uint8_t *output
         return AES128_NULL_POINTER;
 
     if (params->input_len != 16)
-        return AES128_INVALID_INPUT;
+        return AES128_INVALID_INPUT_LENGTH;
     if (output_len < params->input_len)
-        return AES128_INVALID_OUTPUT;
+        return AES128_INVALID_OUTPUT_LENGTH;
 
     /*
      * gcry_error_t gcry_cipher_encrypt (gcry_cipher_hd_t h, unsigned char *out, size_t outsize, const unsigned char *in, size_t inlen)
