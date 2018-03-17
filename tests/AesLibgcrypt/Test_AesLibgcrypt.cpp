@@ -133,6 +133,7 @@ TEST(AesLibgcrypt_Create, destroy_aes_handle)
 }
 
 
+
 TEST_GROUP(AesLibgcrypt_Encrypt)
 {
     AES128_HANDLE aes_handle;
@@ -242,6 +243,54 @@ TEST(AesLibgcrypt_Encrypt, encrypt_message_0_key_0_iv_0)
     ret = Aes128_Encrypt( &encrypt_params, output, sizeof(output) );
 
     // Check against value calculated from a known-good source.
+    LONGS_EQUAL( AES128_SUCCESS, ret );
+    MEMCMP_EQUAL( expected, output, sizeof(expected) );
+}
+
+
+TEST_GROUP(AesLibgcrypt_EncryptExamples)
+{
+    AES128_HANDLE aes_handle;
+    AES128_CREATE_PARAMS create_params;
+    AES128_CRYPTO_PARAMS encrypt_params;
+    uint8_t output[16];
+    int ret;
+
+    void setup()
+    {
+        Aes128_Initialize();
+    }
+
+    void teardown()
+    {
+        Aes128_Destroy(&aes_handle);
+    }
+};
+
+TEST(AesLibgcrypt_EncryptExamples, example_from_rfc4493)
+{
+    uint8_t expected[16] = {
+        0x7d, 0xf7, 0x6b, 0x0c, 0x1a, 0xb8, 0x99, 0xb3,
+        0x3e, 0x42, 0xf0, 0x47, 0xb9, 0x1b, 0x54, 0x6f,
+    };
+    uint8_t key[16] = {
+        0x2b, 0x7e, 0x15, 0x16, 0x28, 0xae, 0xd2, 0xa6,
+        0xab, 0xf7, 0x15, 0x88, 0x09, 0xcf, 0x4f, 0x3c,
+    };
+    uint8_t iv[16] = {};
+    uint8_t msg[16] = {};
+    create_params.key = key;
+    create_params.key_len = sizeof(key);
+    create_params.iv = iv;
+    create_params.iv_len = sizeof(iv);
+
+    ret = Aes128_Create(&create_params, &aes_handle);
+    encrypt_params.aes_handle = aes_handle;
+    encrypt_params.input = msg;
+    encrypt_params.input_len = sizeof(msg);
+
+    ret = Aes128_Encrypt( &encrypt_params, output, sizeof(output) );
+
     LONGS_EQUAL( AES128_SUCCESS, ret );
     MEMCMP_EQUAL( expected, output, sizeof(expected) );
 }
