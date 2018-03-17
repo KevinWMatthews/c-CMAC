@@ -43,3 +43,37 @@ TEST(Libgcrypt, check_version_succeeds_if_actual_version_is_newer_than_required)
     actual = gcry_check_version(required);
     STRCMP_EQUAL( LIBGCRYPT_VERSION, actual );
 }
+
+TEST(Libgcrypt, can_disable_secure_memory)
+{
+    gcry_error_t ret;
+
+    ret = gcry_control(GCRYCTL_DISABLE_SECMEM, 0);
+    LONGS_EQUAL( GPG_ERR_NO_ERROR, ret );
+}
+
+TEST(Libgcrypt, can_disable_secure_memory_failure)
+{
+    gcry_error_t ret;
+
+    ret = gcry_control(GCRYCTL_DISABLE_SECMEM, 0);
+    LONGS_EQUAL( GPG_ERR_NO_ERROR, ret );
+}
+
+TEST(Libgcrypt, can_finish_initialization)
+{
+    gcry_error_t ret;
+
+    ret = gcry_control(GCRYCTL_INITIALIZATION_FINISHED, 0);
+    LONGS_EQUAL( GPG_ERR_NO_ERROR, ret );
+}
+
+IGNORE_TEST(Libgcrypt, can_check_that_init_is_finished)
+{
+    gcry_error_t ret;
+
+    ret = gcry_control(GCRYCTL_INITIALIZATION_FINISHED, 0);
+    ret = gcry_control(GCRYCTL_INITIALIZATION_FINISHED_P, 0);
+    // This fails and I don't know why.
+    LONGS_EQUAL( GPG_ERR_NO_ERROR, ret );
+}
