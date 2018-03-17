@@ -27,6 +27,12 @@ AES128_RETURN_CODE Aes128_Create(AES128_CREATE_PARAMS *params, AES128 *aes_handl
 
 void Aes128_Destroy(AES128 * self);
 
+typedef struct AES128_CRYPTO_PARAMS
+{
+    AES128 aes_handle;
+    uint8_t *input;
+} AES128_CRYPTO_PARAMS;
 AES128_RETURN_CODE Aes128_Encrypt(AES128 self, uint8_t * input, size_t input_len, uint8_t * output, size_t output_len);
+AES128_RETURN_CODE Aes128_Encrypt2(AES128_CRYPTO_PARAMS *params, uint8_t *output, size_t output_len);
 
 #endif

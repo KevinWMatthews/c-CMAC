@@ -128,3 +128,13 @@ AES128_RETURN_CODE Aes128_Encrypt(AES128 self, uint8_t * input, size_t input_len
 
     return AES128_SUCCESS;
 }
+
+AES128_RETURN_CODE Aes128_Encrypt2(AES128_CRYPTO_PARAMS *params, uint8_t *output, size_t output_len)
+{
+    if (params == NULL)
+        return AES128_NULL_POINTER;
+    if (params->aes_handle == NULL)
+        return AES128_NULL_POINTER;
+
+    return 42;
+}

@@ -120,15 +120,65 @@ TEST(AesLibgcrypt, create_aes_handle)
 
 //TODO close cipher handle
 
-IGNORE_TEST(AesLibgcrypt, encrypt_message_0_key_0_iv_0)
+
+TEST_GROUP(AesLibgcrypt_Encrypt)
+{
+    AES128 aes;
+    AES128_CREATE_PARAMS create_params;
+    AES128_CRYPTO_PARAMS encrypt_params;
+    uint8_t zeros[16];
+    uint8_t output[16];
+    int ret;
+
+    void setup()
+    {
+        // Clear zeros array?
+        create_params.key = zeros;
+        create_params.key_len = sizeof(zeros);
+        create_params.iv = zeros;
+        create_params.iv_len = sizeof(zeros);
+
+        Aes128_Initialize();
+        Aes128_Create(&create_params, &aes);
+    }
+
+    void teardown()
+    {
+    }
+};
+
+TEST(AesLibgcrypt_Encrypt, encrypt_fails_with_null_params)
+{
+    ret = Aes128_Encrypt2( NULL, output, sizeof(output) );
+    LONGS_EQUAL( AES128_NULL_POINTER, ret );
+}
+
+TEST(AesLibgcrypt_Encrypt, encrypt_fails_with_null_aes_handle)
+{
+    encrypt_params.aes_handle = NULL;
+    ret = Aes128_Encrypt2( &encrypt_params, output, sizeof(output) );
+    LONGS_EQUAL( AES128_NULL_POINTER, ret );
+}
+
+
+
+
+
+
+
+TEST(AesLibgcrypt, encrypt_message_0_key_0_iv_0)
 {
     uint8_t expected[16] = {
         0x66, 0xE9, 0x4B, 0xD4, 0xEF, 0x8A, 0x2C, 0x3B,
         0x88, 0x4C, 0xFA, 0x59, 0xCA, 0x34, 0x2B, 0x2E,
     };
     uint8_t msg[16] = {0};
-    size_t msg_len = sizeof(msg);
     uint8_t actual[16] = {0};
+    AES128_CRYPTO_PARAMS crypto_params = {};
+    crypto_params.input = msg;
+
+
+    size_t msg_len = sizeof(msg);
     size_t actual_len = sizeof(actual);
 
     uint8_t key[16] = {};
