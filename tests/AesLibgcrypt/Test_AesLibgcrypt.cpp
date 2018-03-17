@@ -5,7 +5,6 @@ extern "C"
 }
 
 #include "CppUTest/TestHarness.h"
-#include "CppUTestExt/MockSupport.h"
 
 TEST_GROUP(AesLibgcrypt)
 {
@@ -15,49 +14,17 @@ TEST_GROUP(AesLibgcrypt)
     void setup()
     {
         aes = NULL;
-        mock().strictOrder();
     }
 
     void teardown()
     {
-        mock().checkExpectations();
-        mock().clear();
     }
 };
 
-void expect_initialize_libgcrypt(void)
+TEST(AesLibgcrypt, initialize)
 {
-    const char *required_version = "1.8.2";
-
-    mock().expectOneCall("gcry_check_version")
-        .withParameter("req_version", required_version)
-        .andReturnValue(required_version);
-
-    mock().expectOneCall("gcry_control")
-        .withParameter("cmd", GCRYCTL_DISABLE_SECMEM)
-        // Not sure if/how to test varargs. Not needed since it's NULL.
-        .andReturnValue(GPG_ERR_NO_ERROR);
-
-    mock().expectOneCall("gcry_control")
-        .withParameter("cmd", GCRYCTL_INITIALIZATION_FINISHED)
-        .andReturnValue(GPG_ERR_NO_ERROR);
-}
-
-TEST(AesLibgcrypt, initialize_libgcrypt)
-{
-    expect_initialize_libgcrypt();
     ret = Aes128_Initialize();
     LONGS_EQUAL( AES128_SUCCESS, ret );
-}
-
-
-TEST(AesLibgcrypt, create_aes_handle)
-{
-    AES128_KEY key = {};
-    AES128_IV iv = {};
-
-    aes = Aes128_Create(&key, &iv);
-    CHECK_TRUE( aes != NULL );
 }
 
 TEST(AesLibgcrypt, destroy_aes_handle)
@@ -66,21 +33,71 @@ TEST(AesLibgcrypt, destroy_aes_handle)
     CHECK_TRUE( aes == NULL );
 }
 
-IGNORE_TEST(AesLibgcrypt, encrypt_message_0_key_0_iv_0)
+TEST(AesLibgcrypt, create_aes_handle)
 {
-    expect_initialize_libgcrypt();
-    mock().expectOneCall("gcry_cipher_open")
-        // Need to make a comparator? This pointer is hidden.
-        .withParameter("hd", 0/* ? */)
-        .withParameter("algo", GCRY_CIPHER_AES128)
-        .withParameter("mode", GCRY_CIPHER_MODE_CBC)
-        .withParameter("flags", 0)
-        .andReturnValue(GPG_ERR_NO_ERROR);
+    AES128_KEY key = {};
+    uint8_t key_buffer[16] = {};
+    AES128_IV iv = {};
+    uint8_t iv_buffer[16] = {};
+
+    key.buffer = key_buffer;
+    key.length = sizeof(key_buffer);
+    iv.buffer = iv_buffer;
+    iv.length = sizeof(iv_buffer);
+
+    aes = Aes128_Create(&key, &iv);
+    CHECK_TRUE( aes != NULL );
+}
+
+TEST(AesLibgcrypt, create_failes_with_null_key)
+{
+    AES128_IV iv = {};
+    uint8_t iv_buffer[16] = {};
+
+    iv.buffer = iv_buffer;
+    iv.length = sizeof(iv_buffer);
+
+    ret = Aes128_Create(NULL, &iv, &aes);
+    LONGS_EQUAL( AES128_FAILURE, ret );
+    CHECK_TRUE( aes == NULL );
+}
+
+//TODO close cipher handle
+
+TEST(AesLibgcrypt, encrypt_message_0_key_0_iv_0)
+{
+    uint8_t expected[16] = {
+        0x66, 0xE9, 0x4B, 0xD4, 0xEF, 0x8A, 0x2C, 0x3B,
+        0x88, 0x4C, 0xFA, 0x59, 0xCA, 0x34, 0x2B, 0x2E,
+    };
+    uint8_t msg[16] = {0};
+    size_t msg_len = sizeof(msg);
+    uint8_t actual[16] = {0};
+    size_t actual_len = sizeof(actual);
+
+    AES128_KEY key = {};
+    uint8_t key_buffer[16] = {};
+    AES128_IV iv = {};
+    uint8_t iv_buffer[16] = {};
 
     // Init
+    key.buffer = key_buffer;
+    key.length = sizeof(key_buffer);
+    iv.buffer = iv_buffer;
+    iv.length = sizeof(iv_buffer);
+
     Aes128_Initialize();
+
     // Create
+    aes = Aes128_Create(&key, &iv);
+
     // Encrypt
+    ret = Aes128_Encrypt(aes, msg, msg_len, actual, actual_len);
+
     // Check against value calculated from a known-good source.
+    LONGS_EQUAL( AES128_SUCCESS, ret );
+    MEMCMP_EQUAL( expected, actual, sizeof(expected) );
+
     // Destroy
+    Aes128_Destroy(&aes);
 }
