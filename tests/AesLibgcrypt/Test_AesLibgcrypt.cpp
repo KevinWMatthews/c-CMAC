@@ -25,9 +25,10 @@ TEST_GROUP(AesLibgcrypt)
     }
 };
 
-TEST(AesLibgcrypt, initialize_libgcrypt)
+void expect_initialize_libgcrypt(void)
 {
     const char *required_version = "1.8.2";
+
     mock().expectOneCall("gcry_check_version")
         .withParameter("req_version", required_version)
         .andReturnValue(required_version);
@@ -40,7 +41,11 @@ TEST(AesLibgcrypt, initialize_libgcrypt)
     mock().expectOneCall("gcry_control")
         .withParameter("cmd", GCRYCTL_INITIALIZATION_FINISHED)
         .andReturnValue(GPG_ERR_NO_ERROR);
+}
 
+TEST(AesLibgcrypt, initialize_libgcrypt)
+{
+    expect_initialize_libgcrypt();
     ret = Aes128_Initialize();
     LONGS_EQUAL( AES128_SUCCESS, ret );
 }
