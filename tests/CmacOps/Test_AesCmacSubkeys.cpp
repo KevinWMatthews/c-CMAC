@@ -208,7 +208,13 @@ TEST(AesCmacSubkeys, generate_L_from_input_key_all_zeros)
 
     Aes128_Initialize();
     Aes128_Create(&create_params, &aes_handle);
-    Aes128_Encrypt(&crypto_params, L, sizeof(L));
+
+    ret = AesCmac_CalculateLFromK_( aes_handle, L, sizeof(L) );
+    // Aes128_Encrypt(&crypto_params, L, sizeof(L));
+    LONGS_EQUAL( 0, ret );
+    MEMCMP_EQUAL( expected, L, sizeof(expected) );
+
+
 
     mock().installComparator("AES_KEY_128", comparator);
     mock().expectOneCall("Aes_Calculate128")

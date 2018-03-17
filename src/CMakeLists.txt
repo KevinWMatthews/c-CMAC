@@ -21,6 +21,8 @@ target_include_directories(CmacOps
         "${CMAKE_HOME_DIRECTORY}/src"
 )
 target_link_libraries(CmacOps
+    PUBLIC
+        Aes128::Aes128
     PRIVATE
         ByteArrayOpsLib::ByteArrayOpsLib
 )
