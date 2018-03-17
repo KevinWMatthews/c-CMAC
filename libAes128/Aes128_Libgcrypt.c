@@ -44,7 +44,7 @@ AES128_RETURN_CODE Aes128_Initialize(void)
     return AES128_SUCCESS;
 }
 
-AES128 Aes128_Create(AES128_KEY * key, AES128_IV * iv)
+AES128_RETURN_CODE Aes128_Create(AES128_KEY * key, AES128_IV * iv, AES128 * self)
 {
     gcry_error_t gcry_error;
 
@@ -62,7 +62,7 @@ AES128 Aes128_Create(AES128_KEY * key, AES128_IV * iv)
      */
     gcry_error = gcry_cipher_open(&aes128.gcrypt_handle, GCRY_CIPHER_AES128, GCRY_CIPHER_MODE_CBC, 0);
     if (gcry_error)
-        return NULL;
+        return AES128_FAILURE;
 
     /*
      * gcry_error_t gcry_cipher_setkey (gcry_cipher_hd_t h, const void *k, size_t l)
@@ -74,7 +74,7 @@ AES128 Aes128_Create(AES128_KEY * key, AES128_IV * iv)
      */
     gcry_error = gcry_cipher_setkey(aes128.gcrypt_handle, key->buffer, key->length);
     if (gcry_error)
-        return NULL;
+        return AES128_FAILURE;
 
     /*
      * gcry_error_t gcry_cipher_setiv (gcry_cipher_hd_t h, const void *k, size_t l)
@@ -86,9 +86,10 @@ AES128 Aes128_Create(AES128_KEY * key, AES128_IV * iv)
      */
     gcry_error = gcry_cipher_setiv(aes128.gcrypt_handle, iv->buffer, iv->length);
     if (gcry_error)
-        return NULL;
+        return AES128_FAILURE;
 
-    return &aes128;
+    *self = &aes128;
+    return AES128_SUCCESS;
 }
 
 void Aes128_Destroy(AES128 * self)

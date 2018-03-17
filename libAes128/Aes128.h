@@ -23,7 +23,7 @@ typedef struct AES128_IV
     size_t length;
     uint8_t *buffer;
 } AES128_IV;
-AES128 Aes128_Create(AES128_KEY * key, AES128_IV * iv);
+AES128_RETURN_CODE Aes128_Create(AES128_KEY * key, AES128_IV * iv, AES128 * self);
 
 void Aes128_Destroy(AES128 * self);
 

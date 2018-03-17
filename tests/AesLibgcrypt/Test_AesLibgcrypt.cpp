@@ -45,7 +45,8 @@ TEST(AesLibgcrypt, create_aes_handle)
     iv.buffer = iv_buffer;
     iv.length = sizeof(iv_buffer);
 
-    aes = Aes128_Create(&key, &iv);
+    ret = Aes128_Create(&key, &iv, &aes);
+    LONGS_EQUAL( AES128_SUCCESS, ret );
     CHECK_TRUE( aes != NULL );
 }
 
@@ -89,7 +90,7 @@ TEST(AesLibgcrypt, encrypt_message_0_key_0_iv_0)
     Aes128_Initialize();
 
     // Create
-    aes = Aes128_Create(&key, &iv);
+    Aes128_Create(&key, &iv, &aes);
 
     // Encrypt
     ret = Aes128_Encrypt(aes, msg, msg_len, actual, actual_len);
