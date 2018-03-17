@@ -8,12 +8,10 @@ extern "C"
 
 TEST_GROUP(AesLibgcrypt2)
 {
-    AES128 aes;
     int ret;
 
     void setup()
     {
-        aes = NULL;
     }
 
     void teardown()
@@ -21,7 +19,8 @@ TEST_GROUP(AesLibgcrypt2)
     }
 };
 
-TEST(AesLibgcrypt2, wiring_check)
+TEST(AesLibgcrypt2, initialize)
 {
-    FAIL("start here");
+    ret = Aes128_Initialize();
+    LONGS_EQUAL( AES128_SUCCESS, ret );
 }
