@@ -180,10 +180,16 @@ TEST(AesCmacSubkeys, generate_L_from_input_key_all_zeros)
 
     AES128_HANDLE aes_handle = NULL;
     AES128_CREATE_PARAMS create_params = {};
+    AES128_CRYPTO_PARAMS crypto_params = {};
+
     create_params.key = key;
     create_params.key_len = sizeof(key);
     create_params.iv = iv;
     create_params.iv_len = sizeof(key);
+
+    crypto_params.aes_handle = aes_handle;
+    crypto_params.input = key;
+    crypto_params.input_len = sizeof(key);
 
 
     mock().expectOneCall("Aes128_Initialize")
@@ -193,8 +199,16 @@ TEST(AesCmacSubkeys, generate_L_from_input_key_all_zeros)
         .withParameter("aes_handle", &aes_handle)
         .andReturnValue(AES128_SUCCESS);
 
+    // Do we need a comparator here? We may if the function assembles the write parameters
+    mock().expectOneCall("Aes128_Encrypt")
+        .withParameter("params", &crypto_params)
+        .withOutputParameterReturning("output", expected, sizeof(expected))
+        .withParameter("output_len", sizeof(expected))
+        .andReturnValue(AES128_SUCCESS);
+
     Aes128_Initialize();
     Aes128_Create(&create_params, &aes_handle);
+    Aes128_Encrypt(&crypto_params, L, sizeof(L));
 
     mock().installComparator("AES_KEY_128", comparator);
     mock().expectOneCall("Aes_Calculate128")
