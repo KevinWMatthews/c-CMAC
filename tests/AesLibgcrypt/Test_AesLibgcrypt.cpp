@@ -68,7 +68,19 @@ TEST(AesLibgcrypt, destroy_aes_handle)
 
 IGNORE_TEST(AesLibgcrypt, encrypt_message_0_key_0_iv_0)
 {
+    expect_initialize_libgcrypt();
+    mock().expectOneCall("gcry_cipher_open")
+        // Need to make a comparator? This pointer is hidden.
+        .withParameter("hd", 0/* ? */)
+        .withParameter("algo", GCRY_CIPHER_AES128)
+        .withParameter("mode", GCRY_CIPHER_MODE_CBC)
+        .withParameter("flags", 0)
+        .andReturnValue(GPG_ERR_NO_ERROR);
+
+    // Init
+    Aes128_Initialize();
     // Create
     // Encrypt
     // Check against value calculated from a known-good source.
+    // Destroy
 }
