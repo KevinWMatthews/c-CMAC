@@ -108,12 +108,6 @@ TEST(AesCmacSubkeys, comparator_test)
     params1.key = key1;
     params1.key_len = 2;
 
-    SimpleString simple_string;
-    const char *string;
-    simple_string = create_comparator.valueToString(&params1);
-    string = simple_string.asCharString();
-    // STRCMP_EQUAL("", string);
-
     ret = create_comparator.isEqual(&params1, &params2);
     LONGS_EQUAL( ret, 0 );
 }

@@ -10,6 +10,7 @@ target_link_libraries(UnitTests_Aes128CreateParamsComparator
     PRIVATE
         CppUTest
         CppUTestExt
+        Aes128::Aes128
 )
 
 target_include_directories(UnitTests_Aes128CreateParamsComparator
