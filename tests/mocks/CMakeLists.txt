@@ -28,6 +28,7 @@ add_executable(UnitTests_Aes128CryptoParamsComparator
     RunAllTests.cpp
     Test_Aes128CryptoParamsComparator.cpp
     "${CMAKE_HOME_DIRECTORY}/mocks/Aes128CryptoParamsComparator.cpp"
+    "${CMAKE_HOME_DIRECTORY}/mocks/Aes128CreateParamsComparator.cpp"
 )
 
 target_link_libraries(UnitTests_Aes128CryptoParamsComparator
