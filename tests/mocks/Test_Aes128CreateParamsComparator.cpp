@@ -52,6 +52,22 @@ TEST(Aes128_CreateParamsComparator, object_to_string_shows_size_and_contents_of_
     STRCMP_CONTAINS("key: Size = 16 | HexContent", string);
 }
 
+TEST(Aes128_CreateParamsComparator, object_to_string_will_not_segfault_with_null_params)
+{
+    simple_string = comparator.valueToString(NULL);
+    string = simple_string.asCharString();
+    STRCMP_CONTAINS("NULL", string);
+}
+
+TEST(Aes128_CreateParamsComparator, object_to_string_will_not_segfault_with_null_key)
+{
+    params.key = NULL;
+    params.key_len = 1;
+
+    simple_string = comparator.valueToString(&params);
+    string = simple_string.asCharString();
+}
+
 TEST(Aes128_CreateParamsComparator, object_to_string_shows_size_and_contents_of_iv)
 {
     uint8_t iv[16] = {};
