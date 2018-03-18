@@ -38,6 +38,9 @@ int AesCmac_CalculateLFromK(uint8_t *K, size_t K_len, uint8_t *L, size_t L_len)
 int AesCmac_CalculateLFromK_(AES128_HANDLE aes_handle, uint8_t *L, size_t L_len)
 {
     AES128_CRYPTO_PARAMS params = {};
+    if (aes_handle == NULL)
+        return -1;
+
     params.aes_handle = aes_handle;
     params.input = const_Zero;
     // params.input[0] = 1;

@@ -40,7 +40,7 @@ public:
         SimpleString key = StringFromBinaryWithSize(params->key, params->key_len);
         SimpleString iv = StringFromBinaryWithSize(params->iv, params->iv_len);
 
-        return StringFrom("key: ") + key + StringFrom("; iv: ") + iv;
+        return StringFrom("{") + StringFrom("key: ") + key + StringFrom(", iv: ") + iv + StringFrom("}");
     }
 };
 
@@ -68,8 +68,14 @@ public:
     {
         const AES128_CRYPTO_PARAMS *params = (const AES128_CRYPTO_PARAMS *)object;
 
+        // SimpleString aes_handle = valueToString(params->aes_handle);
+        // SimpleString aes_handle = Comparator_Aes128_CreateParams::valueToString(params->aes_handle);
+        // SimpleString aes_handle = Comparator_Aes128_CreateParams.valueToString(params->aes_handle);
+        //
         Comparator_Aes128_CreateParams comp;
         SimpleString aes_handle = comp.valueToString(params->aes_handle);
+        // SimpleString aes_handle = StringFromBinaryWithSize(params->aes_handle->key, params->aes_key_len);
+        // SimpleString aes_handle = StringFrom("?");
         SimpleString input = StringFromBinaryWithSize(params->input, params->input_len);
         return StringFrom("AES handle: ") + aes_handle + StringFrom("; input: ") + input;
     }
@@ -94,6 +100,10 @@ TEST_GROUP(AesCmacSubkeys)
         mock().removeAllComparatorsAndCopiers();
     }
 };
+
+TEST(AesCmacSubkeys, comparator_test)
+{
+}
 
 #define MSBIT_SET           (0x80)
 #define CONST_RB            (0x87)
@@ -230,7 +240,7 @@ TEST(AesCmacSubkeys, K2_xor_clears_bits)
     MEMCMP_EQUAL( expected, K2, sizeof(expected) );
 }
 
-TEST(AesCmacSubkeys, generate_L_from_input_key_all_zeros)
+IGNORE_TEST(AesCmacSubkeys, generate_L_from_input_key_all_zeros)
 {
     uint8_t expected[16] = {
         0x66, 0xE9, 0x4B, 0xD4, 0xEF, 0x8A, 0x2C, 0x3B, 0x88, 0x4C, 0xFA, 0x59, 0xCA, 0x34, 0x2B, 0x2E,
@@ -265,8 +275,11 @@ TEST(AesCmacSubkeys, generate_L_from_input_key_all_zeros)
         .andReturnValue(AES128_SUCCESS);
     mock().expectOneCall("Aes128_Create")
         .withParameter("params", &create_params)
-        .withParameter("aes_handle", &aes_handle)
+        .withOutputParameterReturning("aes_handle", &aes_handle, sizeof(&aes_handle))
         .andReturnValue(AES128_SUCCESS);
+
+    Aes128_Initialize();
+    Aes128_Create(&create_params, &aes_handle);
 
     mock().installComparator("AES128_CREATE_PARAMS", create_comparator);    //?
     mock().installComparator("AES128_CRYPTO_PARAMS", crypto_comparator);
@@ -275,9 +288,6 @@ TEST(AesCmacSubkeys, generate_L_from_input_key_all_zeros)
         .withOutputParameterReturning("output", expected, sizeof(expected))
         .withParameter("output_len", sizeof(expected))
         .andReturnValue(AES128_SUCCESS);
-
-    Aes128_Initialize();
-    Aes128_Create(&create_params, &aes_handle);
 
     ret = AesCmac_CalculateLFromK_( aes_handle, L, sizeof(L) );
 

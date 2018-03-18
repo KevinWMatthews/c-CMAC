@@ -5,6 +5,15 @@ extern "C"
 
 #include "CppUTestExt/MockSupport.h"
 
+typedef struct AES128_STRUCT
+{
+    size_t key_len;
+    uint8_t *key;
+    size_t iv_len;
+    uint8_t *iv;
+} AES128_STRUCT;
+
+static AES128_STRUCT aes128_struct;
 
 AES128_RETURN_CODE Aes128_Initialize(void)
 {
@@ -14,9 +23,15 @@ AES128_RETURN_CODE Aes128_Initialize(void)
 
 AES128_RETURN_CODE Aes128_Create(AES128_CREATE_PARAMS *params, AES128_HANDLE *aes_handle)
 {
+    aes128_struct.key = params->key;
+    aes128_struct.key_len = params->key_len;
+    aes128_struct.iv = params->iv;
+    aes128_struct.iv_len = params->iv_len;
+    *aes_handle = &aes128_struct;
+
     mock().actualCall("Aes128_Create")
         .withParameter("params", params)
-        .withParameter("aes_handle", aes_handle);
+        .withOutputParameter("aes_handle", aes_handle);
     return (AES128_RETURN_CODE)mock().intReturnValue();
 }
 
