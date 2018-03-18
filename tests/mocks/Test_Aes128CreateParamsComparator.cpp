@@ -15,7 +15,6 @@ TEST_GROUP(Aes128_CreateParamsComparator)
     SimpleString simple_string;
     const char *string;
 
-
     void setup()
     {
         mock().strictOrder();
