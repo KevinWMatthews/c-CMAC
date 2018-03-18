@@ -103,6 +103,19 @@ TEST_GROUP(AesCmacSubkeys)
 
 TEST(AesCmacSubkeys, comparator_test)
 {
+    uint8_t key1[16] = {42};
+    AES128_CREATE_PARAMS params1 = {}, params2 = {};
+    params1.key = key1;
+    params1.key_len = 2;
+
+    SimpleString simple_string;
+    const char *string;
+    simple_string = create_comparator.valueToString(&params1);
+    string = simple_string.asCharString();
+    // STRCMP_EQUAL("", string);
+
+    ret = create_comparator.isEqual(&params1, &params2);
+    LONGS_EQUAL( ret, 0 );
 }
 
 #define MSBIT_SET           (0x80)
