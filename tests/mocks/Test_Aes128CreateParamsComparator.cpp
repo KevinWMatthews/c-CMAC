@@ -156,3 +156,35 @@ TEST(Aes128_CreateParamsComparator, compare_false_if_iv_content_is_different)
 
     CHECK_FALSE( comparator.isEqual(&params, &params2) );
 }
+
+TEST(Aes128_CreateParamsComparator, example_use_case)
+{
+    uint8_t key[16] = {};
+    uint8_t iv[16] = {};
+    uint8_t key2[16] = {0x42};
+    uint8_t iv2[16] = {0x66};
+
+    params.key = key;
+    params.key_len = sizeof(key);
+    params.iv = iv;
+    params.iv_len = sizeof(iv);
+
+    params2.key = key2;
+    params2.key_len = sizeof(key2);
+    params2.iv = iv2;
+    params2.iv_len = sizeof(iv2);
+
+    mock().installComparator("AES128_CREATE_PARAMS", comparator);
+    mock().expectOneCall("example_use_case")
+        .withParameterOfType("AES128_CREATE_PARAMS", "params", &params);
+
+#if 1
+    // Succeeds
+    mock().actualCall("example_use_case")
+        .withParameterOfType("AES128_CREATE_PARAMS", "params", &params);
+#else
+    // Fails
+    mock().actualCall("example_use_case")
+        .withParameterOfType("AES128_CREATE_PARAMS", "params", &params2);
+#endif
+}
