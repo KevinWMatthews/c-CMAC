@@ -49,7 +49,7 @@ TEST(Aes128_CryptoParamsComparator, object_to_string_shows_all_elements)
     string = simple_string.asCharString();
 
     STRCMP_CONTAINS("AES128_CRYPTO_PARAMS:", string);
-    STRCMP_CONTAINS("AES128_CREATE_PARAMS:", string);
+    STRCMP_CONTAINS("AES128_HANDLE:", string);
     STRCMP_CONTAINS("input:", string);
 }
 
