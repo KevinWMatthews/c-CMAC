@@ -2,6 +2,7 @@ extern "C"
 {
 #include "AesCmacSubkeys.h"
 #include "Aes128.h"
+#include "Mock_Aes128.h"
 }
 
 #include "CppUTest/TestHarness.h"
@@ -206,39 +207,27 @@ TEST(AesCmacSubkeys, generate_L_from_input_key_all_zeros__)
     uint8_t key[16] = {};
     uint8_t iv[16] = {};
     uint8_t input[16] = {};
-    AES128_CREATE_PARAMS create_params = {};
-    AES128_HANDLE aes_handle = NULL;
+    AES128_STRUCT aes_struct = {};
+    AES128_HANDLE aes_handle = &aes_struct;
     AES128_CRYPTO_PARAMS crypto_params = {};
 
-    create_params.key = key;
-    create_params.key_len = sizeof(key);
-    create_params.iv = iv;
-    create_params.iv_len = sizeof(iv);
+    // Skip initialization and just set up the AES values that we expect.
+    aes_struct.key = key;
+    aes_struct.key_len = sizeof(key);
+    aes_struct.iv = iv;
+    aes_struct.iv_len = sizeof(iv);
 
     crypto_params.aes_handle = aes_handle;
     crypto_params.input = input;
     crypto_params.input_len = sizeof(input);
 
-    // The main routine will do other crypto work.
-    // Initialize and create the AES handle and pass it into this function.
-    mock().installComparator("AES128_CREATE_PARAMS", create_comparator);
     mock().installComparator("AES128_CRYPTO_PARAMS", crypto_comparator);
-    mock().expectOneCall("Aes128_Initialize")
-        .andReturnValue(AES128_SUCCESS);
-    mock().expectOneCall("Aes128_Create")
-        .withParameterOfType("AES128_CREATE_PARAMS", "params", &create_params)
-        .withParameter("aes_handle", &aes_handle)
-        .andReturnValue(AES128_SUCCESS);
-    // Perform the calculation
     mock().expectOneCall("Aes128_Encrypt")
         .withParameterOfType("AES128_CRYPTO_PARAMS", "params", &crypto_params)
         .withOutputParameterReturning("output", expected, sizeof(expected))
         .withParameter("output_len", sizeof(expected))
         .andReturnValue(AES128_SUCCESS);
 
-    // Initialize
-    Aes128_Initialize();
-    Aes128_Create(&create_params, &aes_handle);
     // Calculate
     ret = Aes128_Encrypt(&crypto_params, actual, sizeof(actual));
 
