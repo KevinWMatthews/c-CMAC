@@ -21,6 +21,11 @@ bool Aes128CryptoParamsComparator::isEqual(const void* object1, const void* obje
     if (input1 != input2)
         return false;
 
+    // In test code, we treat the aes handles as their create params.
+    // See Mock_Aes128.cpp.
+    if ( !createComparator.isEqual(params1->aes_handle, params2->aes_handle) )
+        return false;
+
     return true;
 }
 

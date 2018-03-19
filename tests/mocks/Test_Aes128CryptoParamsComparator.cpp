@@ -1,6 +1,7 @@
 extern "C"
 {
 #include "Aes128.h"
+#include "Mock_Aes128.h"
 }
 
 #include "CppUTest/TestHarness.h"
@@ -92,7 +93,6 @@ TEST(Aes128_CryptoParamsComparator, compare_false_with_different_input)
     CHECK_FALSE( comparator.isEqual(&params, &params2) );
 }
 
-#if 0
 TEST(Aes128_CryptoParamsComparator, compare_true_with_equivalent_aes_handle)
 {
     AES128_STRUCT aes_struct = {};
@@ -118,28 +118,29 @@ TEST(Aes128_CryptoParamsComparator, compare_true_with_equivalent_aes_handle)
     CHECK_TRUE( comparator.isEqual(&params, &params2) );
 }
 
-IGNORE_TEST(Aes128_CryptoParamsComparator, compare_false_with_different_aes_handle)
+TEST(Aes128_CryptoParamsComparator, compare_false_with_different_aes_key)
 {
-    AES128_STRUCT aes_struct1 = {};
+    AES128_STRUCT aes_struct = {};
     AES128_STRUCT aes_struct2 = {};
-    AES128_HANDLE aes_handle1 = &aes_struct1;
+    AES128_HANDLE aes_handle = &aes_struct;
     AES128_HANDLE aes_handle2 = &aes_struct2;
-    uint8_t key1[16] = {};
+    uint8_t key[16] = {0x66};
     uint8_t key2[16] = {0x42};
     uint8_t iv[16] = {};
+    uint8_t iv2[16] = {};
     uint8_t input[16] = {};
 
-    aes_struct1.key = key1;
-    aes_struct1.key_len = sizeof(key1);
-    aes_struct1.iv = iv;
-    aes_struct1.iv_len = sizeof(iv);
+    aes_struct.key = key;
+    aes_struct.key_len = sizeof(key);
+    aes_struct.iv = iv;
+    aes_struct.iv_len = sizeof(iv);
 
     aes_struct2.key = key2;
     aes_struct2.key_len = sizeof(key2);
-    aes_struct2.iv = iv;
-    aes_struct2.iv_len = sizeof(iv);
+    aes_struct2.iv = iv2;
+    aes_struct2.iv_len = sizeof(iv2);
 
-    params.aes_handle = aes_handle1;
+    params.aes_handle = aes_handle;
     params.input = input;
     params.input_len = sizeof(input);
 
@@ -149,4 +150,36 @@ IGNORE_TEST(Aes128_CryptoParamsComparator, compare_false_with_different_aes_hand
 
     CHECK_FALSE( comparator.isEqual(&params, &params2) );
 }
-#endif
+
+TEST(Aes128_CryptoParamsComparator, compare_false_with_different_aes_iv)
+{
+    AES128_STRUCT aes_struct = {};
+    AES128_STRUCT aes_struct2 = {};
+    AES128_HANDLE aes_handle = &aes_struct;
+    AES128_HANDLE aes_handle2 = &aes_struct2;
+    uint8_t key[16] = {0x42};
+    uint8_t key2[16] = {0x42};
+    uint8_t iv[16] = {0x88};
+    uint8_t iv2[16] = {0x99};
+    uint8_t input[16] = {};
+
+    aes_struct.key = key;
+    aes_struct.key_len = sizeof(key);
+    aes_struct.iv = iv;
+    aes_struct.iv_len = sizeof(iv);
+
+    aes_struct2.key = key2;
+    aes_struct2.key_len = sizeof(key2);
+    aes_struct2.iv = iv2;
+    aes_struct2.iv_len = sizeof(iv2);
+
+    params.aes_handle = aes_handle;
+    params.input = input;
+    params.input_len = sizeof(input);
+
+    params2.aes_handle = aes_handle2;
+    params2.input = input;
+    params2.input_len = sizeof(input);
+
+    CHECK_FALSE( comparator.isEqual(&params, &params2) );
+}
