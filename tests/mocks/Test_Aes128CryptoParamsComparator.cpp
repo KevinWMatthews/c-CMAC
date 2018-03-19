@@ -117,3 +117,35 @@ TEST(Aes128_CryptoParamsComparator, compare_true_with_equivalent_aes_handle)
 
     CHECK_TRUE( comparator.isEqual(&params, &params2) );
 }
+
+IGNORE_TEST(Aes128_CryptoParamsComparator, compare_false_with_different_aes_handle)
+{
+    AES128_STRUCT aes_struct1 = {};
+    AES128_STRUCT aes_struct2 = {};
+    AES128_HANDLE aes_handle1 = &aes_struct1;
+    AES128_HANDLE aes_handle2 = &aes_struct2;
+    uint8_t key1[16] = {};
+    uint8_t key2[16] = {0x42};
+    uint8_t iv[16] = {};
+    uint8_t input[16] = {};
+
+    aes_struct1.key = key1;
+    aes_struct1.key_len = sizeof(key1);
+    aes_struct1.iv = iv;
+    aes_struct1.iv_len = sizeof(iv);
+
+    aes_struct2.key = key2;
+    aes_struct2.key_len = sizeof(key2);
+    aes_struct2.iv = iv;
+    aes_struct2.iv_len = sizeof(iv);
+
+    params.aes_handle = aes_handle1;
+    params.input = input;
+    params.input_len = sizeof(input);
+
+    params2.aes_handle = aes_handle2;
+    params2.input = input;
+    params2.input_len = sizeof(input);
+
+    CHECK_FALSE( comparator.isEqual(&params, &params2) );
+}
