@@ -7,14 +7,10 @@ extern "C"
 
 #include "CppUTest/TestHarness.h"
 #include "CppUTestExt/MockSupport.h"
-#include "Aes128Comparator.h"
-#include "Aes128CreateParamsComparator.h"
 #include "Aes128CryptoParamsComparator.h"
 
 TEST_GROUP(AesCmacSubkeys)
 {
-    Aes128Comparator comparator;
-    Aes128CreateParamsComparator create_comparator;
     Aes128CryptoParamsComparator crypto_comparator;
     int ret;
 
@@ -230,7 +226,6 @@ TEST(AesCmacSubkeys, generate_L_using_rfc4933_example)
         .withOutputParameterReturning("output", expected, sizeof(expected))
         .withParameter("output_len", sizeof(expected))
         .andReturnValue(AES128_SUCCESS);
-
 
     ret = AesCmac_CalculateLFromK_(aes_handle, actual, sizeof(actual));
 
