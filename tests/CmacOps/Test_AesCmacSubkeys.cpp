@@ -171,38 +171,6 @@ TEST(AesCmacSubkeys, generate_L_from_input_key_all_zeros)
     uint8_t expected[16] = {
         0x66, 0xE9, 0x4B, 0xD4, 0xEF, 0x8A, 0x2C, 0x3B, 0x88, 0x4C, 0xFA, 0x59, 0xCA, 0x34, 0x2B, 0x2E,
     };
-    uint8_t zeros[16] = {};
-
-    uint8_t key[16] = {};
-    uint8_t iv[16] = {};
-    AES_KEY_128 aes_params = {};
-    aes_params.key = key;
-    aes_params.key_len = sizeof(key);
-    aes_params.iv = iv;
-    aes_params.iv_len = sizeof(key);
-
-    uint8_t L[16] = {};
-
-    mock().installComparator("AES_KEY_128", comparator);
-    mock().expectOneCall("Aes_Calculate128")
-        .withParameterOfType("AES_KEY_128", "aes_128", (void *)&aes_params)
-        .withMemoryBufferParameter("input", zeros, sizeof(zeros))
-        .withParameter("input_len", sizeof(zeros))
-        .withOutputParameterReturning("output", expected, sizeof(expected))
-        .withParameter("output_len", sizeof(expected))
-        .andReturnValue(0);
-
-    ret = AesCmac_CalculateLFromK( key, sizeof(key), L, sizeof(L) );
-
-    LONGS_EQUAL( 0, ret );
-    MEMCMP_EQUAL( expected, L, sizeof(expected) );
-}
-
-TEST(AesCmacSubkeys, generate_L_from_input_key_all_zeros__)
-{
-    uint8_t expected[16] = {
-        0x66, 0xE9, 0x4B, 0xD4, 0xEF, 0x8A, 0x2C, 0x3B, 0x88, 0x4C, 0xFA, 0x59, 0xCA, 0x34, 0x2B, 0x2E,
-    };
     uint8_t actual[16] = {};
     uint8_t key[16] = {};
     uint8_t iv[16] = {};
