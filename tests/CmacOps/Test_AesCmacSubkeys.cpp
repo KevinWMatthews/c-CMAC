@@ -196,7 +196,6 @@ TEST(AesCmacSubkeys, generate_L_from_input_key_all_zeros)
         .withParameter("output_len", sizeof(expected))
         .andReturnValue(AES128_SUCCESS);
 
-    // Calculate
     ret = AesCmac_CalculateLFromK_(aes_handle, actual, sizeof(actual));
 
     LONGS_EQUAL( AES128_SUCCESS, ret );
@@ -209,33 +208,34 @@ TEST(AesCmacSubkeys, generate_L_using_rfc4933_example)
         0x7d, 0xf7, 0x6b, 0x0c, 0x1a, 0xb8, 0x99, 0xb3,
         0x3e, 0x42, 0xf0, 0x47, 0xb9, 0x1b, 0x54, 0x6f,
     };
+    uint8_t actual[16] = {};
 
     uint8_t key[16] = {
         0x2b, 0x7e, 0x15, 0x16, 0x28, 0xae, 0xd2, 0xa6,
         0xab, 0xf7, 0x15, 0x88, 0x09, 0xcf, 0x4f, 0x3c,
     };
     uint8_t iv[16] = {};
-    AES_KEY_128 aes_params = {};
-    aes_params.key = key;
-    aes_params.key_len = sizeof(key);
-    aes_params.iv = iv;
-    aes_params.iv_len = sizeof(key);
+    uint8_t input[16] = {};     // Per the RFC spec
+    AES128_STRUCT aes_struct = {};
+    AES128_HANDLE aes_handle = &aes_struct;
+    AES128_CRYPTO_PARAMS crypto_params = {};
 
-    uint8_t L[16] = {};
+    crypto_params.aes_handle = aes_handle;
+    crypto_params.input = input;
+    crypto_params.input_len = sizeof(input);
 
-    mock().installComparator("AES_KEY_128", comparator);
-    mock().expectOneCall("Aes_Calculate128")
-        .withParameterOfType("AES_KEY_128", "aes_128", (void *)&aes_params)
-        .withMemoryBufferParameter("input", zeros, sizeof(zeros))
-        .withParameter("input_len", sizeof(zeros))
+    mock().installComparator("AES128_CRYPTO_PARAMS", crypto_comparator);
+    mock().expectOneCall("Aes128_Encrypt")
+        .withParameterOfType("AES128_CRYPTO_PARAMS", "params", &crypto_params)
         .withOutputParameterReturning("output", expected, sizeof(expected))
         .withParameter("output_len", sizeof(expected))
-        .andReturnValue(0);
+        .andReturnValue(AES128_SUCCESS);
 
-    ret = AesCmac_CalculateLFromK( key, sizeof(key), L, sizeof(L) );
 
-    LONGS_EQUAL( 0, ret );
-    MEMCMP_EQUAL( expected, L, sizeof(expected) );
+    ret = AesCmac_CalculateLFromK_(aes_handle, actual, sizeof(actual));
+
+    LONGS_EQUAL( AES128_SUCCESS, ret );
+    MEMCMP_EQUAL( expected, actual, sizeof(expected) );
 }
 
 TEST(AesCmacSubkeys, generate_subkeys_for_rfc_examples)
