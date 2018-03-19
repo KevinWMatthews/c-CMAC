@@ -198,7 +198,7 @@ TEST(AesCmacSubkeys, generate_L_from_input_key_all_zeros)
 
     ret = AesCmac_CalculateLFromK_(aes_handle, actual, sizeof(actual));
 
-    LONGS_EQUAL( AES128_SUCCESS, ret );
+    LONGS_EQUAL( 0, ret );
     MEMCMP_EQUAL( expected, actual, sizeof(expected) );
 }
 
@@ -249,41 +249,47 @@ TEST(AesCmacSubkeys, generate_subkeys_for_rfc_examples)
         0xf7, 0xdd, 0xac, 0x30, 0x6a, 0xe2, 0x66, 0xcc,
         0xf9, 0x0b, 0xc1, 0x1e, 0xe4, 0x6d, 0x51, 0x3b,
     };
+    // Mock value
+    uint8_t L[16] = {
+        0x7d, 0xf7, 0x6b, 0x0c, 0x1a, 0xb8, 0x99, 0xb3,
+        0x3e, 0x42, 0xf0, 0x47, 0xb9, 0x1b, 0x54, 0x6f,
+    };
     // Actual
     uint8_t actual_K1[16] = {};
     uint8_t actual_K2[16] = {};
 
     // Input
-    unsigned char key[16] = {
+    AES128_STRUCT aes_struct = {};
+    AES128_HANDLE aes_handle = &aes_struct;
+    AES128_CRYPTO_PARAMS crypto_params = {};
+    uint8_t key[16] = {
         0x2b, 0x7e, 0x15, 0x16, 0x28, 0xae, 0xd2, 0xa6,
         0xab, 0xf7, 0x15, 0x88, 0x09, 0xcf, 0x4f, 0x3c,
     };
+    uint8_t iv[16] = {};
+    uint8_t input[16] = {};
 
-    // Values for mocks
-    AES_KEY_128 aes_params = {};
-    aes_params.key = key;
-    aes_params.key_len = sizeof(key);
-    aes_params.iv = zeros;
-    aes_params.iv_len = sizeof(zeros);
-    uint8_t L[16] = {
-        0x7d, 0xf7, 0x6b, 0x0c, 0x1a, 0xb8, 0x99, 0xb3,
-        0x3e, 0x42, 0xf0, 0x47, 0xb9, 0x1b, 0x54, 0x6f,
-    };
+    aes_struct.key = key;
+    aes_struct.key_len = sizeof(key);
+    aes_struct.iv = iv;
+    aes_struct.iv_len = sizeof(iv);
 
-    mock().installComparator("AES_KEY_128", comparator);
-    mock().expectOneCall("Aes_Calculate128")
-        .withParameterOfType("AES_KEY_128", "aes_128", &aes_params)
-        .withMemoryBufferParameter("input", zeros, sizeof(zeros))
-        .withParameter("input_len", sizeof(zeros))
+    crypto_params.aes_handle = aes_handle;
+    crypto_params.input = input;
+    crypto_params.input_len = sizeof(input);
+
+    mock().installComparator("AES128_CRYPTO_PARAMS", crypto_comparator);
+    mock().expectOneCall("Aes128_Encrypt")
+        .withParameterOfType("AES128_CRYPTO_PARAMS", "params", &crypto_params)
         .withOutputParameterReturning("output", L, sizeof(L))
         .withParameter("output_len", sizeof(L))
-        .andReturnValue(0);
+        .andReturnValue(AES128_SUCCESS);
 
-    ret = AesCmac_GenerateSubkeys(key, sizeof(key),
+    ret = AesCmac_GenerateSubkeys_(aes_handle,
             actual_K1, sizeof(actual_K1),
             actual_K2, sizeof(actual_K2));
 
-    LONGS_EQUAL( ret, 0 );
+    LONGS_EQUAL( 0, ret );
     MEMCMP_EQUAL( expected_K1, actual_K1, sizeof(expected_K1) );
     MEMCMP_EQUAL( expected_K2, actual_K2, sizeof(expected_K2) );
 }
