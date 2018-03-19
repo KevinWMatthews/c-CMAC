@@ -165,7 +165,7 @@ TEST(AesCmacSubkeys, K2_xor_clears_bits)
     MEMCMP_EQUAL( expected, K2, sizeof(expected) );
 }
 
-IGNORE_TEST(AesCmacSubkeys, generate_L_from_input_key_all_zeros)
+TEST(AesCmacSubkeys, generate_L_from_input_key_all_zeros)
 {
     uint8_t expected[16] = {
         0x66, 0xE9, 0x4B, 0xD4, 0xEF, 0x8A, 0x2C, 0x3B, 0x88, 0x4C, 0xFA, 0x59, 0xCA, 0x34, 0x2B, 0x2E,
@@ -182,39 +182,16 @@ IGNORE_TEST(AesCmacSubkeys, generate_L_from_input_key_all_zeros)
 
     uint8_t L[16] = {};
 
-    AES128_HANDLE aes_handle = NULL;
-    AES128_CREATE_PARAMS create_params = {};
-    AES128_CRYPTO_PARAMS crypto_params = {};
-
-    create_params.key = key;
-    create_params.key_len = sizeof(key);
-    create_params.iv = iv;
-    create_params.iv_len = sizeof(key);
-
-    crypto_params.aes_handle = aes_handle;
-    crypto_params.input = key;
-    crypto_params.input_len = sizeof(key);
-
-
-    mock().expectOneCall("Aes128_Initialize")
-        .andReturnValue(AES128_SUCCESS);
-    mock().expectOneCall("Aes128_Create")
-        .withParameter("params", &create_params)
-        .withOutputParameterReturning("aes_handle", &aes_handle, sizeof(&aes_handle))
-        .andReturnValue(AES128_SUCCESS);
-
-    Aes128_Initialize();
-    Aes128_Create(&create_params, &aes_handle);
-
-    mock().installComparator("AES128_CREATE_PARAMS", create_comparator);    //?
-    mock().installComparator("AES128_CRYPTO_PARAMS", crypto_comparator);
-    mock().expectOneCall("Aes128_Encrypt")
-        .withParameterOfType("AES128_CRYPTO_PARAMS", "params", &crypto_params)
+    mock().installComparator("AES_KEY_128", comparator);
+    mock().expectOneCall("Aes_Calculate128")
+        .withParameterOfType("AES_KEY_128", "aes_128", (void *)&aes_params)
+        .withMemoryBufferParameter("input", zeros, sizeof(zeros))
+        .withParameter("input_len", sizeof(zeros))
         .withOutputParameterReturning("output", expected, sizeof(expected))
         .withParameter("output_len", sizeof(expected))
-        .andReturnValue(AES128_SUCCESS);
+        .andReturnValue(0);
 
-    ret = AesCmac_CalculateLFromK_( aes_handle, L, sizeof(L) );
+    ret = AesCmac_CalculateLFromK( key, sizeof(key), L, sizeof(L) );
 
     LONGS_EQUAL( 0, ret );
     MEMCMP_EQUAL( expected, L, sizeof(expected) );
