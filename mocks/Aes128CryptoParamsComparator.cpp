@@ -14,7 +14,7 @@ SimpleString Aes128CryptoParamsComparator::valueToString(const void* object)
     const AES128_CRYPTO_PARAMS *params = (const AES128_CRYPTO_PARAMS *)object;
 
     if (params == NULL)
-        return StringFrom("NULL");
+        return StringFrom("AES128_CRYPTO_PARAMS: NULL");
 
     SimpleString aes_handle;
 

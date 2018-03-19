@@ -35,7 +35,7 @@ SimpleString Aes128CreateParamsComparator::valueToString(const void* object)
     const AES128_CREATE_PARAMS *params = (const AES128_CREATE_PARAMS *)object;
 
     if (params == NULL)
-        return StringFrom("NULL");
+        return StringFrom("AES128_CREATE_PARAMS: NULL");
 
     SimpleString key = StringFromBinaryWithSize(params->key, params->key_len);
     SimpleString iv = StringFromBinaryWithSize(params->iv, params->iv_len);

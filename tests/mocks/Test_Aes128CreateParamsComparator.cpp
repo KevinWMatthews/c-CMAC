@@ -56,7 +56,7 @@ TEST(Aes128_CreateParamsComparator, object_to_string_will_not_segfault_with_null
 {
     simple_string = comparator.valueToString(NULL);
     string = simple_string.asCharString();
-    STRCMP_CONTAINS("NULL", string);
+    STRCMP_CONTAINS("AES128_CREATE_PARAMS: NULL", string);
 }
 
 TEST(Aes128_CreateParamsComparator, object_to_string_will_not_segfault_with_null_pointer)
