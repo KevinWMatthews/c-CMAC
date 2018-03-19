@@ -10,6 +10,14 @@ add_executable(UnitTests_CmacOps
     Test_ApplyCbcMac.cpp
     "${CMAKE_HOME_DIRECTORY}/mocks/Aes.cpp"
     "${CMAKE_HOME_DIRECTORY}/mocks/Aes128Comparator.cpp"
+    "${CMAKE_HOME_DIRECTORY}/mocks/Aes128CryptoParamsComparator.cpp"
+    "${CMAKE_HOME_DIRECTORY}/mocks/Aes128HandleComparator.cpp"
+    "${CMAKE_HOME_DIRECTORY}/mocks/Aes128CreateParamsComparator.cpp"
+)
+
+target_include_directories(UnitTests_CmacOps
+    PRIVATE
+        "${CMAKE_HOME_DIRECTORY}/mocks"
 )
 
 target_link_libraries(UnitTests_CmacOps

@@ -7,85 +7,14 @@ extern "C"
 #include "CppUTest/TestHarness.h"
 #include "CppUTestExt/MockSupport.h"
 #include "Aes128Comparator.h"
-
-class Comparator_Aes128_CreateParams : public MockNamedValueComparator
-{
-public:
-    virtual bool isEqual(const void* object1, const void* object2)
-    {
-        const AES128_CREATE_PARAMS *params1 = (const AES128_CREATE_PARAMS *)object1;
-        const AES128_CREATE_PARAMS *params2 = (const AES128_CREATE_PARAMS *)object2;
-
-        SimpleString key1 = StringFromBinaryWithSize(params1->key, params1->key_len);
-        SimpleString key2 = StringFromBinaryWithSize(params2->key, params2->key_len);
-
-        SimpleString iv1 = StringFromBinaryWithSize(params1->iv, params1->iv_len);
-        SimpleString iv2 = StringFromBinaryWithSize(params2->iv, params2->iv_len);
-
-        if (key1 != key2)
-            return 0;
-        if (iv1 != iv2)
-            return 0;
-
-        return 1;
-    }
-
-    virtual SimpleString valueToString(const void* object)
-    {
-        if (object == NULL)
-            return StringFrom("NULL");
-
-        const AES128_CREATE_PARAMS *params = (const AES128_CREATE_PARAMS *)object;
-
-        SimpleString key = StringFromBinaryWithSize(params->key, params->key_len);
-        SimpleString iv = StringFromBinaryWithSize(params->iv, params->iv_len);
-
-        return StringFrom("{") + StringFrom("key: ") + key + StringFrom(", iv: ") + iv + StringFrom("}");
-    }
-};
-
-class Comparator_Aes128_CryptoParams : public MockNamedValueComparator
-{
-public:
-    virtual bool isEqual(const void* object1, const void* object2)
-    {
-        const AES128_CRYPTO_PARAMS *params1 = (const AES128_CRYPTO_PARAMS *)object1;
-        const AES128_CRYPTO_PARAMS *params2 = (const AES128_CRYPTO_PARAMS *)object2;
-
-        SimpleString input1 = StringFromBinaryWithSize(params1->input, params1->input_len);
-        SimpleString input2 = StringFromBinaryWithSize(params2->input, params2->input_len);
-
-        if (params1->aes_handle != params2->aes_handle)
-            return 0;
-
-        if (input1 != input2)
-            return 0;
-
-        return 1;
-    }
-
-    virtual SimpleString valueToString(const void* object)
-    {
-        const AES128_CRYPTO_PARAMS *params = (const AES128_CRYPTO_PARAMS *)object;
-
-        // SimpleString aes_handle = valueToString(params->aes_handle);
-        // SimpleString aes_handle = Comparator_Aes128_CreateParams::valueToString(params->aes_handle);
-        // SimpleString aes_handle = Comparator_Aes128_CreateParams.valueToString(params->aes_handle);
-        //
-        Comparator_Aes128_CreateParams comp;
-        SimpleString aes_handle = comp.valueToString(params->aes_handle);
-        // SimpleString aes_handle = StringFromBinaryWithSize(params->aes_handle->key, params->aes_key_len);
-        // SimpleString aes_handle = StringFrom("?");
-        SimpleString input = StringFromBinaryWithSize(params->input, params->input_len);
-        return StringFrom("AES handle: ") + aes_handle + StringFrom("; input: ") + input;
-    }
-};
+#include "Aes128CreateParamsComparator.h"
+#include "Aes128CryptoParamsComparator.h"
 
 TEST_GROUP(AesCmacSubkeys)
 {
     Aes128Comparator comparator;
-    Comparator_Aes128_CreateParams create_comparator;
-    Comparator_Aes128_CryptoParams crypto_comparator;
+    Aes128CreateParamsComparator create_comparator;
+    Aes128CryptoParamsComparator crypto_comparator;
     int ret;
 
     void setup()
