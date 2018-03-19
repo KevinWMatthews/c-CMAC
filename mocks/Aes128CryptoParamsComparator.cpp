@@ -21,9 +21,6 @@ bool Aes128CryptoParamsComparator::isEqual(const void* object1, const void* obje
     if (input1 != input2)
         return false;
 
-    if ( !createComparator.isEqual(params1->aes_handle, params2->aes_handle) )
-        return false;
-
     return true;
 }
 

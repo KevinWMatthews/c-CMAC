@@ -1,17 +1,10 @@
 extern "C"
 {
 #include "Aes128.h"
+#include "Mock_Aes128.h"
 }
 
 #include "CppUTestExt/MockSupport.h"
-
-typedef struct AES128_STRUCT
-{
-    size_t key_len;
-    uint8_t *key;
-    size_t iv_len;
-    uint8_t *iv;
-} AES128_STRUCT;
 
 static AES128_STRUCT aes128_struct;
 

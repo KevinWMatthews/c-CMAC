@@ -6,6 +6,7 @@ extern "C"
 #include "CppUTest/TestHarness.h"
 #include "CppUTestExt/MockSupport.h"
 #include "Aes128CryptoParamsComparator.h"
+#include "Mock_Aes128.h"
 #include <string.h>
 
 TEST_GROUP(Aes128_CryptoParamsComparator)
@@ -73,7 +74,7 @@ TEST(Aes128_CryptoParamsComparator, compare_with_null_pointers)
     CHECK_FALSE( comparator.isEqual(&params, NULL) );
 }
 
-IGNORE_TEST(Aes128_CryptoParamsComparator, compare_true_with_empty_params)
+TEST(Aes128_CryptoParamsComparator, compare_true_with_empty_params)
 {
     CHECK_TRUE( comparator.isEqual(&params, &params2) );
 }
@@ -94,20 +95,17 @@ TEST(Aes128_CryptoParamsComparator, compare_false_with_different_input)
 
 TEST(Aes128_CryptoParamsComparator, compare_true_with_equivalent_aes_handle)
 {
-    AES128_HANDLE aes_handle1 = NULL;
-    AES128_HANDLE aes_handle2 = NULL;
+    AES128_STRUCT aes_struct = {};
+    AES128_HANDLE aes_handle1 = &aes_struct;
+    AES128_HANDLE aes_handle2 = &aes_struct;
     uint8_t key[16] = {};
     uint8_t iv[16] = {};
     uint8_t input[16] = {};
 
-    AES128_CREATE_PARAMS create_params = {};
-
-    create_params.key = key;
-    create_params.key_len = sizeof(key);
-    create_params.iv = iv;
-    create_params.iv_len = sizeof(iv);
-    Aes128_Create(&create_params, &aes_handle1);
-    Aes128_Create(&create_params, &aes_handle2);
+    aes_struct.key = key;
+    aes_struct.key_len = sizeof(key);
+    aes_struct.iv = iv;
+    aes_struct.iv_len = sizeof(iv);
 
     params.aes_handle = aes_handle1;
     params.input = input;
@@ -118,34 +116,4 @@ TEST(Aes128_CryptoParamsComparator, compare_true_with_equivalent_aes_handle)
     params2.input_len = sizeof(input);
 
     CHECK_TRUE( comparator.isEqual(&params, &params2) );
-}
-
-IGNORE_TEST(Aes128_CryptoParamsComparator, compare_false_with_different_aes_handle)
-{
-    AES128_HANDLE aes_handle1 = NULL;
-    AES128_HANDLE aes_handle2 = NULL;
-    uint8_t key[16] = {};
-    uint8_t iv[16] = {};
-    uint8_t input[16] = {};
-
-    AES128_CREATE_PARAMS create_params = {};
-
-    create_params.key = key;
-    create_params.key_len = sizeof(key);
-    create_params.iv = iv;
-    create_params.iv_len = sizeof(iv);
-    Aes128_Create(&create_params, &aes_handle1);
-
-    key[0] = 0x42;
-    Aes128_Create(&create_params, &aes_handle2);
-
-    params.aes_handle = aes_handle1;
-    params.input = input;
-    params.input_len = sizeof(input);
-
-    params2.aes_handle = aes_handle2;
-    params2.input = input;
-    params2.input_len = sizeof(input);
-
-    CHECK_FALSE( comparator.isEqual(&params, &params2) );
 }
