@@ -229,7 +229,7 @@ TEST(AesCmacSubkeys, generate_L_from_input_key_all_zeros__)
         .andReturnValue(AES128_SUCCESS);
 
     // Calculate
-    ret = Aes128_Encrypt(&crypto_params, actual, sizeof(actual));
+    ret = AesCmac_CalculateLFromK_(aes_handle, actual, sizeof(actual));
 
     LONGS_EQUAL( AES128_SUCCESS, ret );
     MEMCMP_EQUAL( expected, actual, sizeof(expected) );
