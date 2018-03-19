@@ -59,7 +59,7 @@ TEST(Aes128_CreateParamsComparator, object_to_string_will_not_segfault_with_null
     STRCMP_CONTAINS("NULL", string);
 }
 
-TEST(Aes128_CreateParamsComparator, object_to_string_will_not_segfault_with_null_key)
+TEST(Aes128_CreateParamsComparator, object_to_string_will_not_segfault_with_null_pointer)
 {
     params.key = NULL;
     params.key_len = 1;
