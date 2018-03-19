@@ -66,8 +66,9 @@ TEST(Aes128_CryptoParamsComparator, object_to_string_shows_input_values)
     STRCMP_CONTAINS("00 01 02", string);
 }
 
-TEST(Aes128_CryptoParamsComparator, compare_false_with_null_pointers)
+TEST(Aes128_CryptoParamsComparator, compare_with_null_pointers)
 {
+    CHECK_TRUE( comparator.isEqual(NULL, NULL) );
     CHECK_FALSE( comparator.isEqual(NULL, &params2) );
     CHECK_FALSE( comparator.isEqual(&params, NULL) );
 }

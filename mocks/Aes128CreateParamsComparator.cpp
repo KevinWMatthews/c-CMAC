@@ -10,9 +10,9 @@ bool Aes128CreateParamsComparator::isEqual(const void* object1, const void* obje
     const AES128_CREATE_PARAMS *params1 = (const AES128_CREATE_PARAMS *)object1;
     const AES128_CREATE_PARAMS *params2 = (const AES128_CREATE_PARAMS *)object2;
 
-    if (params1 == NULL)
-        return false;
-    if (params2 == NULL)
+    if (params1 == NULL && params2 == NULL)
+        return true;
+    if (params1 == NULL || params2 == NULL)
         return false;
 
     SimpleString key1 = StringFromBinaryWithSize(params1->key, params1->key_len);

@@ -79,8 +79,9 @@ TEST(Aes128_CreateParamsComparator, object_to_string_shows_size_and_contents_of_
     STRCMP_CONTAINS("iv: Size = 16 | HexContent", string);
 }
 
-TEST(Aes128_CreateParamsComparator, compare_false_with_null_pointers)
+TEST(Aes128_CreateParamsComparator, compare_with_null_pointers)
 {
+    CHECK_TRUE( comparator.isEqual(NULL, NULL) );
     CHECK_FALSE( comparator.isEqual(NULL, &params2) );
     CHECK_FALSE( comparator.isEqual(&params, NULL) );
 }
