@@ -7,11 +7,9 @@ extern "C"
 
 #include "CppUTest/TestHarness.h"
 #include "CppUTestExt/MockSupport.h"
-#include "Aes128CryptoParamsComparator.h"
 
 TEST_GROUP(AesCmacSubkeys)
 {
-    Aes128CryptoParamsComparator crypto_comparator;
     int ret;
 
     void setup()
@@ -21,8 +19,6 @@ TEST_GROUP(AesCmacSubkeys)
 
     void teardown()
     {
-        mock().checkExpectations();
-        mock().clear();
     }
 };
 
@@ -184,7 +180,6 @@ TEST(AesCmacSubkeys, generate_L_from_input_key_all_zeros)
     crypto_params.input = input;
     crypto_params.input_len = sizeof(input);
 
-    mock().installComparator("AES128_CRYPTO_PARAMS", crypto_comparator);
     mock().expectOneCall("Aes128_Encrypt")
         .withParameterOfType("AES128_CRYPTO_PARAMS", "params", &crypto_params)
         .withOutputParameterReturning("output", expected, sizeof(expected))
@@ -195,8 +190,6 @@ TEST(AesCmacSubkeys, generate_L_from_input_key_all_zeros)
 
     LONGS_EQUAL( 0, ret );
     MEMCMP_EQUAL( expected, actual, sizeof(expected) );
-    mock().checkExpectations();
-    mock().removeAllComparatorsAndCopiers();
 }
 
 TEST(AesCmacSubkeys, generate_L_using_rfc4933_example)
@@ -221,7 +214,6 @@ TEST(AesCmacSubkeys, generate_L_using_rfc4933_example)
     crypto_params.input = input;
     crypto_params.input_len = sizeof(input);
 
-    mock().installComparator("AES128_CRYPTO_PARAMS", crypto_comparator);
     mock().expectOneCall("Aes128_Encrypt")
         .withParameterOfType("AES128_CRYPTO_PARAMS", "params", &crypto_params)
         .withOutputParameterReturning("output", expected, sizeof(expected))
@@ -232,8 +224,6 @@ TEST(AesCmacSubkeys, generate_L_using_rfc4933_example)
 
     LONGS_EQUAL( AES128_SUCCESS, ret );
     MEMCMP_EQUAL( expected, actual, sizeof(expected) );
-    mock().checkExpectations();
-    mock().removeAllComparatorsAndCopiers();
 }
 
 TEST(AesCmacSubkeys, generate_subkeys_for_rfc_examples)
@@ -278,7 +268,6 @@ TEST(AesCmacSubkeys, generate_subkeys_for_rfc_examples)
     crypto_params.input = input;
     crypto_params.input_len = sizeof(input);
 
-    mock().installComparator("AES128_CRYPTO_PARAMS", crypto_comparator);
     mock().expectOneCall("Aes128_Encrypt")
         .withParameterOfType("AES128_CRYPTO_PARAMS", "params", &crypto_params)
         .withOutputParameterReturning("output", L, sizeof(L))
@@ -292,6 +281,4 @@ TEST(AesCmacSubkeys, generate_subkeys_for_rfc_examples)
     LONGS_EQUAL( 0, ret );
     MEMCMP_EQUAL( expected_K1, actual_K1, sizeof(expected_K1) );
     MEMCMP_EQUAL( expected_K2, actual_K2, sizeof(expected_K2) );
-    mock().checkExpectations();
-    mock().removeAllComparatorsAndCopiers();
 }
