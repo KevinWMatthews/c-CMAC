@@ -8,13 +8,9 @@ extern "C"
 
 #include "CppUTest/TestHarness.h"
 #include "CppUTestExt/MockSupport.h"
-#include "Aes128Comparator.h"
-#include "Aes128CryptoParamsComparator.h"
 
 TEST_GROUP(ApplyCbcMac)
 {
-    Aes128CryptoParamsComparator crypto_comparator;
-    // Aes128Comparator comparator;
     size_t n_blocks;
     bool is_complete_block_flag;
     int ret;
@@ -26,8 +22,6 @@ TEST_GROUP(ApplyCbcMac)
 
     void teardown()
     {
-        mock().checkExpectations();
-        mock().clear();
     }
 };
 
@@ -65,45 +59,7 @@ TEST(ApplyCbcMac, finish_zero_length_message_part_1)
     MEMCMP_EQUAL( expected, Y, sizeof(expected) );
 }
 
-#if 0
 TEST(ApplyCbcMac, finish_zero_length_message_part_2)
-{
-    uint8_t key[16] = {};
-    uint8_t Y[16] = {0x80};
-    uint8_t T[16] = {};
-
-    // Calculated expected using online tool
-    uint8_t expected[16] = {
-        0x3A, 0xD7, 0x8E, 0x72, 0x6C, 0x1E, 0xC0, 0x2B,
-        0x7E, 0xBF, 0xE9, 0x2B, 0x23, 0xD9, 0xEC, 0x34,
-    };
-    // Values for mocks
-    AES_KEY_128 aes_params = {};
-    aes_params.key = key;
-    aes_params.key_len = sizeof(key);
-    aes_params.iv = zeros;
-    aes_params.iv_len = sizeof(zeros);
-
-
-
-    mock().installComparator("AES_KEY_128", comparator);
-    mock().expectOneCall("Aes_Calculate128")
-        .withParameterOfType("AES_KEY_128", "aes_128", &aes_params)
-        .withMemoryBufferParameter("input", Y, sizeof(Y))
-        .withParameter("input_len", sizeof(Y))
-        .withOutputParameterReturning("output", expected, sizeof(expected))
-        .withParameter("output_len", sizeof(expected))
-        .andReturnValue(0);
-
-    ret = CmacOps_FinishCbcMac2(key, Y, T);
-
-    mock().checkExpectations();
-    LONGS_EQUAL( 0, ret );
-    MEMCMP_EQUAL( expected, T, sizeof(expected) );
-}
-#endif
-
-TEST(ApplyCbcMac, finish_zero_length_message_part_2__)
 {
     // Calculated expected using online tool
     uint8_t expected[16] = {
@@ -137,7 +93,6 @@ TEST(ApplyCbcMac, finish_zero_length_message_part_2__)
     crypto_params.input = Y;
     crypto_params.input_len = sizeof(Y);
 
-    mock().installComparator("AES128_CRYPTO_PARAMS", crypto_comparator);
     mock().expectOneCall("Aes128_Encrypt")
         .withParameterOfType("AES128_CRYPTO_PARAMS", "params", &crypto_params)
         .withOutputParameterReturning("output", expected, sizeof(expected))
@@ -148,6 +103,4 @@ TEST(ApplyCbcMac, finish_zero_length_message_part_2__)
 
     LONGS_EQUAL( 0, ret );
     MEMCMP_EQUAL( expected, T, sizeof(expected) );
-    mock().checkExpectations();
-    mock().removeAllComparatorsAndCopiers();
 }
