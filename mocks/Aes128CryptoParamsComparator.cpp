@@ -35,7 +35,6 @@ SimpleString Aes128CryptoParamsComparator::valueToString(const void* object)
         return StringFrom("AES128_CRYPTO_PARAMS: NULL");
 
     SimpleString aes_handle;
-
     aes_handle = aesHandleComparator.valueToString(params->aes_handle);
 
     SimpleString input = StringFromBinaryWithSize(params->input, params->input_len);

@@ -23,7 +23,6 @@ TEST_GROUP(AesCmacSubkeys)
     {
         mock().checkExpectations();
         mock().clear();
-        mock().removeAllComparatorsAndCopiers();
     }
 };
 

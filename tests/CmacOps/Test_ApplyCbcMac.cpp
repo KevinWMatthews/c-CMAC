@@ -28,7 +28,6 @@ TEST_GROUP(ApplyCbcMac)
     {
         mock().checkExpectations();
         mock().clear();
-        mock().removeAllComparatorsAndCopiers();
     }
 };
 
@@ -104,7 +103,7 @@ TEST(ApplyCbcMac, finish_zero_length_message_part_2)
 }
 #endif
 
-IGNORE_TEST(ApplyCbcMac, finish_zero_length_message_part_2__)
+TEST(ApplyCbcMac, finish_zero_length_message_part_2__)
 {
     // Calculated expected using online tool
     uint8_t expected[16] = {
@@ -113,6 +112,7 @@ IGNORE_TEST(ApplyCbcMac, finish_zero_length_message_part_2__)
     };
 
     uint8_t key[16] = {};
+    uint8_t iv[16] = {};
     uint8_t Y[16] = {0x80};
     uint8_t T[16] = {};
 
@@ -128,6 +128,11 @@ IGNORE_TEST(ApplyCbcMac, finish_zero_length_message_part_2__)
     AES128_HANDLE aes_handle = &aes_struct;
     AES128_CRYPTO_PARAMS crypto_params = {};
 
+    aes_struct.key = key;
+    aes_struct.key_len = sizeof(key);
+    aes_struct.iv = iv;
+    aes_struct.iv_len = sizeof(iv);
+
     crypto_params.aes_handle = aes_handle;
     crypto_params.input = Y;
     crypto_params.input_len = sizeof(Y);
@@ -139,9 +144,10 @@ IGNORE_TEST(ApplyCbcMac, finish_zero_length_message_part_2__)
         .withParameter("output_len", sizeof(expected))
         .andReturnValue(AES128_SUCCESS);
 
-    // ret = CmacOps_FinishCbcMac2_(aes_handle, Y, T, sizeof(T));
+    ret = CmacOps_FinishCbcMac2_(aes_handle, Y, T, sizeof(T));
 
     LONGS_EQUAL( 0, ret );
     MEMCMP_EQUAL( expected, T, sizeof(expected) );
     mock().checkExpectations();
+    mock().removeAllComparatorsAndCopiers();
 }
