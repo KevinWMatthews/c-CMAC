@@ -24,6 +24,30 @@ add_test(
 )
 
 
+add_executable(UnitTests_Aes128HandleComparator
+    RunAllTests.cpp
+    Test_Aes128HandleComparator.cpp
+    "${CMAKE_HOME_DIRECTORY}/mocks/Aes128HandleComparator.cpp"
+)
+
+target_link_libraries(UnitTests_Aes128HandleComparator
+    PRIVATE
+        CppUTest
+        CppUTestExt
+        Aes128::Aes128
+)
+
+target_include_directories(UnitTests_Aes128HandleComparator
+    PRIVATE
+        "${CMAKE_HOME_DIRECTORY}/mocks"
+)
+
+add_test(
+    NAME Test_Aes128HandleComparator
+    COMMAND UnitTests_Aes128HandleComparator
+)
+
+
 add_executable(UnitTests_Aes128CryptoParamsComparator
     RunAllTests.cpp
     Test_Aes128CryptoParamsComparator.cpp
