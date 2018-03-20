@@ -12,7 +12,6 @@ static uint8_t zeros[16] = {};
 
 TEST_GROUP(AesCmac)
 {
-    Aes128Comparator comparator;
     int ret;
 
     void setup()
@@ -22,8 +21,6 @@ TEST_GROUP(AesCmac)
 
     void teardown()
     {
-        mock().checkExpectations();
-        mock().clear();
     }
 };
 
@@ -54,8 +51,6 @@ TEST(AesCmac, rfc_4493_example_1_message_length_0)
         0x7d, 0xf7, 0x6b, 0x0c, 0x1a, 0xb8, 0x99, 0xb3,
         0x3e, 0x42, 0xf0, 0x47, 0xb9, 0x1b, 0x54, 0x6f,
     };
-
-    mock().installComparator("AES_KEY_128", comparator);
 
     // Step 1: Calculate L from key
     mock().expectOneCall("Aes_Calculate128")
@@ -90,6 +85,4 @@ TEST(AesCmac, rfc_4493_example_1_message_length_0)
 
     LONGS_EQUAL( ret, 0 );
     MEMCMP_EQUAL( expected, cmac, sizeof(expected) );
-    mock().checkExpectations();
-    mock().removeAllComparatorsAndCopiers();
 }
