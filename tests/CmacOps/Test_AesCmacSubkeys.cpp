@@ -195,6 +195,8 @@ TEST(AesCmacSubkeys, generate_L_from_input_key_all_zeros)
 
     LONGS_EQUAL( 0, ret );
     MEMCMP_EQUAL( expected, actual, sizeof(expected) );
+    mock().checkExpectations();
+    mock().removeAllComparatorsAndCopiers();
 }
 
 TEST(AesCmacSubkeys, generate_L_using_rfc4933_example)
@@ -230,6 +232,8 @@ TEST(AesCmacSubkeys, generate_L_using_rfc4933_example)
 
     LONGS_EQUAL( AES128_SUCCESS, ret );
     MEMCMP_EQUAL( expected, actual, sizeof(expected) );
+    mock().checkExpectations();
+    mock().removeAllComparatorsAndCopiers();
 }
 
 TEST(AesCmacSubkeys, generate_subkeys_for_rfc_examples)
@@ -288,4 +292,6 @@ TEST(AesCmacSubkeys, generate_subkeys_for_rfc_examples)
     LONGS_EQUAL( 0, ret );
     MEMCMP_EQUAL( expected_K1, actual_K1, sizeof(expected_K1) );
     MEMCMP_EQUAL( expected_K2, actual_K2, sizeof(expected_K2) );
+    mock().checkExpectations();
+    mock().removeAllComparatorsAndCopiers();
 }

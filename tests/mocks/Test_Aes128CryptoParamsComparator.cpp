@@ -26,13 +26,14 @@ TEST_GROUP(Aes128_CryptoParamsComparator)
     {
         mock().checkExpectations();
         mock().clear();
-        mock().removeAllComparatorsAndCopiers();
     }
 };
 
 TEST(Aes128_CryptoParamsComparator, create_and_install_comparator)
 {
     mock().installComparator("AES128_CRYPTO_PARAMS", comparator);
+    mock().checkExpectations();
+    mock().removeAllComparatorsAndCopiers();
 }
 
 TEST(Aes128_CryptoParamsComparator, object_to_string_will_not_segfault_with_null_params)

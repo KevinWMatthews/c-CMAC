@@ -24,7 +24,6 @@ TEST_GROUP(AesCmac)
     {
         mock().checkExpectations();
         mock().clear();
-        mock().removeAllComparatorsAndCopiers();
     }
 };
 
@@ -91,4 +90,6 @@ TEST(AesCmac, rfc_4493_example_1_message_length_0)
 
     LONGS_EQUAL( ret, 0 );
     MEMCMP_EQUAL( expected, cmac, sizeof(expected) );
+    mock().checkExpectations();
+    mock().removeAllComparatorsAndCopiers();
 }

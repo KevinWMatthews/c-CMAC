@@ -24,13 +24,14 @@ TEST_GROUP(Aes128_CreateParamsComparator)
     {
         mock().checkExpectations();
         mock().clear();
-        mock().removeAllComparatorsAndCopiers();
     }
 };
 
 TEST(Aes128_CreateParamsComparator, create_and_install_comparator)
 {
     mock().installComparator("AES128_CREATE_PARAMS", comparator);
+    mock().checkExpectations();
+    mock().removeAllComparatorsAndCopiers();
 }
 
 TEST(Aes128_CreateParamsComparator, object_to_string_shows_key_and_iv)
@@ -203,4 +204,7 @@ TEST(Aes128_CreateParamsComparator, example_use_case)
     mock().actualCall("example_use_case")
         .withParameterOfType("AES128_CREATE_PARAMS", "params", &params2);
 #endif
+
+    mock().checkExpectations();
+    mock().removeAllComparatorsAndCopiers();
 }

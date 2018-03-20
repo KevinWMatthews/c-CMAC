@@ -29,13 +29,14 @@ TEST_GROUP(Aes128_HandleComparator)
     {
         mock().checkExpectations();
         mock().clear();
-        mock().removeAllComparatorsAndCopiers();
     }
 };
 
 TEST(Aes128_HandleComparator, create_and_install_comparator)
 {
     mock().installComparator("AES128_HANDLE", comparator);
+    mock().checkExpectations();
+    mock().removeAllComparatorsAndCopiers();
 }
 
 TEST(Aes128_HandleComparator, object_to_string_shows_null_handle)
@@ -215,4 +216,6 @@ TEST(Aes128_HandleComparator, example_use_case)
     mock().actualCall("example_use_case")
         .withParameterOfType("AES128_HANDLE", "handle", handle2);
 #endif
+    mock().checkExpectations();
+    mock().removeAllComparatorsAndCopiers();
 }
