@@ -4,6 +4,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include "Aes128.h"
 
 /* Calculate the number of blocks in a message.
  *
@@ -63,5 +64,6 @@ int CmacOps_FinishCbcMac1(uint8_t M_last[16], uint8_t X[16], uint8_t Y[16]);
  * T is the CMC-MAC result.
  */
 int CmacOps_FinishCbcMac2(uint8_t aes_key[16], uint8_t Y[16], uint8_t T[16]);
+int CmacOps_FinishCbcMac2_(AES128_HANDLE aes_handle, uint8_t Y[16], uint8_t T[16], size_t T_len);
 
 #endif

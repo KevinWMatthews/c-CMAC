@@ -28,6 +28,7 @@ TEST_GROUP(AesCmac)
     }
 };
 
+// At this level I think we want to remove the mock and use the actual library...
 TEST(AesCmac, rfc_4493_example_1_message_length_0)
 {
     unsigned char expected[] = {
