@@ -24,7 +24,6 @@ TEST_GROUP(Aes128_CryptoParamsComparator)
 
     void teardown()
     {
-        mock().checkExpectations();
         mock().clear();
     }
 };

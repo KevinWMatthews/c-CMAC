@@ -27,7 +27,6 @@ TEST_GROUP(Aes128_HandleComparator)
 
     void teardown()
     {
-        mock().checkExpectations();
         mock().clear();
     }
 };
