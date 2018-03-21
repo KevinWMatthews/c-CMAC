@@ -1,7 +1,6 @@
 extern "C"
 {
 #include "CmacOps.h"
-#include "Aes.h"
 #include "Aes128.h"
 #include "Mock_Aes128.h"
 }
@@ -71,13 +70,6 @@ TEST(ApplyCbcMac, finish_zero_length_message_part_2)
     uint8_t iv[16] = {};
     uint8_t Y[16] = {0x80};
     uint8_t T[16] = {};
-
-    //old
-    AES_KEY_128 aes_params = {};
-    aes_params.key = key;
-    aes_params.key_len = sizeof(key);
-    aes_params.iv = zeros;
-    aes_params.iv_len = sizeof(zeros);
 
     // Values for mocks
     AES128_STRUCT aes_struct = {};

@@ -8,8 +8,6 @@ add_executable(UnitTests_CmacOps
     Test_GetNthBlock.cpp
     Test_SetLastBlock.cpp
     Test_ApplyCbcMac.cpp
-    "${CMAKE_HOME_DIRECTORY}/mocks/Aes.cpp"
-    "${CMAKE_HOME_DIRECTORY}/mocks/Aes128Comparator.cpp"
     "${CMAKE_HOME_DIRECTORY}/mocks/Aes128CryptoParamsComparator.cpp"
     "${CMAKE_HOME_DIRECTORY}/mocks/Aes128HandleComparator.cpp"
     "${CMAKE_HOME_DIRECTORY}/mocks/Aes128CreateParamsComparator.cpp"

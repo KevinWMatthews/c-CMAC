@@ -2,7 +2,6 @@
 #define AES_CMAC_SUBKEYS_INCLUDED
 
 #include <stdint.h>
-#include "Aes.h"
 #include "Aes128.h"
 
 int AesCmac_GenerateSubkeys(AES128_HANDLE aes_handle,
