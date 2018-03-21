@@ -35,7 +35,7 @@ TEST(AesCmac, rfc_4493_example_1_message_length_0)
     size_t message_len = 0;
     unsigned char cmac[16] = {};
 
-    ret = AesCmac_Calculate128_( key, sizeof(key), message, message_len, cmac, sizeof(cmac) );
+    ret = AesCmac_Calculate128( key, sizeof(key), message, message_len, cmac, sizeof(cmac) );
 
     LONGS_EQUAL( ret, 0 );
     MEMCMP_EQUAL( expected, cmac, sizeof(expected) );

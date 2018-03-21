@@ -99,7 +99,7 @@ TEST(ApplyCbcMac, finish_zero_length_message_part_2)
         .withParameter("output_len", sizeof(expected))
         .andReturnValue(AES128_SUCCESS);
 
-    ret = CmacOps_FinishCbcMac2_(aes_handle, Y, T, sizeof(T));
+    ret = CmacOps_FinishCbcMac2(aes_handle, Y, T, sizeof(T));
 
     LONGS_EQUAL( 0, ret );
     MEMCMP_EQUAL( expected, T, sizeof(expected) );

@@ -186,7 +186,7 @@ TEST(AesCmacSubkeys, generate_L_from_input_key_all_zeros)
         .withParameter("output_len", sizeof(expected))
         .andReturnValue(AES128_SUCCESS);
 
-    ret = AesCmac_CalculateLFromK_(aes_handle, actual, sizeof(actual));
+    ret = AesCmac_CalculateLFromK(aes_handle, actual, sizeof(actual));
 
     LONGS_EQUAL( 0, ret );
     MEMCMP_EQUAL( expected, actual, sizeof(expected) );
@@ -220,7 +220,7 @@ TEST(AesCmacSubkeys, generate_L_using_rfc4933_example)
         .withParameter("output_len", sizeof(expected))
         .andReturnValue(AES128_SUCCESS);
 
-    ret = AesCmac_CalculateLFromK_(aes_handle, actual, sizeof(actual));
+    ret = AesCmac_CalculateLFromK(aes_handle, actual, sizeof(actual));
 
     LONGS_EQUAL( AES128_SUCCESS, ret );
     MEMCMP_EQUAL( expected, actual, sizeof(expected) );
@@ -274,7 +274,7 @@ TEST(AesCmacSubkeys, generate_subkeys_for_rfc_examples)
         .withParameter("output_len", sizeof(L))
         .andReturnValue(AES128_SUCCESS);
 
-    ret = AesCmac_GenerateSubkeys_(aes_handle,
+    ret = AesCmac_GenerateSubkeys(aes_handle,
             actual_K1, sizeof(actual_K1),
             actual_K2, sizeof(actual_K2));
 

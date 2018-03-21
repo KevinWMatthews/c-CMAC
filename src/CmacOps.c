@@ -45,21 +45,7 @@ int CmacOps_FinishCbcMac1(uint8_t M_last[16], uint8_t X[16], uint8_t Y[16])
     return 0;
 }
 
-int CmacOps_FinishCbcMac2(uint8_t aes_key[16], uint8_t Y[16], uint8_t T[16])
-{
-    //TODO pass this as a parameter?
-    AES_KEY_128 key = {
-        .key = aes_key,
-        .key_len = 16,
-        .iv = const_Zero,
-        .iv_len = sizeof(const_Zero)
-    };
-    Aes_Calculate128(&key, Y, 16, T, 16);
-
-    return 0;
-}
-
-int CmacOps_FinishCbcMac2_(AES128_HANDLE aes_handle, uint8_t Y[16], uint8_t T[16], size_t T_len)
+int CmacOps_FinishCbcMac2(AES128_HANDLE aes_handle, uint8_t Y[16], uint8_t T[16], size_t T_len)
 {
     AES128_CRYPTO_PARAMS params = {
         .aes_handle = aes_handle,
