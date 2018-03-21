@@ -89,7 +89,7 @@ TEST(AesCmac, rfc_4493_example_1_message_length_0)
     MEMCMP_EQUAL( expected, cmac, sizeof(expected) );
 }
 
-IGNORE_TEST(AesCmac, rfc_4493_example_1_message_length_0__)
+TEST(AesCmac, rfc_4493_example_1_message_length_0__)
 {
     unsigned char expected[] = {
         0xbb, 0x1d, 0x69, 0x29, 0xe9, 0x59, 0x37, 0x28,
