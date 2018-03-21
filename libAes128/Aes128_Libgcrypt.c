@@ -1,9 +1,12 @@
 #include "Aes128.h"
 #include <gcrypt.h>
+#include <string.h>
 
 typedef struct AES128_STRUCT
 {
     gcry_cipher_hd_t gcrypt_handle;
+    size_t iv_len;
+    uint8_t iv[AES128_BLOCK_LEN];
 } AES128_STRUCT;
 
 static AES128_STRUCT aes128;
@@ -102,6 +105,9 @@ AES128_RETURN_CODE Aes128_Create(AES128_CREATE_PARAMS *params, AES128_HANDLE * a
     if (gcry_error)
         return AES128_FAILURE;
 
+    memcpy(aes128.iv, params->iv, params->iv_len);
+    aes128.iv_len = params->iv_len;
+
     *aes_handle = &aes128;
     return AES128_SUCCESS;
 }
@@ -113,6 +119,7 @@ void Aes128_Destroy(AES128_HANDLE * self)
 
 AES128_RETURN_CODE Aes128_Encrypt(AES128_CRYPTO_PARAMS *params, uint8_t *output, size_t output_len)
 {
+    AES128_HANDLE aes_handle;
     gcry_error_t gcry_error;
 
     if (params == NULL)
@@ -129,6 +136,20 @@ AES128_RETURN_CODE Aes128_Encrypt(AES128_CRYPTO_PARAMS *params, uint8_t *output,
     if (output_len < params->input_len)
         return AES128_INVALID_OUTPUT_LENGTH;
 
+    aes_handle = params->aes_handle;
+
+    /*
+     * gcry_error_t gcry_cipher_setiv (gcry_cipher_hd_t h, const void *k, size_t l)
+     *
+     * Set the initialization vector.
+     * This must be done before every crypto operation.
+     *
+     * Returns 0 on success or a non-zero error code on error.
+     */
+    gcry_error = gcry_cipher_setiv(aes_handle->gcrypt_handle, aes_handle->iv, aes_handle->iv_len);
+    if (gcry_error)
+        return AES128_FAILURE;
+
     /*
      * gcry_error_t gcry_cipher_encrypt (gcry_cipher_hd_t h, unsigned char *out, size_t outsize, const unsigned char *in, size_t inlen)
      *
@@ -137,7 +158,7 @@ AES128_RETURN_CODE Aes128_Encrypt(AES128_CRYPTO_PARAMS *params, uint8_t *output,
      *
      * Returns 0 on success or a non-zero error code on error.
      */
-    gcry_error = gcry_cipher_encrypt(params->aes_handle->gcrypt_handle, output, output_len, params->input, params->input_len);
+    gcry_error = gcry_cipher_encrypt(aes_handle->gcrypt_handle, output, output_len, params->input, params->input_len);
     if (gcry_error)
         return AES128_FAILURE;
 
