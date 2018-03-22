@@ -1,8 +1,10 @@
 enable_language(CXX)
 
+###
 add_executable(UnitTests_Aes128CreateParamsComparator
     RunAllTests.cpp
     Test_Aes128CreateParamsComparator.cpp
+    "${CMAKE_HOME_DIRECTORY}/mocks/Aes128CreateParamsComparator.h"
     "${CMAKE_HOME_DIRECTORY}/mocks/Aes128CreateParamsComparator.cpp"
 )
 
@@ -10,7 +12,7 @@ target_link_libraries(UnitTests_Aes128CreateParamsComparator
     PRIVATE
         CppUTest
         CppUTestExt
-        Aes128::Aes128
+        MockAes128::MockAes128
 )
 
 target_include_directories(UnitTests_Aes128CreateParamsComparator
@@ -24,9 +26,11 @@ add_test(
 )
 
 
+###
 add_executable(UnitTests_Aes128HandleComparator
     RunAllTests.cpp
     Test_Aes128HandleComparator.cpp
+    "${CMAKE_HOME_DIRECTORY}/mocks/Aes128HandleComparator.h"
     "${CMAKE_HOME_DIRECTORY}/mocks/Aes128HandleComparator.cpp"
 )
 
@@ -34,7 +38,7 @@ target_link_libraries(UnitTests_Aes128HandleComparator
     PRIVATE
         CppUTest
         CppUTestExt
-        Aes128::Aes128
+        MockAes128::MockAes128
 )
 
 target_include_directories(UnitTests_Aes128HandleComparator
@@ -48,18 +52,21 @@ add_test(
 )
 
 
+###
 add_executable(UnitTests_Aes128CryptoParamsComparator
     RunAllTests.cpp
     Test_Aes128CryptoParamsComparator.cpp
-    "${CMAKE_HOME_DIRECTORY}/mocks/Aes128CryptoParamsComparator.cpp"
+    "${CMAKE_HOME_DIRECTORY}/mocks/Aes128HandleComparator.h"
     "${CMAKE_HOME_DIRECTORY}/mocks/Aes128HandleComparator.cpp"
+    "${CMAKE_HOME_DIRECTORY}/mocks/Aes128CryptoParamsComparator.h"
+    "${CMAKE_HOME_DIRECTORY}/mocks/Aes128CryptoParamsComparator.cpp"
 )
 
 target_link_libraries(UnitTests_Aes128CryptoParamsComparator
     PRIVATE
         CppUTest
         CppUTestExt
-        Aes128::Aes128
+        MockAes128::MockAes128
 )
 
 target_include_directories(UnitTests_Aes128CryptoParamsComparator
