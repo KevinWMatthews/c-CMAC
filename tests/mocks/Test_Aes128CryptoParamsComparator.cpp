@@ -24,7 +24,6 @@ TEST_GROUP(Aes128_CryptoParamsComparator)
 
     void teardown()
     {
-        mock().clear();
     }
 };
 
@@ -96,7 +95,7 @@ TEST(Aes128_CryptoParamsComparator, compare_false_with_different_input)
 TEST(Aes128_CryptoParamsComparator, compare_true_with_equivalent_aes_handle)
 {
     AES128_STRUCT aes_struct = {};
-    AES128_HANDLE aes_handle1 = &aes_struct;
+    AES128_HANDLE aes_handle = &aes_struct;
     AES128_HANDLE aes_handle2 = &aes_struct;
     uint8_t key[16] = {};
     uint8_t iv[16] = {};
@@ -107,7 +106,7 @@ TEST(Aes128_CryptoParamsComparator, compare_true_with_equivalent_aes_handle)
     aes_struct.iv = iv;
     aes_struct.iv_len = sizeof(iv);
 
-    params.aes_handle = aes_handle1;
+    params.aes_handle = aes_handle;
     params.input = input;
     params.input_len = sizeof(input);
 
