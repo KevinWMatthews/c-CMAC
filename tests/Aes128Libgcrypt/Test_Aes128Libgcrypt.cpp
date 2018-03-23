@@ -4,6 +4,8 @@ extern "C"
 #include <gcrypt.h>
 }
 
+// Test the wrapper with the actual gcrypt library.
+
 #include "CppUTest/TestHarness.h"
 
 TEST_GROUP(Aes128Libgcrypt_Initialize)
