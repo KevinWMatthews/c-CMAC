@@ -2,8 +2,8 @@ enable_language(CXX)
 
 add_executable(UnitTests_CmacOps
     RunAllTests.cpp
-    Test_CmacAesSubkeys.cpp
-    Test_CmacAesSubkeyOps.cpp
+    Test_GenerateSubkeys.cpp
+    Test_SubkeyOps.cpp
     Test_GetNBlocks.cpp
     Test_GetIsCompleteBlock.cpp
     Test_GetNthBlock.cpp
