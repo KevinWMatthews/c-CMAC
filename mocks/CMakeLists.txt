@@ -11,6 +11,7 @@ target_include_directories(MockAes128
 )
 set_target_properties(MockAes128 PROPERTIES
     LINKER_LANGUAGE C
+    COMPILE_FLAGS "-include CppUTest/MemoryLeakDetectorMallocMacros.h"
 )
 target_link_libraries(MockAes128
     PRIVATE
