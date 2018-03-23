@@ -9,7 +9,7 @@
 /*
  *TODO add documentation
  */
-int CmacAes_GenerateSubkeys(AES128_HANDLE aes_handle,
+int CmacAesOps_GenerateSubkeys(AES128_HANDLE aes_handle,
         uint8_t K1[16], size_t K1_len,
         uint8_t K2[16], size_t K2_len);
 

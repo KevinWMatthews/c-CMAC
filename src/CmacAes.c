@@ -26,7 +26,7 @@ int CmacAes_Calculate(uint8_t key[16], size_t key_len,
     Aes128_Create(&create_params, &aes_handle);
 
     // Step 1
-    ret = CmacAes_GenerateSubkeys( aes_handle,
+    ret = CmacAesOps_GenerateSubkeys( aes_handle,
             K1, sizeof(K1),
             K2, sizeof(K2) );
 
@@ -87,7 +87,7 @@ int CmacAes_Calculate_2(CMAC_AES_CALCULATE_PARAMS *params, uint8_t aes_cmac[16],
     Aes128_Create(&create_params, &aes_handle);
 
     // Step 1
-    ret = CmacAes_GenerateSubkeys( aes_handle,
+    ret = CmacAesOps_GenerateSubkeys( aes_handle,
             K1, sizeof(K1),
             K2, sizeof(K2) );
 

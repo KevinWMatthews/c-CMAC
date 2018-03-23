@@ -70,7 +70,7 @@ TEST(CmacAesSubkeys, generate_subkeys_for_rfc_examples)
         .withParameter("output_len", sizeof(L))
         .andReturnValue(AES128_SUCCESS);
 
-    ret = CmacAes_GenerateSubkeys(aes_handle,
+    ret = CmacAesOps_GenerateSubkeys(aes_handle,
             actual_K1, sizeof(actual_K1),
             actual_K2, sizeof(actual_K2));
 
