@@ -35,7 +35,7 @@ TEST(CmacAesSubkeyOps, K1_operate_on_all_zeros_changes_no_bits)
     uint8_t L[16] = {0};
     uint8_t K1[16] = {0};
 
-    ret = CmacAes_CalculateK1FromL( L, sizeof(L), K1, sizeof(K1) );
+    ret = CmacAesSubkeys_CalculateK1FromL( L, sizeof(L), K1, sizeof(K1) );
 
     LONGS_EQUAL( ret, 0 );
     MEMCMP_EQUAL( expected, K1, sizeof(expected) );
@@ -53,7 +53,7 @@ TEST(CmacAesSubkeyOps, left_shift_if_MSbit_L_is_zero)
     };
     uint8_t K1[16] = {0};
 
-    ret = CmacAes_CalculateK1FromL( L, sizeof(L), K1, sizeof(K1) );
+    ret = CmacAesSubkeys_CalculateK1FromL( L, sizeof(L), K1, sizeof(K1) );
 
     LONGS_EQUAL( ret, 0 );
     MEMCMP_EQUAL( expected, K1, sizeof(expected) );
@@ -68,7 +68,7 @@ TEST(CmacAesSubkeyOps, left_shift_and_xor_if_MSbit_L_is_one)
     L[0] = MSBIT_SET;
     expected[15] = CONST_RB;
 
-    ret = CmacAes_CalculateK1FromL( L, sizeof(L), K1, sizeof(K1) );
+    ret = CmacAesSubkeys_CalculateK1FromL( L, sizeof(L), K1, sizeof(K1) );
 
     LONGS_EQUAL( ret, 0 );
     MEMCMP_EQUAL( expected, K1, sizeof(expected) );
@@ -88,7 +88,7 @@ TEST(CmacAesSubkeyOps, verify_K1_uses_xor_const_rb)
     // K1 calculation must use this algorithm.
     expected[15] = (SHIFTED_CONST_RB << 1) ^ CONST_RB;
 
-    ret = CmacAes_CalculateK1FromL( L, sizeof(L), K1, sizeof(K1) );
+    ret = CmacAesSubkeys_CalculateK1FromL( L, sizeof(L), K1, sizeof(K1) );
 
     LONGS_EQUAL( ret, 0 );
     MEMCMP_EQUAL( expected, K1, sizeof(expected) );
@@ -100,7 +100,7 @@ TEST(CmacAesSubkeyOps, K2_operate_on_all_zeros_changes_no_bits)
     uint8_t K1[16] = {0};
     uint8_t K2[16] = {0};
 
-    ret = CmacAes_CalculateK2FromK1( K1, sizeof(K1), K2, sizeof(K2) );
+    ret = CmacAesSubkeys_CalculateK2FromK1( K1, sizeof(K1), K2, sizeof(K2) );
 
     LONGS_EQUAL( ret, 0 );
     MEMCMP_EQUAL( expected, K2, sizeof(expected) );
@@ -118,7 +118,7 @@ TEST(CmacAesSubkeyOps, K2_left_shift_only_if_MSB_K1_is_zero)
     };
     uint8_t K2[16] = {0};
 
-    ret = CmacAes_CalculateK2FromK1( K1, sizeof(K1), K2, sizeof(K2) );
+    ret = CmacAesSubkeys_CalculateK2FromK1( K1, sizeof(K1), K2, sizeof(K2) );
 
     LONGS_EQUAL( ret, 0 );
     MEMCMP_EQUAL( expected, K2, sizeof(expected) );
@@ -133,7 +133,7 @@ TEST(CmacAesSubkeyOps, K2_left_shift_and_xor_if_MSB_K1_is_one)
     K1[0] = MSBIT_SET;
     expected[15] = CONST_RB;
 
-    ret = CmacAes_CalculateK2FromK1( K1, sizeof(K1), K2, sizeof(K2) );
+    ret = CmacAesSubkeys_CalculateK2FromK1( K1, sizeof(K1), K2, sizeof(K2) );
 
     LONGS_EQUAL( ret, 0 );
     MEMCMP_EQUAL( expected, K2, sizeof(expected) );
@@ -152,7 +152,7 @@ TEST(CmacAesSubkeyOps, K2_xor_clears_bits)
 
     expected[15] = (SHIFTED_CONST_RB << 1) ^ CONST_RB;
 
-    ret = CmacAes_CalculateK2FromK1( K1, sizeof(K1), K2, sizeof(K2) );
+    ret = CmacAesSubkeys_CalculateK2FromK1( K1, sizeof(K1), K2, sizeof(K2) );
 
     LONGS_EQUAL( ret, 0 );
     MEMCMP_EQUAL( expected, K2, sizeof(expected) );
@@ -188,7 +188,7 @@ TEST(CmacAesSubkeyOps, generate_L_from_input_key_all_zeros)
         .withParameter("output_len", sizeof(expected))
         .andReturnValue(AES128_SUCCESS);
 
-    ret = CmacAes_CalculateLFromK(aes_handle, actual, sizeof(actual));
+    ret = CmacAesSubkeys_CalculateLFromK(aes_handle, actual, sizeof(actual));
 
     LONGS_EQUAL( 0, ret );
     MEMCMP_EQUAL( expected, actual, sizeof(expected) );
@@ -222,7 +222,7 @@ TEST(CmacAesSubkeyOps, generate_L_using_rfc4933_example)
         .withParameter("output_len", sizeof(expected))
         .andReturnValue(AES128_SUCCESS);
 
-    ret = CmacAes_CalculateLFromK(aes_handle, actual, sizeof(actual));
+    ret = CmacAesSubkeys_CalculateLFromK(aes_handle, actual, sizeof(actual));
 
     LONGS_EQUAL( AES128_SUCCESS, ret );
     MEMCMP_EQUAL( expected, actual, sizeof(expected) );

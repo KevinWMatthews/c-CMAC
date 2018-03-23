@@ -11,7 +11,7 @@ static uint8_t const_Zero[16] = {
 // See RFC4493, Fig 2.2
 #define CONST_RB    0x87
 
-int CmacAes_CalculateLFromK(AES128_HANDLE aes_handle, uint8_t *L, size_t L_len)
+int CmacAesSubkeys_CalculateLFromK(AES128_HANDLE aes_handle, uint8_t *L, size_t L_len)
 {
     AES128_CRYPTO_PARAMS params = {};
     if (aes_handle == NULL)
@@ -26,7 +26,7 @@ int CmacAes_CalculateLFromK(AES128_HANDLE aes_handle, uint8_t *L, size_t L_len)
     return 0;
 }
 
-int CmacAes_CalculateK1FromL(uint8_t *L, size_t L_len, uint8_t *K1, size_t K1_len)
+int CmacAesSubkeys_CalculateK1FromL(uint8_t *L, size_t L_len, uint8_t *K1, size_t K1_len)
 {
     BitOperation_LogicalShiftLeftOne(L, L_len, K1, K1_len);
     if ( GET_MSBIT_8(L[0]) )
@@ -35,7 +35,7 @@ int CmacAes_CalculateK1FromL(uint8_t *L, size_t L_len, uint8_t *K1, size_t K1_le
     return 0;
 }
 
-int CmacAes_CalculateK2FromK1(uint8_t *K1, size_t K1_len, uint8_t *K2, size_t K2_len)
+int CmacAesSubkeys_CalculateK2FromK1(uint8_t *K1, size_t K1_len, uint8_t *K2, size_t K2_len)
 {
     BitOperation_LogicalShiftLeftOne(K1, K1_len, K2, K2_len);
     if ( GET_MSBIT_8(K1[0]) )

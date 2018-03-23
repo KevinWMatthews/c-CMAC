@@ -10,9 +10,9 @@ int CmacAes_GenerateSubkeys(AES128_HANDLE aes_handle,
         uint8_t K2[16], size_t K2_len)
 {
     unsigned char L[16] = {0};
-    CmacAes_CalculateLFromK( aes_handle, L, sizeof(L) );
-    CmacAes_CalculateK1FromL( L, sizeof(L), K1, K1_len );
-    CmacAes_CalculateK2FromK1( K1, 16, K2, K2_len );
+    CmacAesSubkeys_CalculateLFromK( aes_handle, L, sizeof(L) );
+    CmacAesSubkeys_CalculateK1FromL( L, sizeof(L), K1, K1_len );
+    CmacAesSubkeys_CalculateK2FromK1( K1, 16, K2, K2_len );
     return 0;
 }
 
