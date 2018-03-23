@@ -6,7 +6,7 @@ extern "C"
 
 #include "CppUTest/TestHarness.h"
 
-TEST_GROUP(AesLibgcrypt_Initialize)
+TEST_GROUP(Aes128Libgcrypt_Initialize)
 {
     AES128_HANDLE aes_handle;
     int ret;
@@ -20,7 +20,7 @@ TEST_GROUP(AesLibgcrypt_Initialize)
     }
 };
 
-TEST(AesLibgcrypt_Initialize, initialize)
+TEST(Aes128Libgcrypt_Initialize, initialize)
 {
     ret = Aes128_Initialize();
     LONGS_EQUAL( AES128_SUCCESS, ret );
@@ -28,7 +28,7 @@ TEST(AesLibgcrypt_Initialize, initialize)
 
 
 
-TEST_GROUP(AesLibgcrypt_Create)
+TEST_GROUP(Aes128Libgcrypt_Create)
 {
     AES128_HANDLE aes_handle;
     AES128_CREATE_PARAMS create_params;
@@ -43,14 +43,14 @@ TEST_GROUP(AesLibgcrypt_Create)
     }
 };
 
-TEST(AesLibgcrypt_Create, create_fails_with_null_params)
+TEST(Aes128Libgcrypt_Create, create_fails_with_null_params)
 {
     ret = Aes128_Create(NULL, &aes_handle);
     LONGS_EQUAL( AES128_NULL_POINTER, ret );
     CHECK_TRUE( aes_handle == NULL );
 }
 
-TEST(AesLibgcrypt_Create, create_fails_with_null_key)
+TEST(Aes128Libgcrypt_Create, create_fails_with_null_key)
 {
     create_params.key = NULL;
 
@@ -60,7 +60,7 @@ TEST(AesLibgcrypt_Create, create_fails_with_null_key)
     CHECK_TRUE( aes_handle == NULL );
 }
 
-TEST(AesLibgcrypt_Create, create_fails_with_null_iv)
+TEST(Aes128Libgcrypt_Create, create_fails_with_null_iv)
 {
     uint8_t key[AES128_KEY_LEN] = {};
     create_params.key = key;
@@ -72,7 +72,7 @@ TEST(AesLibgcrypt_Create, create_fails_with_null_iv)
     CHECK_TRUE( aes_handle == NULL );
 }
 
-TEST(AesLibgcrypt_Create, create_fails_with_null_aes)
+TEST(Aes128Libgcrypt_Create, create_fails_with_null_aes)
 {
     uint8_t key[AES128_KEY_LEN] = {};
     uint8_t iv[AES128_IV_LEN] = {};
@@ -84,7 +84,7 @@ TEST(AesLibgcrypt_Create, create_fails_with_null_aes)
     LONGS_EQUAL( AES128_NULL_POINTER, ret );
 }
 
-TEST(AesLibgcrypt_Create, create_fails_with_invalid_key_length)
+TEST(Aes128Libgcrypt_Create, create_fails_with_invalid_key_length)
 {
     uint8_t key[AES128_KEY_LEN-1] = {};
     uint8_t iv[AES128_IV_LEN] = {};
@@ -97,7 +97,7 @@ TEST(AesLibgcrypt_Create, create_fails_with_invalid_key_length)
     LONGS_EQUAL( AES128_INVALID_KEY_LENGTH, ret );
 }
 
-TEST(AesLibgcrypt_Create, create_fails_with_invalid_iv_length)
+TEST(Aes128Libgcrypt_Create, create_fails_with_invalid_iv_length)
 {
     uint8_t key[AES128_KEY_LEN] = {};
     uint8_t iv[AES128_IV_LEN-1] = {};
@@ -111,7 +111,7 @@ TEST(AesLibgcrypt_Create, create_fails_with_invalid_iv_length)
     LONGS_EQUAL( AES128_INVALID_IV_LENGTH, ret );
 }
 
-TEST(AesLibgcrypt_Create, create_aes_handle)
+TEST(Aes128Libgcrypt_Create, create_aes_handle)
 {
     uint8_t key[AES128_KEY_LEN] = {};
     uint8_t iv[AES128_IV_LEN] = {};
@@ -126,7 +126,7 @@ TEST(AesLibgcrypt_Create, create_aes_handle)
     CHECK_TRUE( aes_handle != NULL );
 }
 
-TEST(AesLibgcrypt_Create, destroy_aes_handle)
+TEST(Aes128Libgcrypt_Create, destroy_aes_handle)
 {
     Aes128_Destroy(&aes_handle);
     CHECK_TRUE( aes_handle == NULL );
@@ -134,7 +134,7 @@ TEST(AesLibgcrypt_Create, destroy_aes_handle)
 
 
 
-TEST_GROUP(AesLibgcrypt_Encrypt)
+TEST_GROUP(Aes128Libgcrypt_Encrypt)
 {
     AES128_HANDLE aes_handle;
     AES128_CREATE_PARAMS create_params;
@@ -162,13 +162,13 @@ TEST_GROUP(AesLibgcrypt_Encrypt)
     }
 };
 
-TEST(AesLibgcrypt_Encrypt, encrypt_fails_with_null_params)
+TEST(Aes128Libgcrypt_Encrypt, encrypt_fails_with_null_params)
 {
     ret = Aes128_Encrypt( NULL, output, sizeof(output) );
     LONGS_EQUAL( AES128_NULL_POINTER, ret );
 }
 
-TEST(AesLibgcrypt_Encrypt, encrypt_fails_with_null_aes_handle)
+TEST(Aes128Libgcrypt_Encrypt, encrypt_fails_with_null_aes_handle)
 {
     encrypt_params.aes_handle = NULL;
 
@@ -177,7 +177,7 @@ TEST(AesLibgcrypt_Encrypt, encrypt_fails_with_null_aes_handle)
     LONGS_EQUAL( AES128_NULL_POINTER, ret );
 }
 
-TEST(AesLibgcrypt_Encrypt, encrypt_fails_with_null_input)
+TEST(Aes128Libgcrypt_Encrypt, encrypt_fails_with_null_input)
 {
     encrypt_params.aes_handle = aes_handle;
     encrypt_params.input = NULL;
@@ -187,7 +187,7 @@ TEST(AesLibgcrypt_Encrypt, encrypt_fails_with_null_input)
     LONGS_EQUAL( AES128_NULL_POINTER, ret );
 }
 
-TEST(AesLibgcrypt_Encrypt, encrypt_fails_with_invalid_input_length)
+TEST(Aes128Libgcrypt_Encrypt, encrypt_fails_with_invalid_input_length)
 {
     // Forcing input length to 16 bytes for now.
     uint8_t input[AES128_BLOCK_LEN-1] = {};
@@ -201,7 +201,7 @@ TEST(AesLibgcrypt_Encrypt, encrypt_fails_with_invalid_input_length)
     LONGS_EQUAL( AES128_INVALID_INPUT_LENGTH, ret );
 }
 
-TEST(AesLibgcrypt_Encrypt, encrypt_fails_with_null_output)
+TEST(Aes128Libgcrypt_Encrypt, encrypt_fails_with_null_output)
 {
     uint8_t input[AES128_BLOCK_LEN] = {};
 
@@ -213,7 +213,7 @@ TEST(AesLibgcrypt_Encrypt, encrypt_fails_with_null_output)
     LONGS_EQUAL( AES128_NULL_POINTER, ret );
 }
 
-TEST(AesLibgcrypt_Encrypt, encrypt_fails_with_output_shorter_than_input)
+TEST(Aes128Libgcrypt_Encrypt, encrypt_fails_with_output_shorter_than_input)
 {
     uint8_t input[AES128_BLOCK_LEN] = {};
     uint8_t short_output[AES128_BLOCK_LEN-1] = {0};
@@ -227,7 +227,7 @@ TEST(AesLibgcrypt_Encrypt, encrypt_fails_with_output_shorter_than_input)
     LONGS_EQUAL( AES128_INVALID_OUTPUT_LENGTH, ret );
 }
 
-TEST(AesLibgcrypt_Encrypt, encrypt_message_0_key_0_iv_0)
+TEST(Aes128Libgcrypt_Encrypt, encrypt_message_0_key_0_iv_0)
 {
     uint8_t expected[AES128_BLOCK_LEN] = {
         0x66, 0xE9, 0x4B, 0xD4, 0xEF, 0x8A, 0x2C, 0x3B,
@@ -247,7 +247,7 @@ TEST(AesLibgcrypt_Encrypt, encrypt_message_0_key_0_iv_0)
     MEMCMP_EQUAL( expected, output, sizeof(expected) );
 }
 
-TEST(AesLibgcrypt_Encrypt, encrypt_message_0_key_0_iv_0_twice)
+TEST(Aes128Libgcrypt_Encrypt, encrypt_message_0_key_0_iv_0_twice)
 {
     uint8_t expected[AES128_BLOCK_LEN] = {
         0x66, 0xE9, 0x4B, 0xD4, 0xEF, 0x8A, 0x2C, 0x3B,
@@ -274,7 +274,7 @@ TEST(AesLibgcrypt_Encrypt, encrypt_message_0_key_0_iv_0_twice)
 
 
 
-TEST_GROUP(AesLibgcrypt_EncryptKnown)
+TEST_GROUP(Aes128Libgcrypt_EncryptKnown)
 {
     AES128_HANDLE aes_handle;
     AES128_CREATE_PARAMS create_params;
@@ -293,7 +293,7 @@ TEST_GROUP(AesLibgcrypt_EncryptKnown)
     }
 };
 
-TEST(AesLibgcrypt_EncryptKnown, example_from_rfc4493)
+TEST(Aes128Libgcrypt_EncryptKnown, example_from_rfc4493)
 {
     uint8_t expected[AES128_BLOCK_LEN] = {
         0x7d, 0xf7, 0x6b, 0x0c, 0x1a, 0xb8, 0x99, 0xb3,
