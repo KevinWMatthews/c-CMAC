@@ -8,7 +8,7 @@ extern "C"
 #include "CppUTest/TestHarness.h"
 #include "CppUTestExt/MockSupport.h"
 
-TEST_GROUP(CmacAesSubkeys)
+TEST_GROUP(GenerateSubkeys)
 {
     int ret;
 
@@ -22,7 +22,7 @@ TEST_GROUP(CmacAesSubkeys)
     }
 };
 
-TEST(CmacAesSubkeys, generate_subkeys_for_rfc_examples)
+TEST(GenerateSubkeys, generate_subkeys_for_rfc_examples)
 {
     // Expected
     uint8_t expected_K1[16] = {
