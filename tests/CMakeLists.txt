@@ -1,6 +1,6 @@
 add_subdirectory(ByteArrayOps)
 add_subdirectory(CmacOps)
 add_subdirectory(Cmac)
-add_subdirectory(AesLibgcrypt)
+add_subdirectory(Aes128Libgcrypt)
 add_subdirectory(Libgcrypt)
 add_subdirectory(mocks)
