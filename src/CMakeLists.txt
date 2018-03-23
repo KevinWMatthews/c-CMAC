@@ -10,8 +10,8 @@ add_library(ByteArrayOpsLib::ByteArrayOpsLib ALIAS ByteArrayOps)
 
 #TODO this needs to link against libgcrypt
 add_library(CmacOps
-    "${CMAKE_HOME_DIRECTORY}/src/CmacOps.h"
-    "${CMAKE_HOME_DIRECTORY}/src/CmacOps.c"
+    "${CMAKE_HOME_DIRECTORY}/src/CmacAesOps.h"
+    "${CMAKE_HOME_DIRECTORY}/src/CmacAesOps.c"
     "${CMAKE_HOME_DIRECTORY}/src/CmacAesSubkeys.h"
     "${CMAKE_HOME_DIRECTORY}/src/CmacAesSubkeys.c"
 )

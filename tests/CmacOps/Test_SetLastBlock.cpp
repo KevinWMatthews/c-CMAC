@@ -1,6 +1,6 @@
 extern "C"
 {
-#include "CmacOps.h"
+#include "CmacAesOps.h"
 }
 
 #include "CppUTest/TestHarness.h"
@@ -25,7 +25,7 @@ TEST(SetLastBlock, pad_and_xor_incomplete_block_zeros)
     uint8_t M_last[16] = {};
     uint8_t expected[16] = {0x80};
 
-    ret = CmacOps_SetLastBlockForIncomplete(M_n, K2, M_last);
+    ret = CmacAesOps_SetLastBlockForIncomplete(M_n, K2, M_last);
 
     LONGS_EQUAL( 0, ret );
     MEMCMP_EQUAL( expected, M_last, sizeof(expected) );
@@ -44,7 +44,7 @@ TEST(SetLastBlock, pad_and_xor_incomplete_block_ffs)
         0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
     };
 
-    ret = CmacOps_SetLastBlockForIncomplete(M_n, K2, M_last);
+    ret = CmacAesOps_SetLastBlockForIncomplete(M_n, K2, M_last);
 
     LONGS_EQUAL( 0, ret );
     MEMCMP_EQUAL( expected, M_last, sizeof(expected) );
