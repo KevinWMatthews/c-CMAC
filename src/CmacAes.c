@@ -1,7 +1,7 @@
 #include "CmacAes.h"
-#include <string.h>
-#include "AesCmacSubkeys.h"
+#include "CmacAesSubkeys.h"
 #include "CmacOps.h"
+#include <string.h>
 
 int CmacAes_Calculate(uint8_t key[16], size_t key_len,
         uint8_t *message, size_t message_len,

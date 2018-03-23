@@ -12,8 +12,8 @@ add_library(ByteArrayOpsLib::ByteArrayOpsLib ALIAS ByteArrayOps)
 add_library(CmacOps
     "${CMAKE_HOME_DIRECTORY}/src/CmacOps.h"
     "${CMAKE_HOME_DIRECTORY}/src/CmacOps.c"
-    "${CMAKE_HOME_DIRECTORY}/src/AesCmacSubkeys.h"
-    "${CMAKE_HOME_DIRECTORY}/src/AesCmacSubkeys.c"
+    "${CMAKE_HOME_DIRECTORY}/src/CmacAesSubkeys.h"
+    "${CMAKE_HOME_DIRECTORY}/src/CmacAesSubkeys.c"
 )
 # PUBLIC or PRIVATE?
 target_include_directories(CmacOps

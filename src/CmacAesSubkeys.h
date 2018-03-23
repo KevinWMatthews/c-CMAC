@@ -1,5 +1,5 @@
-#ifndef AES_CMAC_SUBKEYS_INCLUDED
-#define AES_CMAC_SUBKEYS_INCLUDED
+#ifndef CMAC_AES_SUBKEYS_INCLUDED
+#define CMAC_AES_SUBKEYS_INCLUDED
 
 #include <stdint.h>
 #include "Aes128.h"

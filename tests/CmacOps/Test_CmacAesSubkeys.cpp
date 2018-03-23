@@ -1,6 +1,6 @@
 extern "C"
 {
-#include "AesCmacSubkeys.h"
+#include "CmacAesSubkeys.h"
 #include "Aes128.h"
 #include "Mock_Aes128.h"
 }
@@ -8,7 +8,7 @@ extern "C"
 #include "CppUTest/TestHarness.h"
 #include "CppUTestExt/MockSupport.h"
 
-TEST_GROUP(AesCmacSubkeys)
+TEST_GROUP(CmacAesSubkeys)
 {
     int ret;
 
@@ -28,7 +28,7 @@ TEST_GROUP(AesCmacSubkeys)
 
 static uint8_t zeros[16] = {};
 
-TEST(AesCmacSubkeys, K1_operate_on_all_zeros_changes_no_bits)
+TEST(CmacAesSubkeys, K1_operate_on_all_zeros_changes_no_bits)
 {
     uint8_t expected[16] = {0};
     uint8_t L[16] = {0};
@@ -40,7 +40,7 @@ TEST(AesCmacSubkeys, K1_operate_on_all_zeros_changes_no_bits)
     MEMCMP_EQUAL( expected, K1, sizeof(expected) );
 }
 
-TEST(AesCmacSubkeys, left_shift_if_MSbit_L_is_zero)
+TEST(CmacAesSubkeys, left_shift_if_MSbit_L_is_zero)
 {
     uint8_t expected[16] = {
         0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02,
@@ -58,7 +58,7 @@ TEST(AesCmacSubkeys, left_shift_if_MSbit_L_is_zero)
     MEMCMP_EQUAL( expected, K1, sizeof(expected) );
 }
 
-TEST(AesCmacSubkeys, left_shift_and_xor_if_MSbit_L_is_one)
+TEST(CmacAesSubkeys, left_shift_and_xor_if_MSbit_L_is_one)
 {
     uint8_t expected[16] = {0};
     uint8_t L[16] = {0};
@@ -73,7 +73,7 @@ TEST(AesCmacSubkeys, left_shift_and_xor_if_MSbit_L_is_one)
     MEMCMP_EQUAL( expected, K1, sizeof(expected) );
 }
 
-TEST(AesCmacSubkeys, verify_K1_uses_xor_const_rb)
+TEST(CmacAesSubkeys, verify_K1_uses_xor_const_rb)
 {
     uint8_t expected[16] = {0};
     uint8_t L[16] = {0};
@@ -93,7 +93,7 @@ TEST(AesCmacSubkeys, verify_K1_uses_xor_const_rb)
     MEMCMP_EQUAL( expected, K1, sizeof(expected) );
 }
 
-TEST(AesCmacSubkeys, K2_operate_on_all_zeros_changes_no_bits)
+TEST(CmacAesSubkeys, K2_operate_on_all_zeros_changes_no_bits)
 {
     uint8_t expected[16] = {0};
     uint8_t K1[16] = {0};
@@ -105,7 +105,7 @@ TEST(AesCmacSubkeys, K2_operate_on_all_zeros_changes_no_bits)
     MEMCMP_EQUAL( expected, K2, sizeof(expected) );
 }
 
-TEST(AesCmacSubkeys, K2_left_shift_only_if_MSB_K1_is_zero)
+TEST(CmacAesSubkeys, K2_left_shift_only_if_MSB_K1_is_zero)
 {
     uint8_t expected[16] = {
         0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02,
@@ -123,7 +123,7 @@ TEST(AesCmacSubkeys, K2_left_shift_only_if_MSB_K1_is_zero)
     MEMCMP_EQUAL( expected, K2, sizeof(expected) );
 }
 
-TEST(AesCmacSubkeys, K2_left_shift_and_xor_if_MSB_K1_is_one)
+TEST(CmacAesSubkeys, K2_left_shift_and_xor_if_MSB_K1_is_one)
 {
     uint8_t expected[16] = {0};
     uint8_t K1[16] = {0};
@@ -138,7 +138,7 @@ TEST(AesCmacSubkeys, K2_left_shift_and_xor_if_MSB_K1_is_one)
     MEMCMP_EQUAL( expected, K2, sizeof(expected) );
 }
 
-TEST(AesCmacSubkeys, K2_xor_clears_bits)
+TEST(CmacAesSubkeys, K2_xor_clears_bits)
 {
     uint8_t expected[16] = {0};
     uint8_t K1[16] = {0};
@@ -157,7 +157,7 @@ TEST(AesCmacSubkeys, K2_xor_clears_bits)
     MEMCMP_EQUAL( expected, K2, sizeof(expected) );
 }
 
-TEST(AesCmacSubkeys, generate_L_from_input_key_all_zeros)
+TEST(CmacAesSubkeys, generate_L_from_input_key_all_zeros)
 {
     uint8_t expected[16] = {
         0x66, 0xE9, 0x4B, 0xD4, 0xEF, 0x8A, 0x2C, 0x3B,
@@ -193,7 +193,7 @@ TEST(AesCmacSubkeys, generate_L_from_input_key_all_zeros)
     MEMCMP_EQUAL( expected, actual, sizeof(expected) );
 }
 
-TEST(AesCmacSubkeys, generate_L_using_rfc4933_example)
+TEST(CmacAesSubkeys, generate_L_using_rfc4933_example)
 {
     uint8_t expected[16] = {
         0x7d, 0xf7, 0x6b, 0x0c, 0x1a, 0xb8, 0x99, 0xb3,
@@ -227,7 +227,7 @@ TEST(AesCmacSubkeys, generate_L_using_rfc4933_example)
     MEMCMP_EQUAL( expected, actual, sizeof(expected) );
 }
 
-TEST(AesCmacSubkeys, generate_subkeys_for_rfc_examples)
+TEST(CmacAesSubkeys, generate_subkeys_for_rfc_examples)
 {
     // Expected
     uint8_t expected_K1[16] = {
