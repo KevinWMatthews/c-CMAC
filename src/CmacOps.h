@@ -6,6 +6,13 @@
 #include <stdint.h>
 #include "Aes128.h"
 
+/*
+ *TODO add documentation
+ */
+int CmacAes_GenerateSubkeys(AES128_HANDLE aes_handle,
+        uint8_t K1[16], size_t K1_len,
+        uint8_t K2[16], size_t K2_len);
+
 /* Calculate the number of blocks in a message.
  *
  * Returns the number of 128-bit (16-byte) blocks in the given message.

@@ -1,6 +1,6 @@
 extern "C"
 {
-#include "CmacAesSubkeys.h"
+#include "CmacOps.h"
 #include "Aes128.h"
 #include "Mock_Aes128.h"
 }

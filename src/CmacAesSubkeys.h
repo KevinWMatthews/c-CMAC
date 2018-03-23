@@ -4,10 +4,6 @@
 #include <stdint.h>
 #include "Aes128.h"
 
-int CmacAes_GenerateSubkeys(AES128_HANDLE aes_handle,
-        uint8_t K1[16], size_t K1_len,
-        uint8_t K2[16], size_t K2_len);
-
 int CmacAes_CalculateLFromK(AES128_HANDLE aes_handle, uint8_t *L, size_t L_len);
 
 int CmacAes_CalculateK1FromL(uint8_t *L, size_t L_len, uint8_t *K1, size_t K1_len);
