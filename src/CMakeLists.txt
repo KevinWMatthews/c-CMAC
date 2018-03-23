@@ -36,8 +36,8 @@ add_library(CmacOpsLib::CmacOpsLib ALIAS CmacOps)
 
 
 add_library(Cmac
-    "${CMAKE_HOME_DIRECTORY}/include/AesCmac.h"
-    "${CMAKE_HOME_DIRECTORY}/src/AesCmac.c"
+    "${CMAKE_HOME_DIRECTORY}/include/CmacAes.h"
+    "${CMAKE_HOME_DIRECTORY}/src/CmacAes.c"
 )
 target_include_directories(Cmac
     PUBLIC

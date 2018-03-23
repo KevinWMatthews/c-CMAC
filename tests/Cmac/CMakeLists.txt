@@ -2,7 +2,7 @@ enable_language(CXX)
 
 add_executable(UnitTests_Cmac
     RunAllTests.cpp
-    Test_AesCmac.cpp
+    Test_CmacAes.cpp
 )
 
 target_link_libraries(UnitTests_Cmac

@@ -1,9 +1,9 @@
-#include "AesCmac.h"
+#include "CmacAes.h"
 #include <string.h>
 #include "AesCmacSubkeys.h"
 #include "CmacOps.h"
 
-int AesCmac_Calculate128(uint8_t key[16], size_t key_len,
+int CmacAes_Calculate(uint8_t key[16], size_t key_len,
         uint8_t *message, size_t message_len,
         uint8_t *aes_cmac, size_t aes_cmac_len)
 {
@@ -65,7 +65,7 @@ int AesCmac_Calculate128(uint8_t key[16], size_t key_len,
     return 0;
 }
 
-int AesCmac_Calculate128_2(AES_CMAC_CALCULATE_128_PARAMS *params, uint8_t aes_cmac[16], size_t aes_cmac_len)
+int CmacAes_Calculate_2(CMAC_AES_CALCULATE_PARAMS *params, uint8_t aes_cmac[16], size_t aes_cmac_len)
 {
 
     unsigned char K1[16] = {0};

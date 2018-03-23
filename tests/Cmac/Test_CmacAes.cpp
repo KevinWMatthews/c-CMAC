@@ -1,12 +1,12 @@
 extern "C"
 {
-#include "AesCmac.h"
+#include "CmacAes.h"
 }
 
 #include "CppUTest/TestHarness.h"
 
 
-TEST_GROUP(AesCmac)
+TEST_GROUP(CmacAes)
 {
     int ret;
 
@@ -21,7 +21,7 @@ TEST_GROUP(AesCmac)
 
 static uint8_t zeros[16] = {};
 
-TEST(AesCmac, rfc_4493_example_1_message_length_0)
+TEST(CmacAes, rfc_4493_example_1_message_length_0)
 {
     unsigned char expected[] = {
         0xbb, 0x1d, 0x69, 0x29, 0xe9, 0x59, 0x37, 0x28,
@@ -35,13 +35,13 @@ TEST(AesCmac, rfc_4493_example_1_message_length_0)
     size_t message_len = 0;
     unsigned char cmac[16] = {};
 
-    ret = AesCmac_Calculate128( key, sizeof(key), message, message_len, cmac, sizeof(cmac) );
+    ret = CmacAes_Calculate( key, sizeof(key), message, message_len, cmac, sizeof(cmac) );
 
     LONGS_EQUAL( ret, 0 );
     MEMCMP_EQUAL( expected, cmac, sizeof(expected) );
 }
 
-TEST(AesCmac, rfc_4493_example_1_message_length_0__)
+TEST(CmacAes, rfc_4493_example_1_message_length_0__2)
 {
     unsigned char expected[] = {
         0xbb, 0x1d, 0x69, 0x29, 0xe9, 0x59, 0x37, 0x28,
@@ -53,14 +53,14 @@ TEST(AesCmac, rfc_4493_example_1_message_length_0__)
     };
     unsigned char *message = NULL;
     size_t message_len = 0;
-    AES_CMAC_CALCULATE_128_PARAMS params = {};
+    CMAC_AES_CALCULATE_PARAMS params = {};
     unsigned char cmac[16] = {};
 
     params.key = key;
     params.key_len = sizeof(key);
     params.message = message;
     params.message_len = message_len;
-    ret = AesCmac_Calculate128_2( &params, cmac, sizeof(cmac) );
+    ret = CmacAes_Calculate_2( &params, cmac, sizeof(cmac) );
 
     LONGS_EQUAL( ret, 0 );
     MEMCMP_EQUAL( expected, cmac, sizeof(expected) );
