@@ -88,26 +88,11 @@ AES128_RETURN_CODE Aes128_Encrypt(AES128_CRYPTO_PARAMS *params, uint8_t *output,
 
     aes_handle = params->aes_handle;
 
-    /*
-     * gcry_error_t gcry_cipher_setiv (gcry_cipher_hd_t h, const void *k, size_t l)
-     *
-     * Set the initialization vector.
-     * This must be done before every crypto operation.
-     *
-     * Returns 0 on success or a non-zero error code on error.
-     */
+    // This must be done before every crypto operation.
     gcry_error = gcry_cipher_setiv(aes_handle->gcrypt_handle, aes_handle->iv, aes_handle->iv_len);
     if (gcry_error)
         return AES128_FAILURE;
 
-    /*
-     * gcry_error_t gcry_cipher_encrypt (gcry_cipher_hd_t h, unsigned char *out, size_t outsize, const unsigned char *in, size_t inlen)
-     *
-     * Encrypt in.
-     * Fill out with the result.
-     *
-     * Returns 0 on success or a non-zero error code on error.
-     */
     gcry_error = gcry_cipher_encrypt(aes_handle->gcrypt_handle, output, output_len, params->input, params->input_len);
     if (gcry_error)
         return AES128_FAILURE;

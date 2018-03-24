@@ -27,6 +27,67 @@ TEST_GROUP(Libgcrypt_AesEncrypt)
     }
 };
 
+TEST(Libgcrypt_AesEncrypt, encrypt)
+{
+    char expected[16] = {
+        0x66, 0xE9, 0x4B, 0xD4, 0xEF, 0x8A, 0x2C, 0x3B,
+        0x88, 0x4C, 0xFA, 0x59, 0xCA, 0x34, 0x2B, 0x2E,
+    };
+    char actual[16] = {};
+    char key[16] = {};
+    char iv[16] = {};
+    char input[16] = {};
+
+    gcry_cipher_setkey( gcrypt_handle, key, sizeof(key) );
+    gcry_cipher_setiv( gcrypt_handle, iv, sizeof(iv) );
+
+    /*
+     * gcry_error_t gcry_cipher_encrypt (gcry_cipher_hd_t h, unsigned char *out, size_t outsize, const unsigned char *in, size_t inlen)
+     *
+     * Encrypt in.
+     * Fill out with the result.
+     *
+     * Returns 0 on success or a non-zero error code on error.
+     */
+    gcry_error = gcry_cipher_encrypt(gcrypt_handle, actual, sizeof(actual), input, sizeof(input));
+
+    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_NO_ERROR, gcry_error );
+    MEMCMP_EQUAL( expected, actual, sizeof(expected) );
+}
+
+TEST(Libgcrypt_AesEncrypt, encrypt_data_twice)
+{
+    char expected[16] = {
+        0x66, 0xE9, 0x4B, 0xD4, 0xEF, 0x8A, 0x2C, 0x3B,
+        0x88, 0x4C, 0xFA, 0x59, 0xCA, 0x34, 0x2B, 0x2E,
+    };
+    char actual[16] = {};
+    char actual2[16] = {};
+
+    char key[16] = {};
+    char iv[16] = {};
+    char input[16] = {};
+    gcry_error_t gcry_error2;
+
+    gcry_cipher_setkey( gcrypt_handle, key, sizeof(key) );
+    gcry_cipher_setiv( gcrypt_handle, iv, sizeof(iv) );
+
+    gcry_error = gcry_cipher_encrypt(gcrypt_handle, actual, sizeof(actual), input, sizeof(input));
+
+    // Must set IV again before second encryption
+    gcry_cipher_setiv( gcrypt_handle, iv, sizeof(iv) );
+    gcry_error2 = gcry_cipher_encrypt(gcrypt_handle, actual2, sizeof(actual2), input, sizeof(input));
+
+    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_NO_ERROR, gcry_error );
+    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_NO_ERROR, gcry_error2 );
+    MEMCMP_EQUAL( expected, actual, sizeof(expected) );
+    MEMCMP_EQUAL( expected, actual2, sizeof(expected) );
+}
+
+
+/*
+ * Set Key
+ */
 TEST(Libgcrypt_AesEncrypt, set_key)
 {
     char key[16] = {};
@@ -43,7 +104,23 @@ TEST(Libgcrypt_AesEncrypt, set_key)
     CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_NO_ERROR, gcry_error );
 }
 
+TEST(Libgcrypt_AesEncrypt, set_key_too_short_fails)
+{
+    char key[15] = {};
+    gcry_error = gcry_cipher_setkey(gcrypt_handle, key, sizeof(key));
+    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_INV_KEYLEN, gcry_error );
+}
 
+TEST(Libgcrypt_AesEncrypt, set_key_too_long_fails)
+{
+    char key[17] = {};
+    gcry_error = gcry_cipher_setkey(gcrypt_handle, key, sizeof(key));
+    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_INV_KEYLEN, gcry_error );
+}
+
+/*
+ * Set IV
+ */
 TEST(Libgcrypt_AesEncrypt, set_iv)
 {
     char iv[16] = {};
@@ -58,20 +135,6 @@ TEST(Libgcrypt_AesEncrypt, set_iv)
      */
     gcry_error = gcry_cipher_setiv( gcrypt_handle, iv, sizeof(iv) );
     CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_NO_ERROR, gcry_error );
-}
-
-TEST(Libgcrypt_AesEncrypt, set_key_too_short_fails)
-{
-    char key[15] = {};
-    gcry_error = gcry_cipher_setkey(gcrypt_handle, key, sizeof(key));
-    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_INV_KEYLEN, gcry_error );
-}
-
-TEST(Libgcrypt_AesEncrypt, set_key_too_long_fails)
-{
-    char key[17] = {};
-    gcry_error = gcry_cipher_setkey(gcrypt_handle, key, sizeof(key));
-    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_INV_KEYLEN, gcry_error );
 }
 
 // These tests work but libgcrypt prints a warning directly to the console.
