@@ -26,7 +26,59 @@ TEST_GROUP(Libgcrypt_AesEncrypt)
     }
 };
 
-TEST(Libgcrypt_AesEncrypt, wiring_check)
+TEST(Libgcrypt_AesEncrypt, set_key)
 {
-    FAIL("START Here");
+    char key[16] = {};
+
+    /*
+     * gcry_error_t gcry_cipher_setkey (gcry_cipher_hd_t h, const void *k, size_t l)
+     *
+     * Set the key k used for encryption or decryption in the context denoted by the handle h.
+     * Can the key go out of scope?
+     *
+     * Returns 0 on success and a non-zero error code on error.
+     */
+    gcry_error = gcry_cipher_setkey( gcrypt_handle, key, sizeof(key) );
+    LONGS_EQUAL( GPG_ERR_NO_ERROR, gcry_error );
 }
+
+
+TEST(Libgcrypt_AesEncrypt, set_iv)
+{
+    char iv[16] = {};
+
+    /*
+     * gcry_error_t gcry_cipher_setiv (gcry_cipher_hd_t h, const void *k, size_t l)
+     *
+     * Set the initialization vector used for encryption or decryption.
+     * The vector is passed as the buffer K of length l bytes and copied to internal data structures.
+     *
+     * Returns 0 on success and a non-zero error code on error.
+     */
+    gcry_error = gcry_cipher_setiv( gcrypt_handle, iv, sizeof(iv) );
+    LONGS_EQUAL( GPG_ERR_NO_ERROR, gcry_error );
+}
+
+TEST(Libgcrypt_AesEncrypt, set_key_too_short_fails)
+{
+    char key[15] = {};
+    gcry_error = gcry_cipher_setkey(gcrypt_handle, key, sizeof(key));
+    CHECK_FALSE( gcry_error == GPG_ERR_NO_ERROR );
+    LONGS_EQUAL( GPG_ERR_INV_KEYLEN, gcry_err_code(gcry_error) );
+}
+
+TEST(Libgcrypt_AesEncrypt, set_key_too_long_fails)
+{
+    char key[17] = {};
+    gcry_error = gcry_cipher_setkey(gcrypt_handle, key, sizeof(key));
+    CHECK_FALSE( gcry_error == GPG_ERR_NO_ERROR );
+    LONGS_EQUAL( GPG_ERR_INV_KEYLEN, gcry_err_code(gcry_error) );
+}
+
+#if 0
+TEST(Libgcrypt_AesEncrypt, set_null_key_segfaults)
+{
+    gcry_error = gcry_cipher_setkey(gcrypt_handle, NULL, 16);
+    LONGS_EQUAL( GPG_ERR_NO_ERROR, gcry_error );
+}
+#endif

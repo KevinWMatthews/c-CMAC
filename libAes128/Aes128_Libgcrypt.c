@@ -47,26 +47,10 @@ AES128_RETURN_CODE Aes128_Create(AES128_CREATE_PARAMS *params, AES128_HANDLE * a
     if (gcry_error)
         return AES128_FAILURE;
 
-    /*
-     * gcry_error_t gcry_cipher_setkey (gcry_cipher_hd_t h, const void *k, size_t l)
-     *
-     * Set the key k used for encryption or decryption in the context denoted by the handle h.
-     * Can the key go out of scope?
-     *
-     * Returns 0 on success and a non-zero error code on error.
-     */
     gcry_error = gcry_cipher_setkey(aes128.gcrypt_handle, params->key, params->key_len);
     if (gcry_error)
         return AES128_FAILURE;
 
-    /*
-     * gcry_error_t gcry_cipher_setiv (gcry_cipher_hd_t h, const void *k, size_t l)
-     *
-     * Set the initialization vector used for encryption or decryption.
-     * The vector is passed as the buffer K of length l bytes and copied to internal data structures.
-     *
-     * Returns 0 on success and a non-zero error code on error.
-     */
     gcry_error = gcry_cipher_setiv(aes128.gcrypt_handle, params->iv, params->iv_len);
     if (gcry_error)
         return AES128_FAILURE;
