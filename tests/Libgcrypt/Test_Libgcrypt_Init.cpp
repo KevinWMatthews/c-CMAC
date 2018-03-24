@@ -4,6 +4,7 @@ extern "C"
 }
 
 #include "CppUTest/TestHarness.h"
+#include "Libgcrypt_TestHelper.h"
 
 #define LIBGCRYPT_VERSION       "1.8.2"
 
@@ -67,13 +68,13 @@ TEST(Libgcrypt_Init, can_disable_secure_memory)
      *      Disables the use of secure memory
      */
     gcry_error = gcry_control(GCRYCTL_DISABLE_SECMEM, 0);
-    LONGS_EQUAL( GPG_ERR_NO_ERROR, gcry_error );
+    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_NO_ERROR, gcry_error );
 }
 
 TEST(Libgcrypt_Init, can_disable_secure_memory_ignores_arguments)
 {
     gcry_error = gcry_control(GCRYCTL_DISABLE_SECMEM, 255);
-    LONGS_EQUAL( GPG_ERR_NO_ERROR, gcry_error );
+    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_NO_ERROR, gcry_error );
 }
 
 TEST(Libgcrypt_Init, can_finish_initialization)
@@ -83,7 +84,7 @@ TEST(Libgcrypt_Init, can_finish_initialization)
      *      This command tells the library that the application has finished the initialization.
      */
     gcry_error = gcry_control(GCRYCTL_INITIALIZATION_FINISHED, 0);
-    LONGS_EQUAL( GPG_ERR_NO_ERROR, gcry_error );
+    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_NO_ERROR, gcry_error );
 }
 
 #if 0
@@ -92,6 +93,6 @@ TEST(Libgcrypt_Init, can_check_that_init_is_finished)
 {
     gcry_error = gcry_control(GCRYCTL_INITIALIZATION_FINISHED, 0);
     gcry_error = gcry_control(GCRYCTL_INITIALIZATION_FINISHED_P, 0);
-    LONGS_EQUAL( GPG_ERR_NO_ERROR, gcry_error );
+    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_NO_ERROR, gcry_error );
 }
 #endif

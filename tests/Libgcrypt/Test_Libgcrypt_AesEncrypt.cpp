@@ -4,6 +4,7 @@ extern "C"
 }
 
 #include "CppUTest/TestHarness.h"
+#include "Libgcrypt_TestHelper.h"
 
 #define LIBGCRYPT_REQURIED_VERSION      "1.8.2"
 
@@ -39,7 +40,7 @@ TEST(Libgcrypt_AesEncrypt, set_key)
      * Returns 0 on success and a non-zero error code on error.
      */
     gcry_error = gcry_cipher_setkey( gcrypt_handle, key, sizeof(key) );
-    LONGS_EQUAL( GPG_ERR_NO_ERROR, gcry_error );
+    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_NO_ERROR, gcry_error );
 }
 
 
@@ -56,29 +57,26 @@ TEST(Libgcrypt_AesEncrypt, set_iv)
      * Returns 0 on success and a non-zero error code on error.
      */
     gcry_error = gcry_cipher_setiv( gcrypt_handle, iv, sizeof(iv) );
-    LONGS_EQUAL( GPG_ERR_NO_ERROR, gcry_error );
+    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_NO_ERROR, gcry_error );
 }
 
 TEST(Libgcrypt_AesEncrypt, set_key_too_short_fails)
 {
     char key[15] = {};
     gcry_error = gcry_cipher_setkey(gcrypt_handle, key, sizeof(key));
-    CHECK_FALSE( gcry_error == GPG_ERR_NO_ERROR );
-    LONGS_EQUAL( GPG_ERR_INV_KEYLEN, gcry_err_code(gcry_error) );
+    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_INV_KEYLEN, gcry_error );
 }
 
 TEST(Libgcrypt_AesEncrypt, set_key_too_long_fails)
 {
     char key[17] = {};
     gcry_error = gcry_cipher_setkey(gcrypt_handle, key, sizeof(key));
-    CHECK_FALSE( gcry_error == GPG_ERR_NO_ERROR );
-    LONGS_EQUAL( GPG_ERR_INV_KEYLEN, gcry_err_code(gcry_error) );
+    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_INV_KEYLEN, gcry_error );
 }
 
 #if 0
 TEST(Libgcrypt_AesEncrypt, set_null_key_segfaults)
 {
     gcry_error = gcry_cipher_setkey(gcrypt_handle, NULL, 16);
-    LONGS_EQUAL( GPG_ERR_NO_ERROR, gcry_error );
 }
 #endif

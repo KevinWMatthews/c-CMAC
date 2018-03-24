@@ -4,6 +4,7 @@ extern "C"
 }
 
 #include "CppUTest/TestHarness.h"
+#include "Libgcrypt_TestHelper.h"
 
 #define LIBGCRYPT_REQURIED_VERSION      "1.8.2"
 
@@ -61,13 +62,12 @@ TEST(Libgcrypt_CreateCipherHandle, invalid_cipher_mode_fails)
 {
     gcry_error = gcry_cipher_open(&gcrypt_handle, 255, GCRY_CIPHER_MODE_CBC, 0);
 
-    CHECK_FALSE( gcry_error == GPG_ERR_NO_ERROR );
-    LONGS_EQUAL( GPG_ERR_CIPHER_ALGO, gcry_err_code(gcry_error) );
+    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_CIPHER_ALGO, gcry_error );
 }
 
 TEST(Libgcrypt_CreateCipherHandle, invalid_cipher_flags_fail)
 {
     gcry_error = gcry_cipher_open(&gcrypt_handle, GCRY_CIPHER_AES128, 255, 0);
 
-    LONGS_EQUAL( GPG_ERR_INV_CIPHER_MODE, gcry_err_code(gcry_error) );
+    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_INV_CIPHER_MODE, gcry_error );
 }

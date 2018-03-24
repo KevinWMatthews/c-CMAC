@@ -5,6 +5,7 @@ enable_language(CXX)
 add_executable(UnitTests_Libgcrypt
     RunAllTests.cpp
     Test_Libgcrypt_Init.cpp
+    Libgcrypt_TestHelper.h
     Test_Libgcrypt_CreateCipherHandle.cpp
     Test_Libgcrypt_AesEncrypt.cpp
 )
