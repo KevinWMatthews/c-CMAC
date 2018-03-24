@@ -6,6 +6,7 @@ add_executable(UnitTests_Libgcrypt
     RunAllTests.cpp
     Test_Libgcrypt_Init.cpp
     Test_Libgcrypt_CreateCipherHandle.cpp
+    Test_Libgcrypt_AesEncrypt.cpp
 )
 
 target_link_libraries(UnitTests_Libgcrypt
