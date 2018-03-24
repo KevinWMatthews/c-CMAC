@@ -65,18 +65,6 @@ AES128_RETURN_CODE Aes128_Create(AES128_CREATE_PARAMS *params, AES128_HANDLE * a
     if (params->iv_len != AES128_IV_LEN)
         return AES128_INVALID_IV_LENGTH;
 
-    /*
-     * gcry_error_t gcry_cipher_open (gcry_cipher_hd_t *hd, int algo, int mode, unsigned int flags)
-     *
-     * Create the cipher context and returns a handle to it in ‘hd’.
-     *
-     * The available cipher algorithms, modes, and flags are listed in gcrypt.h. See:
-     *      enum gcry_cipher_algos and the defines below it.
-     *      enum gcry_cipher_modes
-     *      gcry_cipher_flags, or can be set to 0
-     *
-     * Returns 0 on success and a non-zero error code on error.
-     */
     gcry_error = gcry_cipher_open(&aes128.gcrypt_handle, GCRY_CIPHER_AES128, GCRY_CIPHER_MODE_CBC, 0);
     if (gcry_error)
         return AES128_FAILURE;
