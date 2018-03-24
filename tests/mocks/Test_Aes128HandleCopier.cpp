@@ -46,3 +46,20 @@ TEST(Aes128HandleCopier, can_copy_null_aes_handle)
 
     POINTERS_EQUAL(handle, handle2);
 }
+
+TEST(Aes128HandleCopier, existing_mock_create)
+{
+    AES128_HANDLE handle = NULL;
+
+    AES128_CREATE_PARAMS params = {};
+    params.key = NULL;
+    params.key_len = 0;
+    params.iv = NULL;
+    params.iv_len = 0;
+
+    Aes128_Create2(&params, &handle);
+
+    CHECK_FALSE(handle == NULL);
+
+    Aes128_Destroy(&handle);
+}
