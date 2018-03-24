@@ -69,7 +69,7 @@ TEST(GenerateSubkeys, generate_subkeys_for_rfc_examples)
         // .withOutputParameterReturning("aes_handle", aes_handle, sizeof(aes_handle))
         // .andReturnValue(AES128_SUCCESS);
 
-    Aes128_Create2(&create_params, &aes_handle);
+    aes_handle = Mock_Aes128_Create(&create_params);
 
     crypto_params.aes_handle = aes_handle;
     crypto_params.input = input;
@@ -89,5 +89,5 @@ TEST(GenerateSubkeys, generate_subkeys_for_rfc_examples)
     MEMCMP_EQUAL( expected_K1, actual_K1, sizeof(expected_K1) );
     MEMCMP_EQUAL( expected_K2, actual_K2, sizeof(expected_K2) );
 
-    Aes128_Destroy(&aes_handle);
+    Mock_Aes128_Destroy(aes_handle);
 }

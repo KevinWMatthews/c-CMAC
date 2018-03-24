@@ -89,3 +89,19 @@ void MockAesCreate(AES128_STRUCT *aes_struct)
     mock().actualCall("MockAesCreate")
         .withOutputParameterOfType("AES128_STRUCT", "aes_struct", aes_struct);
 }
+
+static AES128_STRUCT aes128_struct;
+
+AES128_HANDLE Mock_Aes128_Create(AES128_CREATE_PARAMS *params)
+{
+    aes128_struct.key = params->key;
+    aes128_struct.key_len = params->key_len;
+    aes128_struct.iv = params->iv;
+    aes128_struct.iv_len = params->iv_len;
+    return &aes128_struct;
+}
+
+void Mock_Aes128_Destroy(AES128_HANDLE self)
+{
+    return;
+}
