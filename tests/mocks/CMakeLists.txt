@@ -56,6 +56,8 @@ add_test(
 add_executable(UnitTests_Aes128HandleCopier
     RunAllTests.cpp
     Test_Aes128HandleCopier.cpp
+    "${CMAKE_HOME_DIRECTORY}/mocks/Aes128CreateParamsComparator.h"
+    "${CMAKE_HOME_DIRECTORY}/mocks/Aes128CreateParamsComparator.cpp"
 )
 
 target_link_libraries(UnitTests_Aes128HandleCopier

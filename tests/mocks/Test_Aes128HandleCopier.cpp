@@ -6,6 +6,7 @@ extern "C"
 
 #include "CppUTest/TestHarness.h"
 #include "CppUTestExt/MockSupport.h"
+#include "Aes128CreateParamsComparator.h"
 
 class Aes128HandleCopier : public MockNamedValueCopier
 {
@@ -66,6 +67,7 @@ TEST(Aes128HandleCopier, existing_mock_create)
 
 TEST(Aes128HandleCopier, existing_mock_create_with_expectaions)
 {
+    Aes128CreateParamsComparator comparator;
     AES128_HANDLE handle = NULL;
 
     AES128_CREATE_PARAMS params = {};
@@ -74,14 +76,17 @@ TEST(Aes128HandleCopier, existing_mock_create_with_expectaions)
     params.iv = NULL;
     params.iv_len = 0;
 
+    mock().installComparator("AES128_CREATE_PARAMS", comparator);
     mock().expectOneCall("Aes128_Create3")
+        .withParameterOfType("AES128_CREATE_PARAMS", "params", &params)
         .andReturnValue(AES128_SUCCESS);
     Aes128_Create3(&params, &handle);
 
     CHECK_FALSE(handle == NULL);
 
-    mock().checkExpectations();
-    mock().clear();
-
     Aes128_Destroy(&handle);
+
+    mock().checkExpectations();
+    mock().removeAllComparatorsAndCopiers();
+    mock().clear();
 }
