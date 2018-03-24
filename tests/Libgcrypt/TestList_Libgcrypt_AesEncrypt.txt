@@ -1,0 +1,11 @@
+TestList_Libgcrypt_AesEncrypt.txt
+
+Encrypt failure cases:
+    Null in
+    invalid in length
+    null out
+    invalid out length
+    null gcrypt handle
+    handle closed
+    key not set
+    iv not set?
