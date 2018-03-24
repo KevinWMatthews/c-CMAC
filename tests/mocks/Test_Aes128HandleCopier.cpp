@@ -1,7 +1,7 @@
 extern "C"
 {
 #include "Aes128.h"
-// #include "Mock_Aes128.h"
+#include "Mock_Aes128.h"
 }
 
 #include "CppUTest/TestHarness.h"
@@ -65,9 +65,37 @@ TEST(Aes128HandleCopier, existing_mock_create)
     Aes128_Destroy(&handle);
 }
 
+TEST(Aes128HandleCopier, existing_mock_create_with_values)
+{
+    AES128_HANDLE handle = NULL;
+
+    AES128_CREATE_PARAMS params = {};
+    uint8_t key[16] = {0x00, 0x11};
+    uint8_t iv[16] = {0xff, 0xee};
+
+    params.key = key;
+    params.key_len = sizeof(key);
+    params.iv = iv;
+    params.iv_len = sizeof(iv);
+
+    Aes128_Create2(&params, &handle);
+
+    CHECK_FALSE(handle == NULL);
+    POINTERS_EQUAL(key, handle->key);
+    LONGS_EQUAL(sizeof(key), handle->key_len);
+    MEMCMP_EQUAL(key, handle->key, sizeof(key));
+
+    POINTERS_EQUAL(iv, handle->iv);
+    LONGS_EQUAL(sizeof(iv), handle->iv_len);
+    MEMCMP_EQUAL(iv, handle->iv, sizeof(iv));
+
+    Aes128_Destroy(&handle);
+}
+
 TEST(Aes128HandleCopier, existing_mock_create_with_expectaions)
 {
     Aes128CreateParamsComparator comparator;
+
     AES128_HANDLE handle = NULL;
 
     AES128_CREATE_PARAMS params = {};
@@ -77,10 +105,12 @@ TEST(Aes128HandleCopier, existing_mock_create_with_expectaions)
     params.iv_len = 0;
 
     mock().installComparator("AES128_CREATE_PARAMS", comparator);
-    mock().expectOneCall("Aes128_Create3")
+    mock().expectOneCall("Aes128_Create4")
         .withParameterOfType("AES128_CREATE_PARAMS", "params", &params)
+        .withOutputParameterReturning("aes_handle", &handle, sizeof(handle))
         .andReturnValue(AES128_SUCCESS);
-    Aes128_Create3(&params, &handle);
+
+    Aes128_Create4(&params, &handle);
 
     CHECK_FALSE(handle == NULL);
 
