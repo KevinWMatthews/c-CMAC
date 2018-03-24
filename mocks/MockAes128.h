@@ -13,9 +13,9 @@ typedef struct AES128_STRUCT
 } AES128_STRUCT;
 
 // Populate and return a handle to a mock AES128_STRUCT.
-AES128_HANDLE Mock_Aes128_Create(AES128_CREATE_PARAMS *params);
+AES128_HANDLE MockAes128_Create(AES128_CREATE_PARAMS *params);
 
 // Free any resources used by a mock AES handle.
-void Mock_Aes128_Destroy(AES128_HANDLE self);
+void MockAes128_Destroy(AES128_HANDLE self);
 
 #endif

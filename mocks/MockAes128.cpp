@@ -8,7 +8,7 @@ extern "C"
 
 static AES128_STRUCT mock_aes_struct;
 
-AES128_HANDLE Mock_Aes128_Create(AES128_CREATE_PARAMS *params)
+AES128_HANDLE MockAes128_Create(AES128_CREATE_PARAMS *params)
 {
     mock_aes_struct.key = params->key;
     mock_aes_struct.key_len = params->key_len;
@@ -17,7 +17,7 @@ AES128_HANDLE Mock_Aes128_Create(AES128_CREATE_PARAMS *params)
     return &mock_aes_struct;
 }
 
-void Mock_Aes128_Destroy(AES128_HANDLE self)
+void MockAes128_Destroy(AES128_HANDLE self)
 {
     return;
 }

@@ -59,7 +59,7 @@ TEST(GenerateSubkeys, generate_subkeys_for_rfc_examples)
     create_params.key_len = sizeof(key);
     create_params.iv = iv;
     create_params.iv_len = sizeof(iv);
-    aes_handle = Mock_Aes128_Create(&create_params);
+    aes_handle = MockAes128_Create(&create_params);
 
     crypto_params.aes_handle = aes_handle;
     crypto_params.input = input;
@@ -79,5 +79,5 @@ TEST(GenerateSubkeys, generate_subkeys_for_rfc_examples)
     MEMCMP_EQUAL( expected_K1, actual_K1, sizeof(expected_K1) );
     MEMCMP_EQUAL( expected_K2, actual_K2, sizeof(expected_K2) );
 
-    Mock_Aes128_Destroy(aes_handle);
+    MockAes128_Destroy(aes_handle);
 }
