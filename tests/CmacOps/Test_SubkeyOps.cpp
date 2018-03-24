@@ -168,15 +168,15 @@ TEST(CmacAesSubkeyOps, generate_L_from_input_key_all_zeros)
     uint8_t key[16] = {};
     uint8_t iv[16] = {};
     uint8_t input[16] = {};
-    AES128_STRUCT aes_struct = {};
-    AES128_HANDLE aes_handle = &aes_struct;
+    AES128_HANDLE aes_handle = NULL;
+    AES128_CREATE_PARAMS create_params = {};
     AES128_CRYPTO_PARAMS crypto_params = {};
 
-    // Skip initialization and just set up the AES values that we expect.
-    aes_struct.key = key;
-    aes_struct.key_len = sizeof(key);
-    aes_struct.iv = iv;
-    aes_struct.iv_len = sizeof(iv);
+    create_params.key = key;
+    create_params.key_len = sizeof(key);
+    create_params.iv = iv;
+    create_params.iv_len = sizeof(iv);
+    aes_handle = MockAes128_Create(&create_params);
 
     crypto_params.aes_handle = aes_handle;
     crypto_params.input = input;
@@ -208,9 +208,15 @@ TEST(CmacAesSubkeyOps, generate_L_using_rfc4933_example)
     };
     uint8_t iv[16] = {};
     uint8_t input[16] = {};     // Per the RFC spec
-    AES128_STRUCT aes_struct = {};
-    AES128_HANDLE aes_handle = &aes_struct;
+    AES128_HANDLE aes_handle = NULL;
+    AES128_CREATE_PARAMS create_params = {};
     AES128_CRYPTO_PARAMS crypto_params = {};
+
+    create_params.key = key;
+    create_params.key_len = sizeof(key);
+    create_params.iv = iv;
+    create_params.iv_len = sizeof(iv);
+    aes_handle = MockAes128_Create(&create_params);
 
     crypto_params.aes_handle = aes_handle;
     crypto_params.input = input;
