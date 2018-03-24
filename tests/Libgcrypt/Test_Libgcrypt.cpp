@@ -5,8 +5,10 @@ extern "C"
 
 #include "CppUTest/TestHarness.h"
 
-TEST_GROUP(Libgcrypt)
+TEST_GROUP(Libgcrypt_Init)
 {
+    gcry_error_t gcry_error;
+
     void setup()
     {
     }
@@ -17,16 +19,25 @@ TEST_GROUP(Libgcrypt)
 };
 
 #define LIBGCRYPT_VERSION       "1.8.2"
-TEST(Libgcrypt, check_version_succeeds_with_version_match)
+TEST(Libgcrypt_Init, check_version_succeeds_with_version_match)
 {
     const char *required = LIBGCRYPT_VERSION;
     const char *actual = NULL;
 
+    /*
+     * const char * gcry_check_version (const char *req_version)
+     *
+     * Initializes some subsystems used by Libgcrypt and must be invoked before any other function in the library.
+     *
+     * If the current version is higher than the require version,
+     * gcry_errorurns the version number.
+     * If the current version is too old, gcry_errorurns NULL.
+     */
     actual = gcry_check_version(required);
     STRCMP_EQUAL( LIBGCRYPT_VERSION, actual );
 }
 
-TEST(Libgcrypt, check_version_returns_null_if_actual_version_is_too_old)
+TEST(Libgcrypt_Init, check_version_gcry_errorurns_null_if_actual_version_is_too_old)
 {
     const char *required = "1.8.3";
     const char *actual = NULL;
@@ -35,7 +46,7 @@ TEST(Libgcrypt, check_version_returns_null_if_actual_version_is_too_old)
     STRCMP_EQUAL( NULL, actual );
 }
 
-TEST(Libgcrypt, check_version_succeeds_if_actual_version_is_newer_than_required)
+TEST(Libgcrypt_Init, check_version_succeeds_if_actual_version_is_newer_than_required)
 {
     const char *required = "1.8.1";
     const char *actual = NULL;
@@ -44,36 +55,42 @@ TEST(Libgcrypt, check_version_succeeds_if_actual_version_is_newer_than_required)
     STRCMP_EQUAL( LIBGCRYPT_VERSION, actual );
 }
 
-TEST(Libgcrypt, can_disable_secure_memory)
+TEST(Libgcrypt_Init, can_disable_secure_memory)
 {
-    gcry_error_t ret;
-
-    ret = gcry_control(GCRYCTL_DISABLE_SECMEM, 0);
-    LONGS_EQUAL( GPG_ERR_NO_ERROR, ret );
+    /*
+     * gcry_error_t gcry_control (enum gcry_ctl_cmds cmd, ...)
+     *
+     * Set general libgcrypt behavior.
+     *
+     * GCRYCTL_DISABLE_SECMEM
+     *      Disables the use of secure memory
+     */
+    gcry_error = gcry_control(GCRYCTL_DISABLE_SECMEM, 0);
+    LONGS_EQUAL( GPG_ERR_NO_ERROR, gcry_error );
 }
 
-TEST(Libgcrypt, can_disable_secure_memory_failure)
+TEST(Libgcrypt_Init, can_disable_secure_memory_ignores_arguments)
 {
-    gcry_error_t ret;
-
-    ret = gcry_control(GCRYCTL_DISABLE_SECMEM, 0);
-    LONGS_EQUAL( GPG_ERR_NO_ERROR, ret );
+    gcry_error = gcry_control(GCRYCTL_DISABLE_SECMEM, 255);
+    LONGS_EQUAL( GPG_ERR_NO_ERROR, gcry_error );
 }
 
-TEST(Libgcrypt, can_finish_initialization)
+TEST(Libgcrypt_Init, can_finish_initialization)
 {
-    gcry_error_t ret;
-
-    ret = gcry_control(GCRYCTL_INITIALIZATION_FINISHED, 0);
-    LONGS_EQUAL( GPG_ERR_NO_ERROR, ret );
+    /*
+     * GCRYCTL_INITIALIZATION_FINISHED
+     *      This command tells the library that the application has finished the initialization.
+     */
+    gcry_error = gcry_control(GCRYCTL_INITIALIZATION_FINISHED, 0);
+    LONGS_EQUAL( GPG_ERR_NO_ERROR, gcry_error );
 }
 
-IGNORE_TEST(Libgcrypt, can_check_that_init_is_finished)
+#if 0
+// This fails and I don't know why.
+TEST(Libgcrypt_Init, can_check_that_init_is_finished)
 {
-    gcry_error_t ret;
-
-    ret = gcry_control(GCRYCTL_INITIALIZATION_FINISHED, 0);
-    ret = gcry_control(GCRYCTL_INITIALIZATION_FINISHED_P, 0);
-    // This fails and I don't know why.
-    LONGS_EQUAL( GPG_ERR_NO_ERROR, ret );
+    gcry_error = gcry_control(GCRYCTL_INITIALIZATION_FINISHED, 0);
+    gcry_error = gcry_control(GCRYCTL_INITIALIZATION_FINISHED_P, 0);
+    LONGS_EQUAL( GPG_ERR_NO_ERROR, gcry_error );
 }
+#endif
