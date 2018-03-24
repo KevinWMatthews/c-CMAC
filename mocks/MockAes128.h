@@ -1,5 +1,5 @@
-#ifndef MOCK_AES128_INCLUDED
-#define MOCK_AES128_INCLUDED
+#ifndef MOCKAES128_INCLUDED
+#define MOCKAES128_INCLUDED
 
 // For testing we can treat the AES128_STRUCT as its creation parameters.
 // If two structs are created with identical parameters, they will be functionally equivalent.

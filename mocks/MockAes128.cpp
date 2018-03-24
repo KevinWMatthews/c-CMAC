@@ -1,7 +1,7 @@
 extern "C"
 {
 #include "Aes128.h"
-#include "Mock_Aes128.h"
+#include "MockAes128.h"
 }
 
 #include "CppUTestExt/MockSupport.h"

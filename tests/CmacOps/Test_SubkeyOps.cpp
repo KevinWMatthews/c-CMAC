@@ -2,7 +2,7 @@ extern "C"
 {
 #include "CmacAesSubkeys.h"
 #include "Aes128.h"
-#include "Mock_Aes128.h"
+#include "MockAes128.h"
 }
 
 #include "CppUTest/TestHarness.h"

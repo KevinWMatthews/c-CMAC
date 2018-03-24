@@ -3,7 +3,8 @@ enable_language(CXX)
 
 add_library(MockAes128
     "${CMAKE_HOME_DIRECTORY}/libAes128/Aes128.h"
-    Mock_Aes128.cpp
+    MockAes128.h
+    MockAes128.cpp
 )
 target_include_directories(MockAes128
     PUBLIC
