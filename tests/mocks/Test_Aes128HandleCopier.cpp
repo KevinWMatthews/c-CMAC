@@ -81,6 +81,7 @@ TEST(Aes128HandleCopier, existing_mock_create_with_values)
     Aes128_Create2(&params, &handle);
 
     CHECK_FALSE(handle == NULL);
+
     POINTERS_EQUAL(key, handle->key);
     LONGS_EQUAL(sizeof(key), handle->key_len);
     MEMCMP_EQUAL(key, handle->key, sizeof(key));
@@ -92,17 +93,20 @@ TEST(Aes128HandleCopier, existing_mock_create_with_values)
     Aes128_Destroy(&handle);
 }
 
-TEST(Aes128HandleCopier, existing_mock_create_with_expectaions)
+TEST(Aes128HandleCopier, existing_mock_create_with_expectations)
 {
     Aes128CreateParamsComparator comparator;
 
     AES128_HANDLE handle = NULL;
 
     AES128_CREATE_PARAMS params = {};
-    params.key = NULL;
-    params.key_len = 0;
-    params.iv = NULL;
-    params.iv_len = 0;
+    uint8_t key[16] = {0x00, 0x11};
+    uint8_t iv[16] = {0xff, 0xee};
+
+    params.key = key;
+    params.key_len = sizeof(key);
+    params.iv = iv;
+    params.iv_len = sizeof(iv);
 
     mock().installComparator("AES128_CREATE_PARAMS", comparator);
     mock().expectOneCall("Aes128_Create4")
@@ -113,6 +117,14 @@ TEST(Aes128HandleCopier, existing_mock_create_with_expectaions)
     Aes128_Create4(&params, &handle);
 
     CHECK_FALSE(handle == NULL);
+
+    POINTERS_EQUAL(key, handle->key);
+    LONGS_EQUAL(sizeof(key), handle->key_len);
+    MEMCMP_EQUAL(key, handle->key, sizeof(key));
+
+    POINTERS_EQUAL(iv, handle->iv);
+    LONGS_EQUAL(sizeof(iv), handle->iv_len);
+    MEMCMP_EQUAL(iv, handle->iv, sizeof(iv));
 
     Aes128_Destroy(&handle);
 

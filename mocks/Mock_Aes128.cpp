@@ -44,8 +44,12 @@ AES128_RETURN_CODE Aes128_Create4(AES128_CREATE_PARAMS *params, AES128_HANDLE *a
 {
     AES128_HANDLE self = (AES128_HANDLE)calloc(1, sizeof(*self));
 
-    *aes_handle = self;
+    self->key = params->key;
+    self->key_len = params->key_len;
+    self->iv = params->iv;
+    self->iv_len = params->iv_len;
 
+    *aes_handle = self;
     mock().actualCall("Aes128_Create4")
         .withParameterOfType("AES128_CREATE_PARAMS", "params", params)
         .withOutputParameter("aes_handle", aes_handle);
