@@ -84,6 +84,43 @@ TEST(Libgcrypt_AesEncrypt, encrypt_data_twice)
     MEMCMP_EQUAL( expected, actual2, sizeof(expected) );
 }
 
+TEST(Libgcrypt_AesEncrypt, encrypt_non_zero_data)
+{
+    char expected[16] = {
+        0xBB, 0x83, 0x8C, 0x98, 0x03, 0xBD, 0x17, 0x40,
+        0xF8, 0x69, 0x49, 0x8D, 0x47, 0xD5, 0x26, 0x59,
+    };
+    char actual[16] = {};
+    char key[16] = {
+        0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
+        0x88, 0x99, 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff,
+    };
+    char iv[16] = {
+        0xff, 0xee, 0xdd, 0xcc, 0xbb, 0xaa, 0x99, 0x88,
+        0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11, 0x00,
+    };
+    char input[16] = {
+        0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef,
+        0xfe, 0xdc, 0xba, 0x98, 0x76, 0x54, 0x32, 0x10,
+    };
+
+    gcry_cipher_setkey( gcrypt_handle, key, sizeof(key) );
+    gcry_cipher_setiv( gcrypt_handle, iv, sizeof(iv) );
+
+    /*
+     * gcry_error_t gcry_cipher_encrypt (gcry_cipher_hd_t h, unsigned char *out, size_t outsize, const unsigned char *in, size_t inlen)
+     *
+     * Encrypt in.
+     * Fill out with the result.
+     *
+     * Returns 0 on success or a non-zero error code on error.
+     */
+    gcrypt_ret = gcry_cipher_encrypt(gcrypt_handle, actual, sizeof(actual), input, sizeof(input));
+
+    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_NO_ERROR, gcrypt_ret );
+    MEMCMP_EQUAL( expected, actual, sizeof(expected) );
+}
+
 
 /*
  * Set Key
