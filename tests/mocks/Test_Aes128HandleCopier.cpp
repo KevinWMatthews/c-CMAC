@@ -1,7 +1,7 @@
 extern "C"
 {
 #include "Aes128.h"
-#include "Mock_Aes128.h"
+// #include "Mock_Aes128.h"
 }
 
 #include "CppUTest/TestHarness.h"
@@ -18,6 +18,8 @@ public:
 
 TEST_GROUP(Aes128HandleCopier)
 {
+    Aes128HandleCopier copier;
+
     void setup()
     {
     }
@@ -29,9 +31,18 @@ TEST_GROUP(Aes128HandleCopier)
 
 TEST(Aes128HandleCopier, create_and_install_copier)
 {
-    Aes128HandleCopier copier;
     mock().installCopier("Aes128HandleCopier", copier);
     mock().checkExpectations();
     mock().removeAllComparatorsAndCopiers();
     mock().clear();
+}
+
+TEST(Aes128HandleCopier, can_copy_null_aes_handle)
+{
+    AES128_HANDLE handle = NULL;
+    AES128_HANDLE handle2 = NULL;
+
+    copier.copy(handle2, handle);
+
+    POINTERS_EQUAL(handle, handle2);
 }

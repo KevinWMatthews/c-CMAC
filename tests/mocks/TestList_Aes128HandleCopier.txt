@@ -1,7 +1,3 @@
-Create copier
-Install copier
-Uninstall copier
-
     Test copier independent of mock
 Should operate on Mock AES128 struct, not the real thing.
 Copy:
@@ -9,3 +5,5 @@ Copy:
     key length
     iv
     iv length
+
+Or does it? The handle is a pointer. Do we opy it or the underlying struct?
