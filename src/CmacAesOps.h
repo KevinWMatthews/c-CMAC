@@ -6,6 +6,8 @@
 #include <stdint.h>
 #include "Aes128.h"
 
+#define CMAC_AES_BLOCK_LENGTH       16
+
 /*
  *TODO add documentation
  */

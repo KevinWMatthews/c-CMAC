@@ -18,7 +18,13 @@ int CmacAesOps_GenerateSubkeys(AES128_HANDLE aes_handle,
 
 size_t CmacAesOps_GetNBlocks(size_t message_length)
 {
-    return 1;
+    if (message_length == 0)
+        return 1;
+
+    if (message_length % CMAC_AES_BLOCK_LENGTH == 0)
+        return message_length / CMAC_AES_BLOCK_LENGTH;
+
+    return (message_length / CMAC_AES_BLOCK_LENGTH) + 1;
 }
 
 bool CmacAesOps_GetIsCompleteBlock(size_t message_length)
