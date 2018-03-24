@@ -40,7 +40,7 @@ TEST(Libgcrypt_CreateCipherHandle, open_and_close_cipher_handle)
      * Returns 0 on success and a non-zero error code on error.
      */
     gcrypt_ret = gcry_cipher_open(&gcrypt_handle, GCRY_CIPHER_AES128, GCRY_CIPHER_MODE_CBC, 0);
-    LONGS_EQUAL( GPG_ERR_NO_ERROR, gcrypt_ret );
+    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_NO_ERROR, gcrypt_ret );
 
     /*
      * void gcry_cipher_close (gcry_cipher_hd_t h)
