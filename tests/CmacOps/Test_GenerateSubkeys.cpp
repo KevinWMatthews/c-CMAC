@@ -44,10 +44,10 @@ TEST(GenerateSubkeys, generate_subkeys_for_rfc_examples)
         0x2b, 0x7e, 0x15, 0x16, 0x28, 0xae, 0xd2, 0xa6,
         0xab, 0xf7, 0x15, 0x88, 0x09, 0xcf, 0x4f, 0x3c,
     };
-    uint8_t iv[16] = {};
+    uint8_t iv[16] = {};            // All zeros, from RFC
     AES128_HANDLE aes_handle = NULL;
     AES128_CRYPTO_PARAMS crypto_params = {};
-    uint8_t input[16] = {};
+    uint8_t input[16] = {};         // All zeros, from RFC
 
     // Mock value for AES encryption
     uint8_t L[16] = {
@@ -55,20 +55,10 @@ TEST(GenerateSubkeys, generate_subkeys_for_rfc_examples)
         0x3e, 0x42, 0xf0, 0x47, 0xb9, 0x1b, 0x54, 0x6f,
     };
 
-    mock().expectOneCall("Aes128_Initialize");
-    Aes128_Initialize();
-
     create_params.key = key;
     create_params.key_len = sizeof(key);
     create_params.iv = iv;
     create_params.iv_len = sizeof(iv);
-
-    // To establish a mock expectation we need to use a copier
-    // mock().expectOneCall("Aes128_Create2")
-        // .withParameterOfType("AES128_CREATE_PARAMS", "params", &create_params)
-        // .withOutputParameterReturning("aes_handle", aes_handle, sizeof(aes_handle))
-        // .andReturnValue(AES128_SUCCESS);
-
     aes_handle = Mock_Aes128_Create(&create_params);
 
     crypto_params.aes_handle = aes_handle;
