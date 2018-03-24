@@ -10,7 +10,7 @@ extern "C"
 
 TEST_GROUP(Libgcrypt_AesEncrypt)
 {
-    gcry_error_t gcry_error;
+    gcry_error_t gcrypt_ret;
     gcry_cipher_hd_t gcrypt_handle;
 
     void setup()
@@ -49,9 +49,9 @@ TEST(Libgcrypt_AesEncrypt, encrypt)
      *
      * Returns 0 on success or a non-zero error code on error.
      */
-    gcry_error = gcry_cipher_encrypt(gcrypt_handle, actual, sizeof(actual), input, sizeof(input));
+    gcrypt_ret = gcry_cipher_encrypt(gcrypt_handle, actual, sizeof(actual), input, sizeof(input));
 
-    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_NO_ERROR, gcry_error );
+    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_NO_ERROR, gcrypt_ret );
     MEMCMP_EQUAL( expected, actual, sizeof(expected) );
 }
 
@@ -67,19 +67,19 @@ TEST(Libgcrypt_AesEncrypt, encrypt_data_twice)
     char key[16] = {};
     char iv[16] = {};
     char input[16] = {};
-    gcry_error_t gcry_error2;
+    gcry_error_t gcrypt_ret2;
 
     gcry_cipher_setkey( gcrypt_handle, key, sizeof(key) );
     gcry_cipher_setiv( gcrypt_handle, iv, sizeof(iv) );
 
-    gcry_error = gcry_cipher_encrypt(gcrypt_handle, actual, sizeof(actual), input, sizeof(input));
+    gcrypt_ret = gcry_cipher_encrypt(gcrypt_handle, actual, sizeof(actual), input, sizeof(input));
 
     // Must set IV again before second encryption
     gcry_cipher_setiv( gcrypt_handle, iv, sizeof(iv) );
-    gcry_error2 = gcry_cipher_encrypt(gcrypt_handle, actual2, sizeof(actual2), input, sizeof(input));
+    gcrypt_ret2 = gcry_cipher_encrypt(gcrypt_handle, actual2, sizeof(actual2), input, sizeof(input));
 
-    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_NO_ERROR, gcry_error );
-    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_NO_ERROR, gcry_error2 );
+    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_NO_ERROR, gcrypt_ret );
+    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_NO_ERROR, gcrypt_ret2 );
     MEMCMP_EQUAL( expected, actual, sizeof(expected) );
     MEMCMP_EQUAL( expected, actual2, sizeof(expected) );
 }
@@ -100,22 +100,22 @@ TEST(Libgcrypt_AesEncrypt, set_key)
      *
      * Returns 0 on success and a non-zero error code on error.
      */
-    gcry_error = gcry_cipher_setkey( gcrypt_handle, key, sizeof(key) );
-    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_NO_ERROR, gcry_error );
+    gcrypt_ret = gcry_cipher_setkey( gcrypt_handle, key, sizeof(key) );
+    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_NO_ERROR, gcrypt_ret );
 }
 
 TEST(Libgcrypt_AesEncrypt, set_key_too_short_fails)
 {
     char key[15] = {};
-    gcry_error = gcry_cipher_setkey(gcrypt_handle, key, sizeof(key));
-    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_INV_KEYLEN, gcry_error );
+    gcrypt_ret = gcry_cipher_setkey(gcrypt_handle, key, sizeof(key));
+    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_INV_KEYLEN, gcrypt_ret );
 }
 
 TEST(Libgcrypt_AesEncrypt, set_key_too_long_fails)
 {
     char key[17] = {};
-    gcry_error = gcry_cipher_setkey(gcrypt_handle, key, sizeof(key));
-    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_INV_KEYLEN, gcry_error );
+    gcrypt_ret = gcry_cipher_setkey(gcrypt_handle, key, sizeof(key));
+    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_INV_KEYLEN, gcrypt_ret );
 }
 
 /*
@@ -133,8 +133,8 @@ TEST(Libgcrypt_AesEncrypt, set_iv)
      *
      * Returns 0 on success and a non-zero error code on error.
      */
-    gcry_error = gcry_cipher_setiv( gcrypt_handle, iv, sizeof(iv) );
-    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_NO_ERROR, gcry_error );
+    gcrypt_ret = gcry_cipher_setiv( gcrypt_handle, iv, sizeof(iv) );
+    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_NO_ERROR, gcrypt_ret );
 }
 
 // These tests work but libgcrypt prints a warning directly to the console.
@@ -143,21 +143,21 @@ TEST(Libgcrypt_AesEncrypt, set_iv)
 TEST(Libgcrypt_AesEncrypt, set_iv_too_short_prints_warning)
 {
     char iv[15] = {};
-    gcry_error = gcry_cipher_setiv(gcrypt_handle, iv, sizeof(iv));
-    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_NO_ERROR, gcry_error );
+    gcrypt_ret = gcry_cipher_setiv(gcrypt_handle, iv, sizeof(iv));
+    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_NO_ERROR, gcrypt_ret );
 }
 
 TEST(Libgcrypt_AesEncrypt, set_iv_too_long_prints_warning)
 {
     char iv[17] = {};
-    gcry_error = gcry_cipher_setiv(gcrypt_handle, iv, sizeof(iv));
-    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_NO_ERROR, gcry_error );
+    gcrypt_ret = gcry_cipher_setiv(gcrypt_handle, iv, sizeof(iv));
+    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_NO_ERROR, gcrypt_ret );
 }
 #endif
 
 #if 0
 TEST(Libgcrypt_AesEncrypt, set_null_key_segfaults)
 {
-    gcry_error = gcry_cipher_setkey(gcrypt_handle, NULL, 16);
+    gcrypt_ret = gcry_cipher_setkey(gcrypt_handle, NULL, 16);
 }
 #endif

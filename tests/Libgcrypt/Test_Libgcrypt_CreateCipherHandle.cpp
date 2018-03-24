@@ -10,7 +10,7 @@ extern "C"
 
 TEST_GROUP(Libgcrypt_CreateCipherHandle)
 {
-    gcry_error_t gcry_error;
+    gcry_error_t gcrypt_ret;
     gcry_cipher_hd_t gcrypt_handle;
 
     void setup()
@@ -39,8 +39,8 @@ TEST(Libgcrypt_CreateCipherHandle, open_and_close_cipher_handle)
      *
      * Returns 0 on success and a non-zero error code on error.
      */
-    gcry_error = gcry_cipher_open(&gcrypt_handle, GCRY_CIPHER_AES128, GCRY_CIPHER_MODE_CBC, 0);
-    LONGS_EQUAL( GPG_ERR_NO_ERROR, gcry_error );
+    gcrypt_ret = gcry_cipher_open(&gcrypt_handle, GCRY_CIPHER_AES128, GCRY_CIPHER_MODE_CBC, 0);
+    LONGS_EQUAL( GPG_ERR_NO_ERROR, gcrypt_ret );
 
     /*
      * void gcry_cipher_close (gcry_cipher_hd_t h)
@@ -54,20 +54,20 @@ TEST(Libgcrypt_CreateCipherHandle, open_and_close_cipher_handle)
 #if 0
 TEST(Libgcrypt_CreateCipherHandle, null_cipher_handle_will_segfault)
 {
-    gcry_error = gcry_cipher_open(NULL, GCRY_CIPHER_AES128, GCRY_CIPHER_MODE_CBC, 0);
+    gcrypt_ret = gcry_cipher_open(NULL, GCRY_CIPHER_AES128, GCRY_CIPHER_MODE_CBC, 0);
 }
 #endif
 
 TEST(Libgcrypt_CreateCipherHandle, invalid_cipher_mode_fails)
 {
-    gcry_error = gcry_cipher_open(&gcrypt_handle, 255, GCRY_CIPHER_MODE_CBC, 0);
+    gcrypt_ret = gcry_cipher_open(&gcrypt_handle, 255, GCRY_CIPHER_MODE_CBC, 0);
 
-    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_CIPHER_ALGO, gcry_error );
+    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_CIPHER_ALGO, gcrypt_ret );
 }
 
 TEST(Libgcrypt_CreateCipherHandle, invalid_cipher_flags_fail)
 {
-    gcry_error = gcry_cipher_open(&gcrypt_handle, GCRY_CIPHER_AES128, 255, 0);
+    gcrypt_ret = gcry_cipher_open(&gcrypt_handle, GCRY_CIPHER_AES128, 255, 0);
 
-    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_INV_CIPHER_MODE, gcry_error );
+    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_INV_CIPHER_MODE, gcrypt_ret );
 }

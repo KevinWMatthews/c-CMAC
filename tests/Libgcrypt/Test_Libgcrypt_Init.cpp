@@ -10,7 +10,7 @@ extern "C"
 
 TEST_GROUP(Libgcrypt_Init)
 {
-    gcry_error_t gcry_error;
+    gcry_error_t gcrypt_ret;
 
     void setup()
     {
@@ -67,14 +67,14 @@ TEST(Libgcrypt_Init, can_disable_secure_memory)
      * GCRYCTL_DISABLE_SECMEM
      *      Disables the use of secure memory
      */
-    gcry_error = gcry_control(GCRYCTL_DISABLE_SECMEM, 0);
-    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_NO_ERROR, gcry_error );
+    gcrypt_ret = gcry_control(GCRYCTL_DISABLE_SECMEM, 0);
+    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_NO_ERROR, gcrypt_ret );
 }
 
 TEST(Libgcrypt_Init, can_disable_secure_memory_ignores_arguments)
 {
-    gcry_error = gcry_control(GCRYCTL_DISABLE_SECMEM, 255);
-    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_NO_ERROR, gcry_error );
+    gcrypt_ret = gcry_control(GCRYCTL_DISABLE_SECMEM, 255);
+    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_NO_ERROR, gcrypt_ret );
 }
 
 TEST(Libgcrypt_Init, can_finish_initialization)
@@ -83,16 +83,16 @@ TEST(Libgcrypt_Init, can_finish_initialization)
      * GCRYCTL_INITIALIZATION_FINISHED
      *      This command tells the library that the application has finished the initialization.
      */
-    gcry_error = gcry_control(GCRYCTL_INITIALIZATION_FINISHED, 0);
-    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_NO_ERROR, gcry_error );
+    gcrypt_ret = gcry_control(GCRYCTL_INITIALIZATION_FINISHED, 0);
+    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_NO_ERROR, gcrypt_ret );
 }
 
 #if 0
 // This fails and I don't know why.
 TEST(Libgcrypt_Init, can_check_that_init_is_finished)
 {
-    gcry_error = gcry_control(GCRYCTL_INITIALIZATION_FINISHED, 0);
-    gcry_error = gcry_control(GCRYCTL_INITIALIZATION_FINISHED_P, 0);
-    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_NO_ERROR, gcry_error );
+    gcrypt_ret = gcry_control(GCRYCTL_INITIALIZATION_FINISHED, 0);
+    gcrypt_ret = gcry_control(GCRYCTL_INITIALIZATION_FINISHED_P, 0);
+    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_NO_ERROR, gcrypt_ret );
 }
 #endif
