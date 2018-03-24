@@ -1,0 +1,11 @@
+Create copier
+Install copier
+Uninstall copier
+
+    Test copier independent of mock
+Should operate on Mock AES128 struct, not the real thing.
+Copy:
+    key
+    key length
+    iv
+    iv length

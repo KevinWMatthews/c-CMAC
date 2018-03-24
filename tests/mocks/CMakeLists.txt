@@ -1,6 +1,6 @@
 enable_language(CXX)
 
-###
+# AES Create params comparator
 add_executable(UnitTests_Aes128CreateParamsComparator
     RunAllTests.cpp
     Test_Aes128CreateParamsComparator.cpp
@@ -26,7 +26,7 @@ add_test(
 )
 
 
-###
+# AES handle comparator
 add_executable(UnitTests_Aes128HandleComparator
     RunAllTests.cpp
     Test_Aes128HandleComparator.cpp
@@ -52,7 +52,34 @@ add_test(
 )
 
 
-###
+# AES handle copier
+add_executable(UnitTests_Aes128HandleCopier
+    RunAllTests.cpp
+    Test_Aes128HandleCopier.cpp
+)
+
+target_link_libraries(UnitTests_Aes128HandleCopier
+    PRIVATE
+        CppUTest
+        CppUTestExt
+        MockAes128::MockAes128
+)
+
+target_include_directories(UnitTests_Aes128HandleCopier
+    PRIVATE
+        "${CMAKE_HOME_DIRECTORY}/mocks"
+)
+
+add_test(
+    NAME Test_Aes128HandleCopier
+    COMMAND UnitTests_Aes128HandleCopier
+)
+
+
+
+
+
+# AES crypto params comparator
 add_executable(UnitTests_Aes128CryptoParamsComparator
     RunAllTests.cpp
     Test_Aes128CryptoParamsComparator.cpp
