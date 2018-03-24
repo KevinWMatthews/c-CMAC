@@ -29,7 +29,10 @@ size_t CmacAesOps_GetNBlocks(size_t message_length)
 
 bool CmacAesOps_GetIsCompleteBlock(size_t message_length)
 {
-    return false;
+    if (message_length == 0)
+        return false;
+
+    return (message_length % CMAC_AES_BLOCK_LENGTH) == 0;
 }
 
 int CmacAesOps_GetNthBlock(uint8_t M[16], size_t M_len, size_t block_num, uint8_t M_n[16])
