@@ -7,6 +7,15 @@ extern "C"
 #include "CppUTest/TestHarness.h"
 #include "CppUTestExt/MockSupport.h"
 
+class Aes128HandleCopier : public MockNamedValueCopier
+{
+public:
+    virtual void copy(void* out, const void* in)
+    {
+
+    }
+};
+
 TEST_GROUP(Aes128HandleCopier)
 {
     void setup()
@@ -18,7 +27,11 @@ TEST_GROUP(Aes128HandleCopier)
     }
 };
 
-TEST(Aes128HandleCopier, wiring_check)
+TEST(Aes128HandleCopier, create_and_install_copier)
 {
-    FAIL("start here");
+    Aes128HandleCopier copier;
+    mock().installCopier("Aes128HandleCopier", copier);
+    mock().checkExpectations();
+    mock().removeAllComparatorsAndCopiers();
+    mock().clear();
 }
