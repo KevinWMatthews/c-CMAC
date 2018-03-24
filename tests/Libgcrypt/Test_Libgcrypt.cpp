@@ -5,6 +5,8 @@ extern "C"
 
 #include "CppUTest/TestHarness.h"
 
+#define LIBGCRYPT_VERSION       "1.8.2"
+
 TEST_GROUP(Libgcrypt_Init)
 {
     gcry_error_t gcry_error;
@@ -18,7 +20,6 @@ TEST_GROUP(Libgcrypt_Init)
     }
 };
 
-#define LIBGCRYPT_VERSION       "1.8.2"
 TEST(Libgcrypt_Init, check_version_succeeds_with_version_match)
 {
     const char *required = LIBGCRYPT_VERSION;

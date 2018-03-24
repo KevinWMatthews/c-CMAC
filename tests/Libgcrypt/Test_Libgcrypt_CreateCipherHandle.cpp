@@ -5,6 +5,8 @@ extern "C"
 
 #include "CppUTest/TestHarness.h"
 
+#define LIBGCRYPT_REQURIED_VERSION      "1.8.2"
+
 TEST_GROUP(Libgcrypt_CreateCipherHandle)
 {
     gcry_error_t gcry_error;
@@ -12,6 +14,9 @@ TEST_GROUP(Libgcrypt_CreateCipherHandle)
 
     void setup()
     {
+        gcry_check_version(LIBGCRYPT_REQURIED_VERSION);
+        gcry_control(GCRYCTL_DISABLE_SECMEM, 0);
+        gcry_control(GCRYCTL_INITIALIZATION_FINISHED, 0);
     }
 
     void teardown()
@@ -19,14 +24,8 @@ TEST_GROUP(Libgcrypt_CreateCipherHandle)
     }
 };
 
-#define LIBGCRYPT_REQURIED_VERSION      "1.8.2"
-
 TEST(Libgcrypt_CreateCipherHandle, open_and_close_cipher_handle)
 {
-    gcry_check_version(LIBGCRYPT_REQURIED_VERSION);
-    gcry_control(GCRYCTL_DISABLE_SECMEM, 0);
-    gcry_control(GCRYCTL_INITIALIZATION_FINISHED, 0);
-
     /*
      * gcry_error_t gcry_cipher_open (gcry_cipher_hd_t *hd, int algo, int mode, unsigned int flags)
      *
