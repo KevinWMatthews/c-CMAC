@@ -1,9 +1,0 @@
-    Test copier independent of mock
-Should operate on Mock AES128 struct, not the real thing.
-Copy:
-    key
-    key length
-    iv
-    iv length
-
-Or does it? The handle is a pointer. Do we opy it or the underlying struct?

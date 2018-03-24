@@ -11,8 +11,6 @@ typedef struct AES128_STRUCT
     uint8_t *iv;
 } AES128_STRUCT;
 
-void MockAesCreate(AES128_STRUCT *aes_struct);
-
 // Populate and return a handle to a mock AES128_STRUCT.
 AES128_HANDLE Mock_Aes128_Create(AES128_CREATE_PARAMS *params);
 
