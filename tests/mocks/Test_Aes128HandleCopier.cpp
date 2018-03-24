@@ -63,3 +63,25 @@ TEST(Aes128HandleCopier, existing_mock_create)
 
     Aes128_Destroy(&handle);
 }
+
+TEST(Aes128HandleCopier, existing_mock_create_with_expectaions)
+{
+    AES128_HANDLE handle = NULL;
+
+    AES128_CREATE_PARAMS params = {};
+    params.key = NULL;
+    params.key_len = 0;
+    params.iv = NULL;
+    params.iv_len = 0;
+
+    mock().expectOneCall("Aes128_Create3")
+        .andReturnValue(AES128_SUCCESS);
+    Aes128_Create3(&params, &handle);
+
+    CHECK_FALSE(handle == NULL);
+
+    mock().checkExpectations();
+    mock().clear();
+
+    Aes128_Destroy(&handle);
+}

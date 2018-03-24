@@ -32,6 +32,16 @@ AES128_RETURN_CODE Aes128_Create2(AES128_CREATE_PARAMS *params, AES128_HANDLE *a
     return (AES128_RETURN_CODE)mock().intReturnValue();
 }
 
+AES128_RETURN_CODE Aes128_Create3(AES128_CREATE_PARAMS *params, AES128_HANDLE *aes_handle)
+{
+    AES128_HANDLE self = (AES128_HANDLE)calloc(1, sizeof(*self));
+
+    mock().actualCall("Aes128_Create3");
+
+    *aes_handle = self;
+    return (AES128_RETURN_CODE)mock().intReturnValue();
+}
+
 AES128_RETURN_CODE Aes128_Encrypt(AES128_CRYPTO_PARAMS *params, uint8_t *output, size_t output_len)
 {
     mock().actualCall("Aes128_Encrypt")
