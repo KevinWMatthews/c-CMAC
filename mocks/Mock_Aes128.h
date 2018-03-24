@@ -11,4 +11,6 @@ typedef struct AES128_STRUCT
     uint8_t *iv;
 } AES128_STRUCT;
 
+void MockAesCreate(AES128_STRUCT *aes_struct);
+
 #endif
