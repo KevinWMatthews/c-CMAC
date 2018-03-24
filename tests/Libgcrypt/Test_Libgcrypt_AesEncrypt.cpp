@@ -74,6 +74,24 @@ TEST(Libgcrypt_AesEncrypt, set_key_too_long_fails)
     CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_INV_KEYLEN, gcry_error );
 }
 
+// These tests work but libgcrypt prints a warning directly to the console.
+// Disable them until I figure out how to trap the output.
+#if 0
+TEST(Libgcrypt_AesEncrypt, set_iv_too_short_prints_warning)
+{
+    char iv[15] = {};
+    gcry_error = gcry_cipher_setiv(gcrypt_handle, iv, sizeof(iv));
+    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_NO_ERROR, gcry_error );
+}
+
+TEST(Libgcrypt_AesEncrypt, set_iv_too_long_prints_warning)
+{
+    char iv[17] = {};
+    gcry_error = gcry_cipher_setiv(gcrypt_handle, iv, sizeof(iv));
+    CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_NO_ERROR, gcry_error );
+}
+#endif
+
 #if 0
 TEST(Libgcrypt_AesEncrypt, set_null_key_segfaults)
 {
