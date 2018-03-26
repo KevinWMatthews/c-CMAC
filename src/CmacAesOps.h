@@ -52,7 +52,8 @@ int CmacAesOps_GetNthBlock(uint8_t *msg, size_t bytes_in_msg, uint8_t nth_block[
  *TODO if the block is complete, XOR using K1.
  */
 int CmacAesOps_SetLastBlockForIncomplete(uint8_t M_n[16], uint8_t K2[16], uint8_t M_last[16]);
-// Later will have set_last_block_for_complete() or something
+
+int CmacAesOps_SetLastBlockForComplete(uint8_t M_n[16], uint8_t K1[16], uint8_t M_last[16]);
 
 /* Apply the basic CMC-MAC algorithm to all but the last block of the message.
  *
