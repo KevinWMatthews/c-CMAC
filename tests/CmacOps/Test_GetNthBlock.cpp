@@ -12,6 +12,8 @@ TEST_GROUP(GetNthBlock)
     size_t M_len;
     size_t block_num;
 
+    size_t bytes_in_msg;
+
     void setup()
     {
     }
@@ -21,47 +23,81 @@ TEST_GROUP(GetNthBlock)
     }
 };
 
-TEST(GetNthBlock, returns_zeros_for_zero_length_message)
+TEST(GetNthBlock, zero_length_message_returns_block_of_zeros)
 {
     uint8_t M[16] = {0};
     uint8_t M_n[16] = {0};
     uint8_t expected[16] = {0};
+    memset(M_n, 0x55, sizeof(M_n));     // M_n is set to garbage
 
     M_len = 0;
-    block_num = 1;
 
-    ret = CmacAesOps_GetNthBlock(M, M_len, block_num, M_n);
+    ret = CmacAesOps_GetNthBlock(M, M_len, M_n);
 
     LONGS_EQUAL( 0, ret );
     MEMCMP_EQUAL( expected, M_n, sizeof(expected) );
 }
 
-TEST(GetNthBlock, clear_M_n_for_zero_length_message)
+TEST(GetNthBlock, get_one_byte_and_zeros_for_message_with_one_byte)
 {
-    uint8_t M[16] = {0};
-    uint8_t M_n[16] = {};
-    uint8_t expected[16] = {0};
+    uint8_t expected[16] = {};
+    uint8_t msg[16] = {};
+    uint8_t nth_block[16] = {};
+    int i;
 
-    M_len = 0;
-    block_num = 1;
-    memset(M_n, 0x55, sizeof(M_n));
+    for (i = 0; i < 15; i++)
+    {
+        msg[i] = 0xa0 + i;
+        expected[i] = 0xa0 + i;
+    }
+    memset(nth_block, 0x55, sizeof(nth_block));
 
-    ret = CmacAesOps_GetNthBlock(M, M_len, block_num, M_n);
+    bytes_in_msg = 15;
+
+    ret = CmacAesOps_GetNthBlock(msg, bytes_in_msg, nth_block);
 
     LONGS_EQUAL( 0, ret );
-    MEMCMP_EQUAL( expected, M_n, sizeof(expected) );
+    MEMCMP_EQUAL( expected, nth_block, sizeof(expected) );
 }
 
-TEST(GetNthBlock, fail_if_block_number_is_not_in_message)
+TEST(GetNthBlock, get_15_bytes_and_zeros_for_message_with_15_bytes)
 {
-    uint8_t M[16] = {0};
-    uint8_t M_n[16] = {};
+    uint8_t expected[16] = {};
+    uint8_t msg[16] = {};
+    uint8_t nth_block[16] = {};
+    int i;
+    for (i = 0; i < 15; i++)
+    {
+        msg[i] = 0xa0 + i;
+        expected[i] = 0xa0 + i;
+    }
+    memset(nth_block, 0x55, sizeof(nth_block));
 
-    M_len = 0;
-    block_num = 2;      // Off the end of the message
-    memset(M_n, 0x55, sizeof(M_n));
+    bytes_in_msg = 15;
 
-    ret = CmacAesOps_GetNthBlock(M, M_len, block_num, M_n);
+    ret = CmacAesOps_GetNthBlock(msg, bytes_in_msg, nth_block);
 
-    LONGS_EQUAL( -1, ret );
+    LONGS_EQUAL( 0, ret );
+    MEMCMP_EQUAL( expected, nth_block, sizeof(expected) );
+}
+
+TEST(GetNthBlock, get_complete_first_block_for_message_with_16_bytes)
+{
+    uint8_t expected[16] = {};
+    uint8_t msg[16] = {};
+    uint8_t nth_block[16] = {};
+    int i;
+    for (i = 0; i < 16; i++)
+    {
+        expected[i] = 0xa0 + i;
+        msg[i] = 0xa0 + i;
+    }
+    memset(nth_block, 0x55, sizeof(nth_block));
+
+    bytes_in_msg = 16;
+
+    ret = CmacAesOps_GetNthBlock(msg, bytes_in_msg, nth_block);
+
+    LONGS_EQUAL( 0, ret );
+    MEMCMP_EQUAL( expected, nth_block, sizeof(expected) );
 }

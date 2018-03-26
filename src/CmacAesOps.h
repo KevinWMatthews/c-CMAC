@@ -41,7 +41,7 @@ bool CmacAesOps_GetIsCompleteBlock(size_t message_length);
  * For the given message M, get nth block where n is given by the (1-indexed!) block number.
  * Value is returned in M_n.
  */
-int CmacAesOps_GetNthBlock(uint8_t M[16], size_t M_len, size_t block_num, uint8_t M_n[16]);
+int CmacAesOps_GetNthBlock(uint8_t *msg, size_t bytes_in_msg, uint8_t nth_block[16]);
 
 /* Calculate the XOR of the last message block.
  *
