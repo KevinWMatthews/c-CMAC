@@ -42,7 +42,7 @@ uint8_t set_first_nibble_from_block_number(size_t num_blocks)
 
 // Set up what we expect the Nth block to be.
 // Pass in the buffer expected and the number of the Nth block.
-void set_up_incomplete_expected_nth_block(uint8_t expected[16], size_t num_blocks, size_t num_trailing_bytes)
+void incomplete_nth_block_set_up_expected(uint8_t expected[16], size_t num_blocks, size_t num_trailing_bytes)
 {
     int i;
 
@@ -52,7 +52,7 @@ void set_up_incomplete_expected_nth_block(uint8_t expected[16], size_t num_block
     }
 }
 
-void set_up_complete_expected_nth_block(uint8_t expected[16], size_t num_blocks)
+void complete_nth_block_set_up_expected(uint8_t expected[16], size_t num_blocks)
 {
     int i;
 
@@ -116,7 +116,7 @@ TEST(GetNthBlock, get_several_trailing_bytes_from_incomplete_one_block_message)
     num_trailing_bytes = 15;
 
     set_up_message(msg, bytes_in_msg);
-    set_up_incomplete_expected_nth_block(expected, num_blocks, num_trailing_bytes);
+    incomplete_nth_block_set_up_expected(expected, num_blocks, num_trailing_bytes);
     set_up_actual_nth_block(actual);
 
     ret = CmacAesOps_GetNthBlock(msg, bytes_in_msg, actual);
@@ -136,7 +136,7 @@ TEST(GetNthBlock, get_complete_block_from_complete_one_block_message)
     num_trailing_bytes = 0;
 
     set_up_message(msg, bytes_in_msg);
-    set_up_complete_expected_nth_block(expected, num_blocks);
+    complete_nth_block_set_up_expected(expected, num_blocks);
     set_up_actual_nth_block(actual);
 
     ret = CmacAesOps_GetNthBlock(msg, bytes_in_msg, actual);
@@ -156,7 +156,7 @@ TEST(GetNthBlock, get_trailing_bytes_from_incomplete_two_block_message)
     num_trailing_bytes = 1;
 
     set_up_message(msg, bytes_in_msg);
-    set_up_incomplete_expected_nth_block(expected, num_blocks, num_trailing_bytes);
+    incomplete_nth_block_set_up_expected(expected, num_blocks, num_trailing_bytes);
     set_up_actual_nth_block(actual);
 
     ret = CmacAesOps_GetNthBlock(msg, bytes_in_msg, actual);
@@ -176,7 +176,7 @@ TEST(GetNthBlock, get_complete_last_block_from_complete_two_block_message)
     num_trailing_bytes = 0;
 
     set_up_message(msg, bytes_in_msg);
-    set_up_complete_expected_nth_block(expected, num_blocks);
+    complete_nth_block_set_up_expected(expected, num_blocks);
     set_up_actual_nth_block(actual);
 
     ret = CmacAesOps_GetNthBlock(msg, bytes_in_msg, actual);
@@ -196,7 +196,7 @@ TEST(GetNthBlock, get_trailing_bytes_from_incomplete_three_block_message)
     num_trailing_bytes = 1;
 
     set_up_message(msg, bytes_in_msg);
-    set_up_incomplete_expected_nth_block(expected, num_blocks, num_trailing_bytes);
+    incomplete_nth_block_set_up_expected(expected, num_blocks, num_trailing_bytes);
     set_up_actual_nth_block(actual);
 
     ret = CmacAesOps_GetNthBlock(msg, bytes_in_msg, actual);
@@ -216,7 +216,7 @@ TEST(GetNthBlock, get_complete_last_block_from_complete_three_block_message)
     num_trailing_bytes = 0;
 
     set_up_message(msg, bytes_in_msg);
-    set_up_complete_expected_nth_block(expected, num_blocks);
+    complete_nth_block_set_up_expected(expected, num_blocks);
     set_up_actual_nth_block(actual);
 
     ret = CmacAesOps_GetNthBlock(msg, bytes_in_msg, actual);
