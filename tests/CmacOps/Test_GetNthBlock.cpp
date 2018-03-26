@@ -101,3 +101,28 @@ TEST(GetNthBlock, get_complete_first_block_for_message_with_16_bytes)
     LONGS_EQUAL( 0, ret );
     MEMCMP_EQUAL( expected, nth_block, sizeof(expected) );
 }
+
+TEST(GetNthBlock, get_single_byte_and_zeros_for_message_with_one_block_plus_one_byte)
+{
+    uint8_t expected[CMAC_AES_BLOCK_LENGTH] = {};
+    uint8_t msg[CMAC_AES_BLOCK_LENGTH+1] = {};
+    uint8_t nth_block[CMAC_AES_BLOCK_LENGTH] = {};
+    int i;
+    for (i = 0; i < 16; i++)
+    {
+        msg[i] = 0xa0 + i;
+    }
+    for (i = 0; i < 1; i++)
+    {
+        expected[i] = 0xb0 + i;
+        msg[i+16] = 0xb0 + i;
+    }
+    memset(nth_block, 0x55, sizeof(nth_block));
+
+    bytes_in_msg = 17;
+
+    ret = CmacAesOps_GetNthBlock(msg, bytes_in_msg, nth_block);
+
+    LONGS_EQUAL( 0, ret );
+    MEMCMP_EQUAL( expected, nth_block, sizeof(expected) );
+}

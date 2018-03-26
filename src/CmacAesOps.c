@@ -39,9 +39,21 @@ int CmacAesOps_GetNthBlock(uint8_t *msg, size_t bytes_in_msg, uint8_t nth_block[
 {
     size_t blocks_in_msg = CmacAesOps_GetNBlocks(bytes_in_msg);
 
-    memset(nth_block, 0, 16);
+    memset(nth_block, 0, CMAC_AES_BLOCK_LENGTH);
 
-    memcpy(nth_block, msg, bytes_in_msg);
+    if (bytes_in_msg % CMAC_AES_BLOCK_LENGTH == 0)
+    {
+        memcpy(nth_block, msg, bytes_in_msg);
+    }
+    if (bytes_in_msg / CMAC_AES_BLOCK_LENGTH == 0)
+    {
+        memcpy(nth_block, msg, bytes_in_msg);
+    }
+    else if (bytes_in_msg / CMAC_AES_BLOCK_LENGTH == 1)
+    {
+        memcpy(nth_block, msg+CMAC_AES_BLOCK_LENGTH, bytes_in_msg-CMAC_AES_BLOCK_LENGTH);
+    }
+
     return 0;
 }
 
