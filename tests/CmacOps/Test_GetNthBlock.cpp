@@ -224,3 +224,23 @@ TEST(GetNthBlock, get_complete_last_block_from_complete_three_block_message)
     LONGS_EQUAL( 0, ret );
     MEMCMP_EQUAL( expected, actual, sizeof(expected) );
 }
+
+TEST(GetNthBlock, do_not_segfault_with_null_message)
+{
+    uint8_t expected[16] = {0};
+    uint8_t nth_block[16] = {0};
+    uint8_t *msg = NULL;
+
+    bytes_in_msg = 1;   // Not valid - msg pointer is NULL
+    num_blocks = 1;     // Special case
+    num_trailing_bytes = 0;
+
+    // Message is NULL
+    // Expected is all zeros
+    set_up_actual_nth_block(nth_block);
+
+    ret = CmacAesOps_GetNthBlock(msg, bytes_in_msg, nth_block);
+
+    LONGS_EQUAL( 0, ret );
+    MEMCMP_EQUAL( expected, nth_block, sizeof(expected) );
+}

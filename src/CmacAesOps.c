@@ -42,6 +42,11 @@ int CmacAesOps_GetNthBlock(uint8_t *msg, size_t bytes_in_msg, uint8_t nth_block[
 
     memset(nth_block, 0, CMAC_AES_BLOCK_LENGTH);
 
+    if (msg == NULL)        // Zero-length message - is a valid case
+    {
+        return 0;
+    }
+
     blocks_in_msg = CmacAesOps_GetNBlocks(bytes_in_msg);
     offset = CMAC_AES_BLOCK_LENGTH * (blocks_in_msg-1);
     memcpy(nth_block, msg + offset, bytes_in_msg - offset);
