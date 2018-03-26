@@ -65,6 +65,7 @@ int CmacAesOps_SetLastBlockForIncomplete(uint8_t M_n[16], uint8_t K2[16], uint8_
 
 int CmacAesOps_SetLastBlockForComplete(uint8_t M_n[16], uint8_t K1[16], uint8_t M_last[16])
 {
+    BitOperation_Xor(M_n, K1, 16, M_last);
     return 0;
 }
 
