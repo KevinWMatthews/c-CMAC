@@ -126,3 +126,28 @@ TEST(GetNthBlock, get_trailing_bytes_from_incomplete_two_block_message)
     LONGS_EQUAL( 0, ret );
     MEMCMP_EQUAL( expected, nth_block, sizeof(expected) );
 }
+
+TEST(GetNthBlock, get_complete_last_block_from_complete_two_block_message)
+{
+    uint8_t expected[CMAC_AES_BLOCK_LENGTH] = {};
+    uint8_t nth_block[CMAC_AES_BLOCK_LENGTH] = {};
+    uint8_t msg[CMAC_AES_BLOCK_LENGTH*2] = {};
+    int i;
+    for (i = 0; i < 16; i++)
+    {
+        msg[i] = 0xa0 + i;
+    }
+    for (i = 0; i < 16; i++)
+    {
+        expected[i] = 0xb0 + i;
+        msg[i+16] = 0xb0 + i;
+    }
+    memset(nth_block, 0x55, sizeof(nth_block));
+
+    bytes_in_msg = 32;
+
+    ret = CmacAesOps_GetNthBlock(msg, bytes_in_msg, nth_block);
+
+    LONGS_EQUAL( 0, ret );
+    MEMCMP_EQUAL( expected, nth_block, sizeof(expected) );
+}
