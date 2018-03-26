@@ -46,7 +46,7 @@ TEST(CmacAes, rfc_4493_example_1_message_length_0)
     MEMCMP_EQUAL( expected, cmac, sizeof(expected) );
 }
 
-IGNORE_TEST(CmacAes, rfc_4493_example_2_message_length_16)
+TEST(CmacAes, rfc_4493_example_2_message_length_16)
 {
     uint8_t expected[] = {
         0x07, 0x0a, 0x16, 0xb4, 0x6b, 0x4d, 0x41, 0x44,
