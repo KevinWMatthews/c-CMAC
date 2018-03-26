@@ -8,11 +8,8 @@ extern "C"
 
 TEST_GROUP(GetNthBlock)
 {
-    int ret;
-    size_t M_len;
-    size_t block_num;
-
     size_t bytes_in_msg;
+    int ret;
 
     void setup()
     {
@@ -25,24 +22,24 @@ TEST_GROUP(GetNthBlock)
 
 TEST(GetNthBlock, get_all_zeros_from_zero_length_message)
 {
-    uint8_t M[16] = {0};
-    uint8_t M_n[16] = {0};
     uint8_t expected[16] = {0};
-    memset(M_n, 0x55, sizeof(M_n));     // M_n is set to garbage
+    uint8_t nth_block[16] = {0};
+    uint8_t *msg = NULL;
+    memset(nth_block, 0x55, sizeof(nth_block));     // M_n is set to garbage
 
-    M_len = 0;
+    bytes_in_msg = 0;
 
-    ret = CmacAesOps_GetNthBlock(M, M_len, M_n);
+    ret = CmacAesOps_GetNthBlock(msg, bytes_in_msg, nth_block);
 
     LONGS_EQUAL( 0, ret );
-    MEMCMP_EQUAL( expected, M_n, sizeof(expected) );
+    MEMCMP_EQUAL( expected, nth_block, sizeof(expected) );
 }
 
 TEST(GetNthBlock, get_trailing_byte_from_a_single_byte_message)
 {
     uint8_t expected[16] = {};
-    uint8_t msg[16] = {};
     uint8_t nth_block[16] = {};
+    uint8_t msg[1] = {};
     int i;
 
     for (i = 0; i < 1; i++)
