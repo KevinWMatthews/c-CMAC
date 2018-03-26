@@ -23,7 +23,7 @@ TEST_GROUP(GetNthBlock)
     }
 };
 
-TEST(GetNthBlock, zero_length_message_returns_block_of_zeros)
+TEST(GetNthBlock, get_all_zeros_from_zero_length_message)
 {
     uint8_t M[16] = {0};
     uint8_t M_n[16] = {0};
@@ -38,7 +38,7 @@ TEST(GetNthBlock, zero_length_message_returns_block_of_zeros)
     MEMCMP_EQUAL( expected, M_n, sizeof(expected) );
 }
 
-TEST(GetNthBlock, get_one_byte_and_zeros_for_message_with_one_byte)
+TEST(GetNthBlock, get_trailing_byte_from_a_single_byte_message)
 {
     uint8_t expected[16] = {};
     uint8_t msg[16] = {};
@@ -60,7 +60,7 @@ TEST(GetNthBlock, get_one_byte_and_zeros_for_message_with_one_byte)
     MEMCMP_EQUAL( expected, nth_block, sizeof(expected) );
 }
 
-TEST(GetNthBlock, get_15_bytes_and_zeros_for_message_with_15_bytes)
+TEST(GetNthBlock, get_trailing_bytes_from_incomplete_one_block_message)
 {
     uint8_t expected[16] = {};
     uint8_t msg[16] = {};
@@ -81,7 +81,7 @@ TEST(GetNthBlock, get_15_bytes_and_zeros_for_message_with_15_bytes)
     MEMCMP_EQUAL( expected, nth_block, sizeof(expected) );
 }
 
-TEST(GetNthBlock, get_complete_first_block_for_message_with_16_bytes)
+TEST(GetNthBlock, get_complete_block_from_complete_one_block_message)
 {
     uint8_t expected[16] = {};
     uint8_t msg[16] = {};
@@ -102,7 +102,7 @@ TEST(GetNthBlock, get_complete_first_block_for_message_with_16_bytes)
     MEMCMP_EQUAL( expected, nth_block, sizeof(expected) );
 }
 
-TEST(GetNthBlock, get_single_byte_and_zeros_for_message_with_one_block_plus_one_byte)
+TEST(GetNthBlock, get_trailing_bytes_from_incomplete_two_block_message)
 {
     uint8_t expected[CMAC_AES_BLOCK_LENGTH] = {};
     uint8_t msg[CMAC_AES_BLOCK_LENGTH+1] = {};
