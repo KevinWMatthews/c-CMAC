@@ -7,7 +7,7 @@ add_executable(UnitTests_CmacOps
     Test_GetNBlocks.cpp
     Test_GetIsCompleteBlock.cpp
     Test_GetNthBlock.cpp
-    Test_SetLastBlock.cpp
+    Test_SetLastBlockIncomplete.cpp
     Test_ApplyCbcMac.cpp
 )
 

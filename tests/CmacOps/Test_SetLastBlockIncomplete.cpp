@@ -5,7 +5,7 @@ extern "C"
 
 #include "CppUTest/TestHarness.h"
 
-TEST_GROUP(SetLastBlock)
+TEST_GROUP(SetLastBlockIncomplete)
 {
     int ret;
 
@@ -18,7 +18,7 @@ TEST_GROUP(SetLastBlock)
     }
 };
 
-TEST(SetLastBlock, pad_and_xor_incomplete_block_zeros)
+TEST(SetLastBlockIncomplete, pad_and_xor_completely_empty_block)
 {
     uint8_t M_n[16] = {};
     uint8_t K2[16] = {};
@@ -31,7 +31,9 @@ TEST(SetLastBlock, pad_and_xor_incomplete_block_zeros)
     MEMCMP_EQUAL( expected, M_last, sizeof(expected) );
 }
 
-TEST(SetLastBlock, pad_and_xor_incomplete_block_ffs)
+// This doesn't enforce the correct behavior - this block is complete.
+// Test the entire block so we can be sure that we operate on all bits.
+TEST(SetLastBlockIncomplete, pad_and_xor_incomplete_block_of_ffs)
 {
     uint8_t M_n[16] = {};
     uint8_t K2[16] = {

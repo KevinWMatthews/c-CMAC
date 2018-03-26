@@ -40,7 +40,10 @@ int CmacAes_Calculate(CMAC_AES_CALCULATE_PARAMS *params, uint8_t aes_cmac[16], s
     unsigned char M_last[16] = {0};
 
     ret = CmacAesOps_GetNthBlock(params->message, params->message_len, M_n);
-    ret = CmacAesOps_SetLastBlockForIncomplete(M_n, K2, M_last);
+    if (!is_complete_block)
+    {
+        ret = CmacAesOps_SetLastBlockForIncomplete(M_n, K2, M_last);
+    }
 
     // Step 5
     unsigned char X[16] = {0};
