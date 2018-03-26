@@ -184,3 +184,43 @@ TEST(GetNthBlock, get_complete_last_block_from_complete_two_block_message)
     LONGS_EQUAL( 0, ret );
     MEMCMP_EQUAL( expected, actual, sizeof(expected) );
 }
+
+TEST(GetNthBlock, get_trailing_bytes_from_incomplete_three_block_message)
+{
+    uint8_t expected[CMAC_AES_BLOCK_LENGTH] = {};
+    uint8_t actual[CMAC_AES_BLOCK_LENGTH] = {};
+    uint8_t msg[CMAC_AES_BLOCK_LENGTH * 2 + 1] = {};
+
+    bytes_in_msg = sizeof(msg);
+    num_blocks = 3;
+    num_trailing_bytes = 1;
+
+    set_up_message(msg, bytes_in_msg);
+    set_up_incomplete_expected_nth_block(expected, num_blocks, num_trailing_bytes);
+    set_up_actual_nth_block(actual);
+
+    ret = CmacAesOps_GetNthBlock(msg, bytes_in_msg, actual);
+
+    LONGS_EQUAL( 0, ret );
+    MEMCMP_EQUAL( expected, actual, sizeof(expected) );
+}
+
+TEST(GetNthBlock, get_complete_last_block_from_complete_three_block_message)
+{
+    uint8_t expected[CMAC_AES_BLOCK_LENGTH] = {};
+    uint8_t actual[CMAC_AES_BLOCK_LENGTH] = {};
+    uint8_t msg[CMAC_AES_BLOCK_LENGTH * 3] = {};
+
+    bytes_in_msg = sizeof(msg);
+    num_blocks = 3;
+    num_trailing_bytes = 0;
+
+    set_up_message(msg, bytes_in_msg);
+    set_up_complete_expected_nth_block(expected, num_blocks);
+    set_up_actual_nth_block(actual);
+
+    ret = CmacAesOps_GetNthBlock(msg, bytes_in_msg, actual);
+
+    LONGS_EQUAL( 0, ret );
+    MEMCMP_EQUAL( expected, actual, sizeof(expected) );
+}

@@ -41,6 +41,21 @@ int CmacAesOps_GetNthBlock(uint8_t *msg, size_t bytes_in_msg, uint8_t nth_block[
 
     memset(nth_block, 0, CMAC_AES_BLOCK_LENGTH);
 
+    if (bytes_in_msg / CMAC_AES_BLOCK_LENGTH == 0)
+    {
+        memcpy(nth_block, msg, bytes_in_msg);
+    }
+    else if (bytes_in_msg / CMAC_AES_BLOCK_LENGTH == 1)
+    {
+        memcpy(nth_block, msg+CMAC_AES_BLOCK_LENGTH, bytes_in_msg-CMAC_AES_BLOCK_LENGTH);
+    }
+    else if (bytes_in_msg / CMAC_AES_BLOCK_LENGTH == 2)
+    {
+        memcpy( nth_block,
+                msg + (CMAC_AES_BLOCK_LENGTH * 2),
+                bytes_in_msg - (CMAC_AES_BLOCK_LENGTH * 2) );
+    }
+
     if (bytes_in_msg % CMAC_AES_BLOCK_LENGTH == 0)
     {
         if (bytes_in_msg / CMAC_AES_BLOCK_LENGTH == 1)
@@ -51,16 +66,13 @@ int CmacAesOps_GetNthBlock(uint8_t *msg, size_t bytes_in_msg, uint8_t nth_block[
         {
             memcpy(nth_block, msg+CMAC_AES_BLOCK_LENGTH, bytes_in_msg-CMAC_AES_BLOCK_LENGTH);
         }
+        else if (bytes_in_msg / CMAC_AES_BLOCK_LENGTH == 3)
+        {
+            memcpy(nth_block,
+                    msg + (CMAC_AES_BLOCK_LENGTH * 2),
+                    bytes_in_msg - (CMAC_AES_BLOCK_LENGTH * 2) );
+        }
     }
-    if (bytes_in_msg / CMAC_AES_BLOCK_LENGTH == 0)
-    {
-        memcpy(nth_block, msg, bytes_in_msg);
-    }
-    else if (bytes_in_msg / CMAC_AES_BLOCK_LENGTH == 1)
-    {
-        memcpy(nth_block, msg+CMAC_AES_BLOCK_LENGTH, bytes_in_msg-CMAC_AES_BLOCK_LENGTH);
-    }
-
     return 0;
 }
 
