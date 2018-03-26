@@ -10,6 +10,7 @@
 
 typedef struct CMAC_AES_CONTEXT
 {
+    AES128_HANDLE aes_handle;
     uint8_t K1[16];
     uint8_t K2[16];
 } CMAC_AES_CONTEXT;
@@ -17,7 +18,7 @@ typedef struct CMAC_AES_CONTEXT
 /*
  *TODO add documentation
  */
-int CmacAesOps_GenerateSubkeys(AES128_HANDLE aes_handle, CMAC_AES_CONTEXT *context);
+int CmacAesOps_GenerateSubkeys2(CMAC_AES_CONTEXT *context);
 
 /* Calculate the number of blocks in a message.
  *

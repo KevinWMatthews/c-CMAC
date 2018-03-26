@@ -47,7 +47,6 @@ TEST(GenerateSubkeys, generate_subkeys_for_rfc_examples)
     // Values for mocks
     AES128_CREATE_PARAMS create_params = {};
     AES128_CRYPTO_PARAMS crypto_params = {};
-    AES128_HANDLE aes_handle = NULL;
     uint8_t iv[16] = {};            // All zeros, from RFC
 
     // Mock value for AES encryption
@@ -60,9 +59,9 @@ TEST(GenerateSubkeys, generate_subkeys_for_rfc_examples)
     create_params.key_len = sizeof(key);
     create_params.iv = iv;
     create_params.iv_len = sizeof(iv);
-    aes_handle = MockAes128_Create(&create_params);
+    context.aes_handle = MockAes128_Create(&create_params);
 
-    crypto_params.aes_handle = aes_handle;
+    crypto_params.aes_handle = context.aes_handle;
     crypto_params.input = input;
     crypto_params.input_len = sizeof(input);
 
@@ -72,11 +71,11 @@ TEST(GenerateSubkeys, generate_subkeys_for_rfc_examples)
         .withParameter("output_len", sizeof(L))
         .andReturnValue(AES128_SUCCESS);
 
-    ret = CmacAesOps_GenerateSubkeys(aes_handle, &context);
+    ret = CmacAesOps_GenerateSubkeys2(&context);
 
     LONGS_EQUAL( 0, ret );
     MEMCMP_EQUAL( expected_K1, context.K1, sizeof(expected_K1) );
     MEMCMP_EQUAL( expected_K2, context.K2, sizeof(expected_K2) );
 
-    MockAes128_Destroy(aes_handle);
+    MockAes128_Destroy(context.aes_handle);
 }

@@ -11,7 +11,6 @@ int CmacAes_Calculate(CMAC_AES_CALCULATE_PARAMS *params, uint8_t aes_cmac[16], s
 
 
     uint8_t iv[16] = {0};       // CMAC uses an IV of zeros.
-    AES128_HANDLE aes_handle = {0};
     AES128_CREATE_PARAMS create_params = {
         .key = params->key,
         .key_len = params->key_len,
@@ -20,10 +19,12 @@ int CmacAes_Calculate(CMAC_AES_CALCULATE_PARAMS *params, uint8_t aes_cmac[16], s
     };
 
     Aes128_Initialize();
-    Aes128_Create(&create_params, &aes_handle);
+    //TODO extract this into a CmacOps function.
+    // We need to make it obvious that you must do this.
+    Aes128_Create(&create_params, &context.aes_handle);
 
     // Step 1
-    ret = CmacAesOps_GenerateSubkeys(aes_handle, &context);
+    ret = CmacAesOps_GenerateSubkeys2(&context);
 
     // Step 2
     n_blocks = CmacAesOps_GetNBlocks(params->message_len);
@@ -57,9 +58,9 @@ int CmacAes_Calculate(CMAC_AES_CALCULATE_PARAMS *params, uint8_t aes_cmac[16], s
 
 
     unsigned char T[16] = {0};
-    ret = CmacAesOps_FinishCbcMac2(aes_handle, Y, T, sizeof(T));
+    ret = CmacAesOps_FinishCbcMac2(context.aes_handle, Y, T, sizeof(T));
 
-    Aes128_Destroy(&aes_handle);
+    Aes128_Destroy(&context.aes_handle);
 
     // Step 7
     memcpy(aes_cmac, T, 16);
