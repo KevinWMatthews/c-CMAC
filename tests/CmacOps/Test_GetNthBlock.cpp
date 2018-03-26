@@ -45,14 +45,14 @@ TEST(GetNthBlock, get_trailing_byte_from_a_single_byte_message)
     uint8_t nth_block[16] = {};
     int i;
 
-    for (i = 0; i < 15; i++)
+    for (i = 0; i < 1; i++)
     {
         msg[i] = 0xa0 + i;
         expected[i] = 0xa0 + i;
     }
     memset(nth_block, 0x55, sizeof(nth_block));
 
-    bytes_in_msg = 15;
+    bytes_in_msg = 1;
 
     ret = CmacAesOps_GetNthBlock(msg, bytes_in_msg, nth_block);
 
