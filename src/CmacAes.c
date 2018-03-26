@@ -21,6 +21,8 @@ int CmacAes_Calculate(CMAC_AES_CALCULATE_PARAMS *params, uint8_t aes_cmac[16], s
     Aes128_Initialize();
     //TODO extract this into a CmacOps function.
     // We need to make it obvious that you must do this.
+    // This function will accept only the key and the key length.
+    // It will set the IV (note the comment on IV above - code smell).
     Aes128_Create(&create_params, &context.aes_handle);
 
     // Step 1
