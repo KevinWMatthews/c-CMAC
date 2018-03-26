@@ -4,11 +4,11 @@
 
 int CmacAes_Calculate(CMAC_AES_CALCULATE_PARAMS *params, uint8_t aes_cmac[16], size_t aes_cmac_len)
 {
-    unsigned char K1[16] = {0};
-    unsigned char K2[16] = {0};
+    CMAC_AES_CONTEXT context = {0};
     size_t n_blocks;
     bool is_complete_block;
     int ret;
+
 
     uint8_t iv[16] = {0};       // CMAC uses an IV of zeros.
     AES128_HANDLE aes_handle = {0};
@@ -23,9 +23,7 @@ int CmacAes_Calculate(CMAC_AES_CALCULATE_PARAMS *params, uint8_t aes_cmac[16], s
     Aes128_Create(&create_params, &aes_handle);
 
     // Step 1
-    ret = CmacAesOps_GenerateSubkeys( aes_handle,
-            K1, sizeof(K1),
-            K2, sizeof(K2) );
+    ret = CmacAesOps_GenerateSubkeys(aes_handle, &context);
 
     // Step 2
     n_blocks = CmacAesOps_GetNBlocks(params->message_len);
@@ -42,11 +40,11 @@ int CmacAes_Calculate(CMAC_AES_CALCULATE_PARAMS *params, uint8_t aes_cmac[16], s
     ret = CmacAesOps_GetNthBlock(params->message, params->message_len, M_n);
     if (is_complete_block)
     {
-        ret = CmacAesOps_SetLastBlockForComplete(M_n, K1, M_last);
+        ret = CmacAesOps_SetLastBlockForComplete(M_n, context.K1, M_last);
     }
     else
     {
-        ret = CmacAesOps_SetLastBlockForIncomplete(M_n, K2, M_last);
+        ret = CmacAesOps_SetLastBlockForIncomplete(M_n, context.K2, M_last);
     }
 
     // Step 5

@@ -8,12 +8,16 @@
 
 #define CMAC_AES_BLOCK_LENGTH       16
 
+typedef struct CMAC_AES_CONTEXT
+{
+    uint8_t K1[16];
+    uint8_t K2[16];
+} CMAC_AES_CONTEXT;
+
 /*
  *TODO add documentation
  */
-int CmacAesOps_GenerateSubkeys(AES128_HANDLE aes_handle,
-        uint8_t K1[16], size_t K1_len,
-        uint8_t K2[16], size_t K2_len);
+int CmacAesOps_GenerateSubkeys(AES128_HANDLE aes_handle, CMAC_AES_CONTEXT *context);
 
 /* Calculate the number of blocks in a message.
  *

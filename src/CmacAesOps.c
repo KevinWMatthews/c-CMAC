@@ -5,14 +5,15 @@
 
 static uint8_t const_Zero[16];
 
-int CmacAesOps_GenerateSubkeys(AES128_HANDLE aes_handle,
-        uint8_t K1[16], size_t K1_len,
-        uint8_t K2[16], size_t K2_len)
+int CmacAesOps_GenerateSubkeys(AES128_HANDLE aes_handle, CMAC_AES_CONTEXT *context)
 {
-    unsigned char L[16] = {0};
+    uint8_t L[16] = {0};
+
     CmacAesSubkeys_CalculateLFromK( aes_handle, L, sizeof(L) );
-    CmacAesSubkeys_CalculateK1FromL( L, sizeof(L), K1, K1_len );
-    CmacAesSubkeys_CalculateK2FromK1( K1, 16, K2, K2_len );
+    CmacAesSubkeys_CalculateK1FromL( L, sizeof(L), context->K1, sizeof(context->K1) );
+    CmacAesSubkeys_CalculateK2FromK1( context->K1, sizeof(context->K1),
+                                      context->K2, sizeof(context->K2) );
+
     return 0;
 }
 
