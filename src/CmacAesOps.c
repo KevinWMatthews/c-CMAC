@@ -37,42 +37,15 @@ bool CmacAesOps_GetIsCompleteBlock(size_t message_length)
 
 int CmacAesOps_GetNthBlock(uint8_t *msg, size_t bytes_in_msg, uint8_t nth_block[16])
 {
-    size_t blocks_in_msg = CmacAesOps_GetNBlocks(bytes_in_msg);
+    size_t blocks_in_msg;
+    size_t offset;
 
     memset(nth_block, 0, CMAC_AES_BLOCK_LENGTH);
 
-    if (bytes_in_msg / CMAC_AES_BLOCK_LENGTH == 0)
-    {
-        memcpy(nth_block, msg, bytes_in_msg);
-    }
-    else if (bytes_in_msg / CMAC_AES_BLOCK_LENGTH == 1)
-    {
-        memcpy(nth_block, msg+CMAC_AES_BLOCK_LENGTH, bytes_in_msg-CMAC_AES_BLOCK_LENGTH);
-    }
-    else if (bytes_in_msg / CMAC_AES_BLOCK_LENGTH == 2)
-    {
-        memcpy( nth_block,
-                msg + (CMAC_AES_BLOCK_LENGTH * 2),
-                bytes_in_msg - (CMAC_AES_BLOCK_LENGTH * 2) );
-    }
+    blocks_in_msg = CmacAesOps_GetNBlocks(bytes_in_msg);
+    offset = CMAC_AES_BLOCK_LENGTH * (blocks_in_msg-1);
+    memcpy(nth_block, msg + offset, bytes_in_msg - offset);
 
-    if (bytes_in_msg % CMAC_AES_BLOCK_LENGTH == 0)
-    {
-        if (bytes_in_msg / CMAC_AES_BLOCK_LENGTH == 1)
-        {
-            memcpy(nth_block, msg, bytes_in_msg);
-        }
-        else if (bytes_in_msg / CMAC_AES_BLOCK_LENGTH == 2)
-        {
-            memcpy(nth_block, msg+CMAC_AES_BLOCK_LENGTH, bytes_in_msg-CMAC_AES_BLOCK_LENGTH);
-        }
-        else if (bytes_in_msg / CMAC_AES_BLOCK_LENGTH == 3)
-        {
-            memcpy(nth_block,
-                    msg + (CMAC_AES_BLOCK_LENGTH * 2),
-                    bytes_in_msg - (CMAC_AES_BLOCK_LENGTH * 2) );
-        }
-    }
     return 0;
 }
 
