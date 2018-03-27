@@ -35,12 +35,18 @@ int CmacAesOps_GetNBlocks(size_t bytes_in_msg, CMAC_AES_CONTEXT *context)
     return 0;
 }
 
-bool CmacAesOps_GetIsCompleteBlock(size_t bytes_in_msg)
+int CmacAesOps_GetIsCompleteBlock(size_t bytes_in_msg, CMAC_AES_CONTEXT *context)
 {
     if (bytes_in_msg == 0)
-        return false;
-
-    return (bytes_in_msg % CMAC_AES_BYTES_IN_BLOCK) == 0;
+    {
+        context->is_nth_block_complete = false;
+    }
+    else
+    {
+        bool remainder = bytes_in_msg % CMAC_AES_BYTES_IN_BLOCK;
+        context->is_nth_block_complete = (remainder == 0);
+    }
+    return 0;
 }
 
 int CmacAesOps_GetNthBlock(uint8_t *msg, size_t bytes_in_msg, CMAC_AES_CONTEXT *context)

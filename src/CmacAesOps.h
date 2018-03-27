@@ -14,6 +14,7 @@ typedef struct CMAC_AES_CONTEXT
     uint8_t key1[16];           // K1
     uint8_t key2[16];           // K2
     size_t n_blocks;
+    bool is_nth_block_complete;
     uint8_t nth_block[16];      // M_n
 } CMAC_AES_CONTEXT;
 
@@ -42,7 +43,7 @@ int CmacAesOps_GetNBlocks(size_t bytes_in_msg, CMAC_AES_CONTEXT *context);
  * 128 bits => is_complete_block_flag = 1
  * 129 bits => is_complete_block_flag = 0
  */
-bool CmacAesOps_GetIsCompleteBlock(size_t bytes_in_msg);
+int CmacAesOps_GetIsCompleteBlock(size_t bytes_in_msg, CMAC_AES_CONTEXT *context);
 
 /* Get the nth block in the message
  *
