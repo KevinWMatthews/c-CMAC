@@ -42,11 +42,11 @@ int CmacAes_Calculate(CMAC_AES_CALCULATE_PARAMS *params, uint8_t aes_cmac[16], s
     ret = CmacAesOps_GetNthBlock(params->message, params->message_len, &context);
     if (is_complete_block)
     {
-        ret = CmacAesOps_SetLastBlockForComplete(context.nth_block, context.K1, M_last);
+        ret = CmacAesOps_SetLastBlockForComplete(context.nth_block, context.key1, M_last);
     }
     else
     {
-        ret = CmacAesOps_SetLastBlockForIncomplete(context.nth_block, context.K2, M_last);
+        ret = CmacAesOps_SetLastBlockForIncomplete(context.nth_block, context.key2, M_last);
     }
 
     // Step 5

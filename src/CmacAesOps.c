@@ -10,9 +10,9 @@ int CmacAesOps_GenerateSubkeys(CMAC_AES_CONTEXT *context)
     uint8_t L[16] = {0};
 
     CmacAesSubkeys_CalculateLFromK( context->aes_handle, L, sizeof(L) );
-    CmacAesSubkeys_CalculateK1FromL( L, sizeof(L), context->K1, sizeof(context->K1) );
-    CmacAesSubkeys_CalculateK2FromK1( context->K1, sizeof(context->K1),
-                                      context->K2, sizeof(context->K2) );
+    CmacAesSubkeys_CalculateK1FromL( L, sizeof(L), context->key1, sizeof(context->key1) );
+    CmacAesSubkeys_CalculateK2FromK1( context->key1, sizeof(context->key1),
+                                      context->key2, sizeof(context->key2) );
 
     return 0;
 }

@@ -25,11 +25,11 @@ TEST_GROUP(GenerateSubkeys)
 TEST(GenerateSubkeys, generate_subkeys_for_rfc_examples)
 {
     // Expected
-    uint8_t expected_K1[16] = {
+    uint8_t expected_key1[16] = {
         0xfb, 0xee, 0xd6, 0x18, 0x35, 0x71, 0x33, 0x66,
         0x7c, 0x85, 0xe0, 0x8f, 0x72, 0x36, 0xa8, 0xde,
     };
-    uint8_t expected_K2[16] = {
+    uint8_t expected_key2[16] = {
         0xf7, 0xdd, 0xac, 0x30, 0x6a, 0xe2, 0x66, 0xcc,
         0xf9, 0x0b, 0xc1, 0x1e, 0xe4, 0x6d, 0x51, 0x3b,
     };
@@ -74,8 +74,8 @@ TEST(GenerateSubkeys, generate_subkeys_for_rfc_examples)
     ret = CmacAesOps_GenerateSubkeys(&context);
 
     LONGS_EQUAL( 0, ret );
-    MEMCMP_EQUAL( expected_K1, context.K1, sizeof(expected_K1) );
-    MEMCMP_EQUAL( expected_K2, context.K2, sizeof(expected_K2) );
+    MEMCMP_EQUAL( expected_key1, context.key1, sizeof(expected_key1) );
+    MEMCMP_EQUAL( expected_key2, context.key2, sizeof(expected_key2) );
 
     MockAes128_Destroy(context.aes_handle);
 }

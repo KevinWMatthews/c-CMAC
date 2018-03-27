@@ -11,15 +11,14 @@
 typedef struct CMAC_AES_CONTEXT
 {
     AES128_HANDLE aes_handle;
-    uint8_t K1[16];
-    uint8_t K2[16];
+    uint8_t key1[16];           // K1
+    uint8_t key2[16];           // K2
     size_t n_blocks;
     uint8_t nth_block[16];      // M_n
 } CMAC_AES_CONTEXT;
 
 /*
- * Calculates subkeys K1 and K2.
- * Stores them in the context.
+ * Calculates subkeys and stores them in the context.
  */
 int CmacAesOps_GenerateSubkeys(CMAC_AES_CONTEXT *context);
 
