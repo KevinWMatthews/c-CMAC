@@ -8,6 +8,7 @@ extern "C"
 
 TEST_GROUP(GetNthBlock)
 {
+    CMAC_AES_CONTEXT context;
     size_t bytes_in_msg;
     size_t num_blocks;
     size_t num_trailing_bytes;
@@ -72,7 +73,6 @@ void set_up_actual_nth_block(uint8_t nth_block[16])
 TEST(GetNthBlock, get_all_zeros_from_zero_length_message)
 {
     uint8_t expected[16] = {0};
-    uint8_t nth_block[16] = {0};
     uint8_t *msg = NULL;
 
     bytes_in_msg = 0;
@@ -81,166 +81,165 @@ TEST(GetNthBlock, get_all_zeros_from_zero_length_message)
 
     // Message is NULL
     // Expected is all zeros
-    set_up_actual_nth_block(nth_block);
+    set_up_actual_nth_block(context.nth_block);
 
-    ret = CmacAesOps_GetNthBlock(msg, bytes_in_msg, nth_block);
+    ret = CmacAesOps_GetNthBlock(msg, bytes_in_msg, &context);
 
     LONGS_EQUAL( 0, ret );
-    MEMCMP_EQUAL( expected, nth_block, sizeof(expected) );
+    MEMCMP_EQUAL( expected, context.nth_block, sizeof(expected) );
 }
 
 TEST(GetNthBlock, get_single_trailing_byte_from_a_incomplete_one_block_message)
 {
     uint8_t expected[16] = {0xff};
-    uint8_t actual[16] = {};
     uint8_t msg[1] = {0xff};
 
     bytes_in_msg = sizeof(msg);
-    num_blocks = 1;
+    context.n_blocks = 1;
     num_trailing_bytes = 1;
 
-    ret = CmacAesOps_GetNthBlock(msg, bytes_in_msg, actual);
+    ret = CmacAesOps_GetNthBlock(msg, bytes_in_msg, &context);
 
     LONGS_EQUAL( 0, ret );
-    MEMCMP_EQUAL( expected, actual, sizeof(expected) );
+    MEMCMP_EQUAL( expected, context.nth_block, sizeof(expected) );
 }
 
 TEST(GetNthBlock, get_several_trailing_bytes_from_incomplete_one_block_message)
 {
     uint8_t expected[16] = {};
-    uint8_t actual[16] = {};
     uint8_t msg[15] = {};
 
     bytes_in_msg = sizeof(msg);
     num_blocks = 1;
     num_trailing_bytes = 15;
+    context.n_blocks = num_blocks;
 
     set_up_message(msg, bytes_in_msg);
     incomplete_nth_block_set_up_expected(expected, num_blocks, num_trailing_bytes);
-    set_up_actual_nth_block(actual);
+    set_up_actual_nth_block(context.nth_block);
 
-    ret = CmacAesOps_GetNthBlock(msg, bytes_in_msg, actual);
+    ret = CmacAesOps_GetNthBlock(msg, bytes_in_msg, &context);
 
     LONGS_EQUAL( 0, ret );
-    MEMCMP_EQUAL( expected, actual, sizeof(expected) );
+    MEMCMP_EQUAL( expected, context.nth_block, sizeof(expected) );
 }
 
 TEST(GetNthBlock, get_complete_block_from_complete_one_block_message)
 {
     uint8_t expected[16] = {};
-    uint8_t actual[16] = {};
     uint8_t msg[16] = {};
 
     bytes_in_msg = sizeof(msg);
     num_blocks = 1;
     num_trailing_bytes = 0;
+    context.n_blocks = num_blocks;
 
     set_up_message(msg, bytes_in_msg);
     complete_nth_block_set_up_expected(expected, num_blocks);
-    set_up_actual_nth_block(actual);
+    set_up_actual_nth_block(context.nth_block);
 
-    ret = CmacAesOps_GetNthBlock(msg, bytes_in_msg, actual);
+    ret = CmacAesOps_GetNthBlock(msg, bytes_in_msg, &context);
 
     LONGS_EQUAL( 0, ret );
-    MEMCMP_EQUAL( expected, actual, sizeof(expected) );
+    MEMCMP_EQUAL( expected, context.nth_block, sizeof(expected) );
 }
 
 TEST(GetNthBlock, get_trailing_bytes_from_incomplete_two_block_message)
 {
     uint8_t expected[CMAC_AES_BLOCK_LENGTH] = {};
-    uint8_t actual[CMAC_AES_BLOCK_LENGTH] = {};
     uint8_t msg[CMAC_AES_BLOCK_LENGTH + 1] = {};
 
     bytes_in_msg = sizeof(msg);
     num_blocks = 2;
     num_trailing_bytes = 1;
+    context.n_blocks = num_blocks;
 
     set_up_message(msg, bytes_in_msg);
     incomplete_nth_block_set_up_expected(expected, num_blocks, num_trailing_bytes);
-    set_up_actual_nth_block(actual);
+    set_up_actual_nth_block(context.nth_block);
 
-    ret = CmacAesOps_GetNthBlock(msg, bytes_in_msg, actual);
+    ret = CmacAesOps_GetNthBlock(msg, bytes_in_msg, &context);
 
     LONGS_EQUAL( 0, ret );
-    MEMCMP_EQUAL( expected, actual, sizeof(expected) );
+    MEMCMP_EQUAL( expected, context.nth_block, sizeof(expected) );
 }
 
 TEST(GetNthBlock, get_complete_last_block_from_complete_two_block_message)
 {
     uint8_t expected[CMAC_AES_BLOCK_LENGTH] = {};
-    uint8_t actual[CMAC_AES_BLOCK_LENGTH] = {};
     uint8_t msg[CMAC_AES_BLOCK_LENGTH * 2] = {};
 
     bytes_in_msg = sizeof(msg);
     num_blocks = 2;
     num_trailing_bytes = 0;
+    context.n_blocks = num_blocks;
 
     set_up_message(msg, bytes_in_msg);
     complete_nth_block_set_up_expected(expected, num_blocks);
-    set_up_actual_nth_block(actual);
+    set_up_actual_nth_block(context.nth_block);
 
-    ret = CmacAesOps_GetNthBlock(msg, bytes_in_msg, actual);
+    ret = CmacAesOps_GetNthBlock(msg, bytes_in_msg, &context);
 
     LONGS_EQUAL( 0, ret );
-    MEMCMP_EQUAL( expected, actual, sizeof(expected) );
+    MEMCMP_EQUAL( expected, context.nth_block, sizeof(expected) );
 }
 
 TEST(GetNthBlock, get_trailing_bytes_from_incomplete_three_block_message)
 {
     uint8_t expected[CMAC_AES_BLOCK_LENGTH] = {};
-    uint8_t actual[CMAC_AES_BLOCK_LENGTH] = {};
     uint8_t msg[CMAC_AES_BLOCK_LENGTH * 2 + 1] = {};
 
     bytes_in_msg = sizeof(msg);
     num_blocks = 3;
     num_trailing_bytes = 1;
+    context.n_blocks = num_blocks;
 
     set_up_message(msg, bytes_in_msg);
     incomplete_nth_block_set_up_expected(expected, num_blocks, num_trailing_bytes);
-    set_up_actual_nth_block(actual);
+    set_up_actual_nth_block(context.nth_block);
 
-    ret = CmacAesOps_GetNthBlock(msg, bytes_in_msg, actual);
+    ret = CmacAesOps_GetNthBlock(msg, bytes_in_msg, &context);
 
     LONGS_EQUAL( 0, ret );
-    MEMCMP_EQUAL( expected, actual, sizeof(expected) );
+    MEMCMP_EQUAL( expected, context.nth_block, sizeof(expected) );
 }
 
 TEST(GetNthBlock, get_complete_last_block_from_complete_three_block_message)
 {
     uint8_t expected[CMAC_AES_BLOCK_LENGTH] = {};
-    uint8_t actual[CMAC_AES_BLOCK_LENGTH] = {};
     uint8_t msg[CMAC_AES_BLOCK_LENGTH * 3] = {};
 
     bytes_in_msg = sizeof(msg);
     num_blocks = 3;
     num_trailing_bytes = 0;
+    context.n_blocks = num_blocks;
 
     set_up_message(msg, bytes_in_msg);
     complete_nth_block_set_up_expected(expected, num_blocks);
-    set_up_actual_nth_block(actual);
+    set_up_actual_nth_block(context.nth_block);
 
-    ret = CmacAesOps_GetNthBlock(msg, bytes_in_msg, actual);
+    ret = CmacAesOps_GetNthBlock(msg, bytes_in_msg, &context);
 
     LONGS_EQUAL( 0, ret );
-    MEMCMP_EQUAL( expected, actual, sizeof(expected) );
+    MEMCMP_EQUAL( expected, context.nth_block, sizeof(expected) );
 }
 
 TEST(GetNthBlock, do_not_segfault_with_null_message)
 {
     uint8_t expected[16] = {0};
-    uint8_t nth_block[16] = {0};
     uint8_t *msg = NULL;
 
     bytes_in_msg = 1;   // Not valid - msg pointer is NULL
     num_blocks = 1;     // Special case
     num_trailing_bytes = 0;
+    context.n_blocks = num_blocks;
 
     // Message is NULL
     // Expected is all zeros
-    set_up_actual_nth_block(nth_block);
+    set_up_actual_nth_block(context.nth_block);
 
-    ret = CmacAesOps_GetNthBlock(msg, bytes_in_msg, nth_block);
+    ret = CmacAesOps_GetNthBlock(msg, bytes_in_msg, &context);
 
     LONGS_EQUAL( 0, ret );
-    MEMCMP_EQUAL( expected, nth_block, sizeof(expected) );
+    MEMCMP_EQUAL( expected, context.nth_block, sizeof(expected) );
 }

@@ -54,21 +54,19 @@ bool CmacAesOps_GetIsCompleteBlock(size_t message_length)
     return (message_length % CMAC_AES_BLOCK_LENGTH) == 0;
 }
 
-int CmacAesOps_GetNthBlock(uint8_t *msg, size_t bytes_in_msg, uint8_t nth_block[16])
+int CmacAesOps_GetNthBlock(uint8_t *msg, size_t bytes_in_msg, CMAC_AES_CONTEXT *context)
 {
-    size_t blocks_in_msg;
     size_t offset;
 
-    memset(nth_block, 0, CMAC_AES_BLOCK_LENGTH);
+    memset( context->nth_block, 0, sizeof(context->nth_block) );
 
     if (msg == NULL)        // Zero-length message - is a valid case
     {
         return 0;
     }
 
-    blocks_in_msg = CmacAesOps_GetNBlocks(bytes_in_msg);
-    offset = CMAC_AES_BLOCK_LENGTH * (blocks_in_msg-1);
-    memcpy(nth_block, msg + offset, bytes_in_msg - offset);
+    offset = CMAC_AES_BLOCK_LENGTH * (context->n_blocks - 1);
+    memcpy(context->nth_block, msg + offset, bytes_in_msg - offset);
 
     return 0;
 }

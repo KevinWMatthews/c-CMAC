@@ -14,6 +14,7 @@ typedef struct CMAC_AES_CONTEXT
     uint8_t K1[16];
     uint8_t K2[16];
     size_t n_blocks;
+    uint8_t nth_block[16];
 } CMAC_AES_CONTEXT;
 
 /*
@@ -48,7 +49,7 @@ bool CmacAesOps_GetIsCompleteBlock(size_t message_length);
  * For the given message M, get nth block where n is given by the (1-indexed!) block number.
  * Value is returned in M_n.
  */
-int CmacAesOps_GetNthBlock(uint8_t *msg, size_t bytes_in_msg, uint8_t nth_block[16]);
+int CmacAesOps_GetNthBlock(uint8_t *msg, size_t bytes_in_msg, CMAC_AES_CONTEXT *context);
 
 /* Calculate the XOR of the last message block.
  *

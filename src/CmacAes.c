@@ -39,14 +39,14 @@ int CmacAes_Calculate(CMAC_AES_CALCULATE_PARAMS *params, uint8_t aes_cmac[16], s
     unsigned char M_n[16] = {0};
     unsigned char M_last[16] = {0};
 
-    ret = CmacAesOps_GetNthBlock(params->message, params->message_len, M_n);
+    ret = CmacAesOps_GetNthBlock(params->message, params->message_len, &context);
     if (is_complete_block)
     {
-        ret = CmacAesOps_SetLastBlockForComplete(M_n, context.K1, M_last);
+        ret = CmacAesOps_SetLastBlockForComplete(context.nth_block, context.K1, M_last);
     }
     else
     {
-        ret = CmacAesOps_SetLastBlockForIncomplete(M_n, context.K2, M_last);
+        ret = CmacAesOps_SetLastBlockForIncomplete(context.nth_block, context.K2, M_last);
     }
 
     // Step 5
