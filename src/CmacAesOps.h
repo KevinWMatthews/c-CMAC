@@ -13,6 +13,7 @@ typedef struct CMAC_AES_CONTEXT
     AES128_HANDLE aes_handle;
     uint8_t K1[16];
     uint8_t K2[16];
+    size_t n_blocks;
 } CMAC_AES_CONTEXT;
 
 /*
@@ -29,6 +30,7 @@ int CmacAesOps_GenerateSubkeys2(CMAC_AES_CONTEXT *context);
  * If the message length is 0, the number of blocks is set to 1.
  */
 size_t CmacAesOps_GetNBlocks(size_t message_length);
+int CmacAesOps_GetNBlocks2(size_t message_length, CMAC_AES_CONTEXT *context);
 
 /* Calculate if the last block of a message is complete.
  *
