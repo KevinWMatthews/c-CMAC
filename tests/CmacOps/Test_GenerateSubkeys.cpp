@@ -71,7 +71,7 @@ TEST(GenerateSubkeys, generate_subkeys_for_rfc_examples)
         .withParameter("output_len", sizeof(L))
         .andReturnValue(AES128_SUCCESS);
 
-    ret = CmacAesOps_GenerateSubkeys2(&context);
+    ret = CmacAesOps_GenerateSubkeys(&context);
 
     LONGS_EQUAL( 0, ret );
     MEMCMP_EQUAL( expected_K1, context.K1, sizeof(expected_K1) );

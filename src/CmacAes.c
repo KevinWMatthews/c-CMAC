@@ -25,7 +25,7 @@ int CmacAes_Calculate(CMAC_AES_CALCULATE_PARAMS *params, uint8_t aes_cmac[16], s
     Aes128_Create(&create_params, &context.aes_handle);
 
     // Step 1
-    ret = CmacAesOps_GenerateSubkeys2(&context);
+    ret = CmacAesOps_GenerateSubkeys(&context);
 
     // Step 2
     ret = CmacAesOps_GetNBlocks(params->message_len, &context);

@@ -5,7 +5,7 @@
 
 static uint8_t const_Zero[16];
 
-int CmacAesOps_GenerateSubkeys2(CMAC_AES_CONTEXT *context)
+int CmacAesOps_GenerateSubkeys(CMAC_AES_CONTEXT *context)
 {
     uint8_t L[16] = {0};
 

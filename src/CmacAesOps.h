@@ -21,7 +21,7 @@ typedef struct CMAC_AES_CONTEXT
  * Calculates subkeys K1 and K2.
  * Stores them in the context.
  */
-int CmacAesOps_GenerateSubkeys2(CMAC_AES_CONTEXT *context);
+int CmacAesOps_GenerateSubkeys(CMAC_AES_CONTEXT *context);
 
 /* Calculate the number of blocks in a message.
  *
