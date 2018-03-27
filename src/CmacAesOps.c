@@ -23,13 +23,13 @@ int CmacAesOps_GetNBlocks(size_t bytes_in_msg, CMAC_AES_CONTEXT *context)
     {
         context->n_blocks = 1;
     }
-    else if (bytes_in_msg % CMAC_AES_BLOCK_LENGTH == 0)
+    else if (bytes_in_msg % CMAC_AES_BYTES_IN_BLOCK == 0)
     {
-        context->n_blocks = bytes_in_msg / CMAC_AES_BLOCK_LENGTH;
+        context->n_blocks = bytes_in_msg / CMAC_AES_BYTES_IN_BLOCK;
     }
     else
     {
-        context->n_blocks = (bytes_in_msg / CMAC_AES_BLOCK_LENGTH) + 1;
+        context->n_blocks = (bytes_in_msg / CMAC_AES_BYTES_IN_BLOCK) + 1;
     }
 
     return 0;
@@ -40,7 +40,7 @@ bool CmacAesOps_GetIsCompleteBlock(size_t bytes_in_msg)
     if (bytes_in_msg == 0)
         return false;
 
-    return (bytes_in_msg % CMAC_AES_BLOCK_LENGTH) == 0;
+    return (bytes_in_msg % CMAC_AES_BYTES_IN_BLOCK) == 0;
 }
 
 int CmacAesOps_GetNthBlock(uint8_t *msg, size_t bytes_in_msg, CMAC_AES_CONTEXT *context)
@@ -54,7 +54,7 @@ int CmacAesOps_GetNthBlock(uint8_t *msg, size_t bytes_in_msg, CMAC_AES_CONTEXT *
         return 0;
     }
 
-    offset = CMAC_AES_BLOCK_LENGTH * (context->n_blocks - 1);
+    offset = CMAC_AES_BYTES_IN_BLOCK * (context->n_blocks - 1);
     memcpy(context->nth_block, msg + offset, bytes_in_msg - offset);
 
     return 0;

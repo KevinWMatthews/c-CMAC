@@ -31,7 +31,7 @@ TEST(GetNBlocks, zero_length_message_has_one_block)
 
 TEST(GetNBlocks, messgae_shorter_than_one_block_has_one_block)
 {
-    message_length = CMAC_AES_BLOCK_LENGTH - 1;
+    message_length = CMAC_AES_BYTES_IN_BLOCK - 1;
     ret = CmacAesOps_GetNBlocks(message_length, &context);
     LONGS_EQUAL( 0, ret );
     LONGS_EQUAL( 1, context.n_blocks );
@@ -39,7 +39,7 @@ TEST(GetNBlocks, messgae_shorter_than_one_block_has_one_block)
 
 TEST(GetNBlocks, message_exactly_one_block_length_has_one_block)
 {
-    message_length = CMAC_AES_BLOCK_LENGTH;
+    message_length = CMAC_AES_BYTES_IN_BLOCK;
     ret = CmacAesOps_GetNBlocks(message_length, &context);
     LONGS_EQUAL( 0, ret );
     LONGS_EQUAL( 1, context.n_blocks );
@@ -47,7 +47,7 @@ TEST(GetNBlocks, message_exactly_one_block_length_has_one_block)
 
 TEST(GetNBlocks, message_between_one_and_two_blocks_long_has_two_blocks)
 {
-    message_length = CMAC_AES_BLOCK_LENGTH + 1;
+    message_length = CMAC_AES_BYTES_IN_BLOCK + 1;
     ret = CmacAesOps_GetNBlocks(message_length, &context);
     LONGS_EQUAL( 0, ret );
     LONGS_EQUAL( 2, context.n_blocks );
@@ -55,7 +55,7 @@ TEST(GetNBlocks, message_between_one_and_two_blocks_long_has_two_blocks)
 
 TEST(GetNBlocks, message_exactly_two_blocks_long)
 {
-    message_length = CMAC_AES_BLOCK_LENGTH * 2;
+    message_length = CMAC_AES_BYTES_IN_BLOCK * 2;
     ret = CmacAesOps_GetNBlocks(message_length, &context);
     LONGS_EQUAL( 0, ret );
     LONGS_EQUAL( 2, context.n_blocks );
@@ -63,7 +63,7 @@ TEST(GetNBlocks, message_exactly_two_blocks_long)
 
 TEST(GetNBlocks, message_between_two_and_three_blocks_long)
 {
-    message_length = (CMAC_AES_BLOCK_LENGTH * 2) + 1;
+    message_length = (CMAC_AES_BYTES_IN_BLOCK * 2) + 1;
     ret = CmacAesOps_GetNBlocks(message_length, &context);
     LONGS_EQUAL( 0, ret );
     LONGS_EQUAL( 3, context.n_blocks );

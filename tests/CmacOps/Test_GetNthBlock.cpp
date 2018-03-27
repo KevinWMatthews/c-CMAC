@@ -146,8 +146,8 @@ TEST(GetNthBlock, get_complete_block_from_complete_one_block_message)
 
 TEST(GetNthBlock, get_trailing_bytes_from_incomplete_two_block_message)
 {
-    uint8_t expected[CMAC_AES_BLOCK_LENGTH] = {};
-    uint8_t msg[CMAC_AES_BLOCK_LENGTH + 1] = {};
+    uint8_t expected[CMAC_AES_BYTES_IN_BLOCK] = {};
+    uint8_t msg[CMAC_AES_BYTES_IN_BLOCK + 1] = {};
 
     bytes_in_msg = sizeof(msg);
     num_blocks = 2;
@@ -166,8 +166,8 @@ TEST(GetNthBlock, get_trailing_bytes_from_incomplete_two_block_message)
 
 TEST(GetNthBlock, get_complete_last_block_from_complete_two_block_message)
 {
-    uint8_t expected[CMAC_AES_BLOCK_LENGTH] = {};
-    uint8_t msg[CMAC_AES_BLOCK_LENGTH * 2] = {};
+    uint8_t expected[CMAC_AES_BYTES_IN_BLOCK] = {};
+    uint8_t msg[CMAC_AES_BYTES_IN_BLOCK * 2] = {};
 
     bytes_in_msg = sizeof(msg);
     num_blocks = 2;
@@ -186,8 +186,8 @@ TEST(GetNthBlock, get_complete_last_block_from_complete_two_block_message)
 
 TEST(GetNthBlock, get_trailing_bytes_from_incomplete_three_block_message)
 {
-    uint8_t expected[CMAC_AES_BLOCK_LENGTH] = {};
-    uint8_t msg[CMAC_AES_BLOCK_LENGTH * 2 + 1] = {};
+    uint8_t expected[CMAC_AES_BYTES_IN_BLOCK] = {};
+    uint8_t msg[CMAC_AES_BYTES_IN_BLOCK * 2 + 1] = {};
 
     bytes_in_msg = sizeof(msg);
     num_blocks = 3;
@@ -206,8 +206,8 @@ TEST(GetNthBlock, get_trailing_bytes_from_incomplete_three_block_message)
 
 TEST(GetNthBlock, get_complete_last_block_from_complete_three_block_message)
 {
-    uint8_t expected[CMAC_AES_BLOCK_LENGTH] = {};
-    uint8_t msg[CMAC_AES_BLOCK_LENGTH * 3] = {};
+    uint8_t expected[CMAC_AES_BYTES_IN_BLOCK] = {};
+    uint8_t msg[CMAC_AES_BYTES_IN_BLOCK * 3] = {};
 
     bytes_in_msg = sizeof(msg);
     num_blocks = 3;

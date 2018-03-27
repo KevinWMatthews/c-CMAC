@@ -39,7 +39,7 @@ TEST(GetIsCompleteBlock, message_shorter_than_one_block_is_not_complete)
 
 TEST(GetIsCompleteBlock, message_exactly_one_block_long_is_complete)
 {
-    message_length = CMAC_AES_BLOCK_LENGTH;
+    message_length = CMAC_AES_BYTES_IN_BLOCK;
 
     is_complete_block_flag = CmacAesOps_GetIsCompleteBlock(message_length);
 
@@ -48,7 +48,7 @@ TEST(GetIsCompleteBlock, message_exactly_one_block_long_is_complete)
 
 TEST(GetIsCompleteBlock, message_between_one_and_two_blocks_long_is_not_complete)
 {
-    message_length = CMAC_AES_BLOCK_LENGTH+15;
+    message_length = CMAC_AES_BYTES_IN_BLOCK+15;
 
     is_complete_block_flag = CmacAesOps_GetIsCompleteBlock(message_length);
 
@@ -57,7 +57,7 @@ TEST(GetIsCompleteBlock, message_between_one_and_two_blocks_long_is_not_complete
 
 TEST(GetIsCompleteBlock, message_exactly_two_blocks_long_is_complete)
 {
-    message_length = CMAC_AES_BLOCK_LENGTH*2;
+    message_length = CMAC_AES_BYTES_IN_BLOCK*2;
 
     is_complete_block_flag = CmacAesOps_GetIsCompleteBlock(message_length);
 

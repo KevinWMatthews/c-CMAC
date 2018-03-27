@@ -6,7 +6,7 @@
 #include <stdint.h>
 #include "Aes128.h"
 
-#define CMAC_AES_BLOCK_LENGTH       16
+#define CMAC_AES_BYTES_IN_BLOCK         16
 
 typedef struct CMAC_AES_CONTEXT
 {
