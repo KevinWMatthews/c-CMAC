@@ -32,7 +32,7 @@ int CmacAesOps_GenerateSubkeys2(CMAC_AES_CONTEXT *context);
  * 129 bits => 2 blocks
  * If the message length is 0, the number of blocks is set to 1.
  */
-int CmacAesOps_GetNBlocks(size_t message_length, CMAC_AES_CONTEXT *context);
+int CmacAesOps_GetNBlocks(size_t bytes_in_msg, CMAC_AES_CONTEXT *context);
 
 /* Calculate if the last block of a message is complete.
  *
@@ -43,7 +43,7 @@ int CmacAesOps_GetNBlocks(size_t message_length, CMAC_AES_CONTEXT *context);
  * 128 bits => is_complete_block_flag = 1
  * 129 bits => is_complete_block_flag = 0
  */
-bool CmacAesOps_GetIsCompleteBlock(size_t message_length);
+bool CmacAesOps_GetIsCompleteBlock(size_t bytes_in_msg);
 
 /* Get the nth block in the message
  *
