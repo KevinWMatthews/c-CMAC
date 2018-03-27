@@ -40,6 +40,7 @@ int CmacAes_Calculate(CMAC_AES_CALCULATE_PARAMS *params, uint8_t aes_cmac[16], s
     unsigned char M_last[16] = {0};
 
     ret = CmacAesOps_GetNthBlock(params->message, params->message_len, &context);
+    //TODO pull this into a single operation - SetLastBlock
     if (context.is_nth_block_complete)
     {
         ret = CmacAesOps_SetLastBlockForComplete(context.nth_block, context.key1, M_last);
