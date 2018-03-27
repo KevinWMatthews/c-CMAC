@@ -14,17 +14,19 @@ typedef struct CMAC_AES_CONTEXT
     uint8_t K1[16];
     uint8_t K2[16];
     size_t n_blocks;
-    uint8_t nth_block[16];
+    uint8_t nth_block[16];      // M_n
 } CMAC_AES_CONTEXT;
 
 /*
- *TODO add documentation
+ * Calculates subkeys K1 and K2.
+ * Stores them in the context.
  */
 int CmacAesOps_GenerateSubkeys2(CMAC_AES_CONTEXT *context);
 
 /* Calculate the number of blocks in a message.
  *
- * Returns the number of 128-bit (16-byte) blocks in the given message.
+ * Stores the number of 128-bit (16-byte) blocks in the given message in the context.
+ *
  * If the block contains trailing bits, the block number is rounded up. For example,
  * 128 bits => 1 block
  * 129 bits => 2 blocks
@@ -46,7 +48,7 @@ bool CmacAesOps_GetIsCompleteBlock(size_t message_length);
 /* Get the nth block in the message
  *
  * For the given message M, get nth block where n is given by the (1-indexed!) block number.
- * Value is returned in M_n.
+ * Stores the nth block in the context.
  */
 int CmacAesOps_GetNthBlock(uint8_t *msg, size_t bytes_in_msg, CMAC_AES_CONTEXT *context);
 
