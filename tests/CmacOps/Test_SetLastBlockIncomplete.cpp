@@ -18,37 +18,34 @@ TEST_GROUP(SetLastBlockIncomplete)
     }
 };
 
-TEST(SetLastBlockIncomplete, pad_and_xor_completely_empty_block)
+TEST(SetLastBlockIncomplete, pad_and_xor_empty_block_key_zeros)
 {
-    uint8_t M_n[16] = {};
-    uint8_t K2[16] = {};
-    uint8_t M_last[16] = {};
     uint8_t expected[16] = {0x80};
+    uint8_t actual[16] = {};
+    uint8_t nth_block[16] = {};
+    uint8_t K2[16] = {};
 
-    ret = CmacAesOps_SetLastBlockForIncomplete(M_n, K2, M_last);
+    ret = CmacAesOps_SetLastBlockForIncomplete(nth_block, K2, actual);
 
     LONGS_EQUAL( 0, ret );
-    MEMCMP_EQUAL( expected, M_last, sizeof(expected) );
+    MEMCMP_EQUAL( expected, actual, sizeof(expected) );
 }
 
-// This doesn't enforce the correct behavior - this block is complete.
-// Test the entire block so we can be sure that we operate on all bits.
-TEST(SetLastBlockIncomplete, pad_and_xor_incomplete_block_of_ffs)
+TEST(SetLastBlockIncomplete, pad_and_xor_empty_block_key_ffs)
 {
-    uint8_t M_n[16] = {};
-    uint8_t K2[16] = {
-        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-    };
-    uint8_t M_last[16] = {};
     uint8_t expected[16] = {
         0x7f, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
         0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
     };
+    uint8_t actual[16] = {};
+    uint8_t nth_block[16] = {};
+    uint8_t K2[16] = {
+        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+    };
 
-    ret = CmacAesOps_SetLastBlockForIncomplete(M_n, K2, M_last);
+    ret = CmacAesOps_SetLastBlockForIncomplete(nth_block, K2, actual);
 
     LONGS_EQUAL( 0, ret );
-    MEMCMP_EQUAL( expected, M_last, sizeof(expected) );
+    MEMCMP_EQUAL( expected, actual, sizeof(expected) );
 }
-
