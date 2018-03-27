@@ -17,17 +17,7 @@ int CmacAesOps_GenerateSubkeys2(CMAC_AES_CONTEXT *context)
     return 0;
 }
 
-size_t CmacAesOps_GetNBlocks(size_t message_length)
-{
-    if (message_length == 0)
-        return 1;
-
-    if (message_length % CMAC_AES_BLOCK_LENGTH == 0)
-        return message_length / CMAC_AES_BLOCK_LENGTH;
-
-    return (message_length / CMAC_AES_BLOCK_LENGTH) + 1;
-}
-int CmacAesOps_GetNBlocks2(size_t message_length, CMAC_AES_CONTEXT *context)
+int CmacAesOps_GetNBlocks(size_t message_length, CMAC_AES_CONTEXT *context)
 {
     if (message_length == 0)
     {
@@ -44,7 +34,6 @@ int CmacAesOps_GetNBlocks2(size_t message_length, CMAC_AES_CONTEXT *context)
 
     return 0;
 }
-
 
 bool CmacAesOps_GetIsCompleteBlock(size_t message_length)
 {

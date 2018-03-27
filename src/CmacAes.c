@@ -28,7 +28,7 @@ int CmacAes_Calculate(CMAC_AES_CALCULATE_PARAMS *params, uint8_t aes_cmac[16], s
     ret = CmacAesOps_GenerateSubkeys2(&context);
 
     // Step 2
-    ret = CmacAesOps_GetNBlocks2(params->message_len, &context);
+    ret = CmacAesOps_GetNBlocks(params->message_len, &context);
 
     // Step 3
     is_complete_block = CmacAesOps_GetIsCompleteBlock(params->message_len);
