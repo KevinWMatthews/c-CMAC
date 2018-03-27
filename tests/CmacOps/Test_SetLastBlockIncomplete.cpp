@@ -49,3 +49,16 @@ TEST(SetLastBlockIncomplete, pad_and_xor_empty_block_key_ffs)
     LONGS_EQUAL( 0, ret );
     MEMCMP_EQUAL( expected, actual, sizeof(expected) );
 }
+
+IGNORE_TEST(SetLastBlockIncomplete, pad_and_xor_block_with_one_byte_key_zeros)
+{
+    uint8_t expected[16] = {0x55, 0x80};
+    uint8_t actual[16] = {};
+    uint8_t nth_block[16] = {0x55};
+    uint8_t K2[16] = {};
+
+    ret = CmacAesOps_SetLastBlockForIncomplete(nth_block, K2, actual);
+
+    LONGS_EQUAL( 0, ret );
+    MEMCMP_EQUAL( expected, actual, sizeof(expected) );
+}
