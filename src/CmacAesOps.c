@@ -66,6 +66,13 @@ int CmacAesOps_GetNthBlock(uint8_t *msg, size_t bytes_in_msg, CMAC_AES_CONTEXT *
     return 0;
 }
 
+int CmacAesOps_SetLastBlock(CMAC_AES_CONTEXT *context)
+{
+    BitOperation_Xor(context->nth_block, context->key1,
+            sizeof(context->key1), context->last_block);
+    return 0;
+}
+
 int CmacAesOps_SetLastBlockForIncomplete(uint8_t M_n[16], uint8_t K2[16], uint8_t M_last[16])
 {
     // Hack for padding - set first bit, the rest are 0's

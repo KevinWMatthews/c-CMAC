@@ -16,6 +16,7 @@ typedef struct CMAC_AES_CONTEXT
     size_t n_blocks;
     bool is_nth_block_complete;
     uint8_t nth_block[16];      // M_n
+    uint8_t last_block[16];     // M_last
 } CMAC_AES_CONTEXT;
 
 /*
@@ -52,14 +53,13 @@ int CmacAesOps_GetIsCompleteBlock(size_t bytes_in_msg, CMAC_AES_CONTEXT *context
  */
 int CmacAesOps_GetNthBlock(uint8_t *msg, size_t bytes_in_msg, CMAC_AES_CONTEXT *context);
 
-/* Calculate the XOR of the last message block.
+/* Calculate the "last block" (M_last) from the Nth block (M_n) and store this in the context.
  *
- * Given the nth block of the message, calculate the XOR of last block.
- * This is used as a special input for the final step of the CMAC calculation.
- *
- * If the block is incomplete, XOR using K2.
- *TODO if the block is complete, XOR using K1.
+ * The last block is used as a special input for the final step of the CMAC calculation.
+ * It is derived from the Nth block by padding (if necessary) and XOR with one of teh subkeys.
  */
+int CmacAesOps_SetLastBlock(CMAC_AES_CONTEXT *context);
+
 int CmacAesOps_SetLastBlockForIncomplete(uint8_t M_n[16], uint8_t K2[16], uint8_t M_last[16]);
 
 int CmacAesOps_SetLastBlockForComplete(uint8_t M_n[16], uint8_t K1[16], uint8_t M_last[16]);

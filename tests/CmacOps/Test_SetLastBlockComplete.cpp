@@ -4,9 +4,11 @@ extern "C"
 }
 
 #include "CppUTest/TestHarness.h"
+#include <string.h>
 
 TEST_GROUP(SetLastBlockComplete)
 {
+    CMAC_AES_CONTEXT context;
     int ret;
 
     void setup()
@@ -21,14 +23,15 @@ TEST_GROUP(SetLastBlockComplete)
 TEST(SetLastBlockComplete, xor_block_of_00s_with_key_of_00s)
 {
     uint8_t expected[16] = {};
-    uint8_t K1[16] = {};
-    uint8_t nth_block[16] = {};
-    uint8_t actual[16] = {};
 
-    ret = CmacAesOps_SetLastBlockForComplete(nth_block, K1, actual);
+    memset(context.key1, 0, sizeof(context.key1));
+    memset(context.nth_block, 0, sizeof(context.nth_block));
+    context.is_nth_block_complete = true;
+
+    ret = CmacAesOps_SetLastBlock(&context);
 
     LONGS_EQUAL( 0, ret );
-    MEMCMP_EQUAL( expected, actual, sizeof(expected) );
+    MEMCMP_EQUAL( expected, context.last_block, sizeof(expected) );
 }
 
 TEST(SetLastBlockComplete, xor_block_of_ffs_with_key_of_00s)
@@ -37,17 +40,15 @@ TEST(SetLastBlockComplete, xor_block_of_ffs_with_key_of_00s)
         0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
         0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
     };
-    uint8_t K1[16] = {};
-    uint8_t nth_block[16] = {
-        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-    };
-    uint8_t actual[16] = {};
 
-    ret = CmacAesOps_SetLastBlockForComplete(nth_block, K1, actual);
+    memset(context.key1, 0, sizeof(context.key1));
+    memset(context.nth_block, 0xff, sizeof(context.nth_block));
+    context.is_nth_block_complete = true;
+
+    ret = CmacAesOps_SetLastBlock(&context);
 
     LONGS_EQUAL( 0, ret );
-    MEMCMP_EQUAL( expected, actual, sizeof(expected) );
+    MEMCMP_EQUAL( expected, context.last_block, sizeof(expected) );
 }
 
 TEST(SetLastBlockComplete, xor_block_of_00s_with_key_of_ffs)
@@ -56,17 +57,15 @@ TEST(SetLastBlockComplete, xor_block_of_00s_with_key_of_ffs)
         0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
         0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
     };
-    uint8_t K1[16] = {
-        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-    };
-    uint8_t nth_block[16] = {};
-    uint8_t actual[16] = {};
 
-    ret = CmacAesOps_SetLastBlockForComplete(nth_block, K1, actual);
+    memset(context.key1, 0xff, sizeof(context.key1));
+    memset(context.nth_block, 0, sizeof(context.nth_block));
+    context.is_nth_block_complete = true;
+
+    ret = CmacAesOps_SetLastBlock(&context);
 
     LONGS_EQUAL( 0, ret );
-    MEMCMP_EQUAL( expected, actual, sizeof(expected) );
+    MEMCMP_EQUAL( expected, context.last_block, sizeof(expected) );
 }
 
 TEST(SetLastBlockComplete, xor_set_all_bits)
@@ -75,18 +74,13 @@ TEST(SetLastBlockComplete, xor_set_all_bits)
         0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
         0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
     };
-    uint8_t K1[16] = {
-        0x55, 0x55, 0x55, 0x55, 0x55, 0x55, 0x55, 0x55,
-        0x55, 0x55, 0x55, 0x55, 0x55, 0x55, 0x55, 0x55,
-    };
-    uint8_t nth_block[16] = {
-        0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa,
-        0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa,
-    };
-    uint8_t actual[16] = {};
 
-    ret = CmacAesOps_SetLastBlockForComplete(nth_block, K1, actual);
+    memset(context.key1, 0x55, sizeof(context.key1));
+    memset(context.nth_block, 0xaa, sizeof(context.nth_block));
+    context.is_nth_block_complete = true;
+
+    ret = CmacAesOps_SetLastBlock(&context);
 
     LONGS_EQUAL( 0, ret );
-    MEMCMP_EQUAL( expected, actual, sizeof(expected) );
+    MEMCMP_EQUAL( expected, context.last_block, sizeof(expected) );
 }
