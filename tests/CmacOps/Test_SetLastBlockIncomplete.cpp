@@ -20,7 +20,7 @@ TEST_GROUP(SetLastBlockIncomplete)
     }
 };
 
-IGNORE_TEST(SetLastBlockIncomplete, pad_and_xor_zero_length_block_with_key_of_00s)
+TEST(SetLastBlockIncomplete, pad_and_xor_zero_length_block_with_key_of_00s)
 {
     uint8_t expected[16] = {0x80};
 
