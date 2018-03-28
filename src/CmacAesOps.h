@@ -16,6 +16,7 @@ typedef struct CMAC_AES_CONTEXT
     size_t n_blocks;
     bool is_nth_block_complete;
     uint8_t nth_block[16];      // M_n
+    size_t nth_block_len;       // Bytes in actually written; not buffer length
     uint8_t last_block[16];     // M_last
 } CMAC_AES_CONTEXT;
 
@@ -49,7 +50,7 @@ int CmacAesOps_GetIsCompleteBlock(size_t bytes_in_msg, CMAC_AES_CONTEXT *context
 /* Get the nth block in the message
  *
  * For the given message M, get nth block where n is given by the (1-indexed!) block number.
- * Stores the nth block in the context.
+ * Stores the nth block and its length in the context.
  */
 int CmacAesOps_GetNthBlock(uint8_t *msg, size_t bytes_in_msg, CMAC_AES_CONTEXT *context);
 

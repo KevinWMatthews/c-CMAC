@@ -62,6 +62,7 @@ int CmacAesOps_GetNthBlock(uint8_t *msg, size_t bytes_in_msg, CMAC_AES_CONTEXT *
 
     offset = CMAC_AES_BYTES_IN_BLOCK * (context->n_blocks - 1);
     memcpy(context->nth_block, msg + offset, bytes_in_msg - offset);
+    context->nth_block_len = bytes_in_msg - offset;
 
     return 0;
 }
