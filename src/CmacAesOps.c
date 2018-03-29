@@ -69,8 +69,22 @@ int CmacAesOps_GetNthBlock(uint8_t *msg, size_t bytes_in_msg, CMAC_AES_CONTEXT *
 
 int CmacAesOps_SetLastBlock(CMAC_AES_CONTEXT *context)
 {
-    BitOperation_Xor(context->nth_block, context->key1,
-            sizeof(context->key1), context->last_block);
+    if (context->is_nth_block_complete)
+    {
+        BitOperation_Xor(context->nth_block,
+                context->key1, sizeof(context->key1),
+                context->last_block);
+    }
+    else
+    {
+        size_t num_trailing_bytes = context->nth_block_len;
+
+        memcpy(context->last_block, context->nth_block, num_trailing_bytes);
+        context->last_block[num_trailing_bytes] = 0x80;      // Padding
+        BitOperation_Xor(context->last_block,
+                context->key2, sizeof(context->key2),
+                context->last_block);
+    }
     return 0;
 }
 
