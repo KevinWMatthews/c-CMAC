@@ -34,21 +34,8 @@ int CmacAes_Calculate(CMAC_AES_CALCULATE_PARAMS *params, uint8_t aes_cmac[16], s
     ret = CmacAesOps_GetIsCompleteBlock(params->message_len, &context);
 
     // Step 4
-    // Given a message of n blocks, get the nth block.
-    // For now we have a zero-length message, so it will be all padding.
-    unsigned char M_n[16] = {0};
-    unsigned char M_last[16] = {0};
-
     ret = CmacAesOps_GetNthBlock(params->message, params->message_len, &context);
-    //TODO pull this into a single operation - SetLastBlock
-    if (context.is_nth_block_complete)
-    {
-        ret = CmacAesOps_SetLastBlockForComplete(context.nth_block, context.key1, M_last);
-    }
-    else
-    {
-        ret = CmacAesOps_SetLastBlockForIncomplete(context.nth_block, context.key2, M_last);
-    }
+    ret = CmacAesOps_SetLastBlock(&context);
 
     // Step 5
     unsigned char X[16] = {0};
@@ -56,7 +43,7 @@ int CmacAes_Calculate(CMAC_AES_CALCULATE_PARAMS *params, uint8_t aes_cmac[16], s
     // Step 6
     unsigned char Y[16] = {0};
     ret = CmacAesOps_ApplyCbcMac(params->key, params->message, context.n_blocks, X, Y);
-    ret = CmacAesOps_FinishCbcMac1(M_last, X, Y);
+    ret = CmacAesOps_FinishCbcMac1(context.last_block, X, Y);
 
 
     unsigned char T[16] = {0};
