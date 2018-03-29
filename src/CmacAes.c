@@ -17,11 +17,11 @@ int CmacAes_Calculate(CMAC_AES_CALCULATE_PARAMS *params, uint8_t aes_cmac[16], s
         .iv_len = sizeof(iv),
     };
 
-    Aes128_Initialize();
     //TODO extract this into a CmacOps function.
     // We need to make it obvious that you must do this.
     // This function will accept only the key and the key length.
     // It will set the IV (note the comment on IV above - code smell).
+    Aes128_Initialize();
     Aes128_Create(&create_params, &context.aes_handle);
 
     // Step 1
@@ -38,21 +38,23 @@ int CmacAes_Calculate(CMAC_AES_CALCULATE_PARAMS *params, uint8_t aes_cmac[16], s
     ret = CmacAesOps_SetLastBlockFromNthBlock(&context);
 
     // Step 5
+    //TODO pull this into a function? It's part of the spec but is trivial
     unsigned char X[16] = {0};
 
     // Step 6
+    //TODO Pull all of this into a function?
     unsigned char Y[16] = {0};
     ret = CmacAesOps_ApplyCbcMac(params->key, params->message, context.n_blocks, X, Y);
     ret = CmacAesOps_FinishCbcMac1(context.last_block, X, Y);
 
-
     unsigned char T[16] = {0};
     ret = CmacAesOps_FinishCbcMac2(context.aes_handle, Y, T, sizeof(T));
 
-    Aes128_Destroy(&context.aes_handle);
-
     // Step 7
     memcpy(aes_cmac, T, 16);
+
+    //TODO Extract this into a CmacOps function?
+    Aes128_Destroy(&context.aes_handle);
 
     return 0;
 }
