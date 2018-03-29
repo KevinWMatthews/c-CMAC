@@ -28,7 +28,7 @@ TEST(SetLastBlockIncomplete, pad_and_xor_zero_length_block_with_key_of_00s)
     memset(context.key2, 0, sizeof(context.key2));
     memset(context.nth_block, 0, sizeof(context.nth_block));
 
-    ret = CmacAesOps_SetLastBlock(&context);
+    ret = CmacAesOps_SetLastBlockFromNthBlock(&context);
 
     LONGS_EQUAL( 0, ret );
     MEMCMP_EQUAL( expected, context.last_block, sizeof(expected) );
@@ -45,7 +45,7 @@ TEST(SetLastBlockIncomplete, pad_and_xor_zero_length_block_with_key_of_ffs)
     memset(context.key2, 0xff, sizeof(context.key2));
     memset(context.nth_block, 0, sizeof(context.nth_block));
 
-    ret = CmacAesOps_SetLastBlock(&context);
+    ret = CmacAesOps_SetLastBlockFromNthBlock(&context);
 
     LONGS_EQUAL( 0, ret );
     MEMCMP_EQUAL( expected, context.last_block, sizeof(expected) );
@@ -61,7 +61,7 @@ TEST(SetLastBlockIncomplete, pad_and_xor_single_byte_with_key_of_00s)
     context.nth_block[0] = 0x55;
     context.nth_block_len = 1;
 
-    ret = CmacAesOps_SetLastBlock(&context);
+    ret = CmacAesOps_SetLastBlockFromNthBlock(&context);
 
     LONGS_EQUAL( 0, ret );
     MEMCMP_EQUAL( expected, context.last_block, sizeof(expected) );
@@ -79,7 +79,7 @@ TEST(SetLastBlockIncomplete, pad_and_xor_single_byte_with_key_of_ffs)
     context.nth_block_len = 1;
     memset(context.nth_block, 0x55,context.nth_block_len);
 
-    ret = CmacAesOps_SetLastBlock(&context);
+    ret = CmacAesOps_SetLastBlockFromNthBlock(&context);
 
     LONGS_EQUAL( 0, ret );
     MEMCMP_EQUAL( expected, context.last_block, sizeof(expected) );
@@ -98,7 +98,7 @@ TEST(SetLastBlockIncomplete, pad_and_xor_larget_incomplete_block_with_key_of_ffs
     context.nth_block_len = sizeof(context.nth_block) - 1;
     memset(context.nth_block, 0x55, context.nth_block_len);
 
-    ret = CmacAesOps_SetLastBlock(&context);
+    ret = CmacAesOps_SetLastBlockFromNthBlock(&context);
 
     LONGS_EQUAL( 0, ret );
     MEMCMP_EQUAL( expected, context.last_block, sizeof(expected) );

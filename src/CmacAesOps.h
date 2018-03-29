@@ -59,7 +59,7 @@ int CmacAesOps_GetNthBlock(uint8_t *msg, size_t bytes_in_msg, CMAC_AES_CONTEXT *
  * The last block is used as a special input for the final step of the CMAC calculation.
  * It is derived from the Nth block by padding (if necessary) and XOR with one of teh subkeys.
  */
-int CmacAesOps_SetLastBlock(CMAC_AES_CONTEXT *context);
+int CmacAesOps_SetLastBlockFromNthBlock(CMAC_AES_CONTEXT *context);
 
 int CmacAesOps_SetLastBlockForIncomplete(uint8_t M_n[16], uint8_t K2[16], uint8_t M_last[16]);
 

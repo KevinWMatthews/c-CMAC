@@ -35,7 +35,7 @@ int CmacAes_Calculate(CMAC_AES_CALCULATE_PARAMS *params, uint8_t aes_cmac[16], s
 
     // Step 4
     ret = CmacAesOps_GetNthBlock(params->message, params->message_len, &context);
-    ret = CmacAesOps_SetLastBlock(&context);
+    ret = CmacAesOps_SetLastBlockFromNthBlock(&context);
 
     // Step 5
     unsigned char X[16] = {0};

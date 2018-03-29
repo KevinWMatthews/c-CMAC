@@ -67,7 +67,7 @@ int CmacAesOps_GetNthBlock(uint8_t *msg, size_t bytes_in_msg, CMAC_AES_CONTEXT *
     return 0;
 }
 
-int CmacAesOps_SetLastBlock(CMAC_AES_CONTEXT *context)
+int CmacAesOps_SetLastBlockFromNthBlock(CMAC_AES_CONTEXT *context)
 {
     if (context->is_nth_block_complete)
     {
