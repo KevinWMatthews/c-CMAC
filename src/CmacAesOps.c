@@ -110,8 +110,9 @@ int CmacAesOps_ApplyCbcMac(uint8_t aes_key[16], uint8_t *message, size_t n_block
 
 int CmacAesOps_ApplyCbcXor(CMAC_AES_CONTEXT *context)
 {
-    BitOperation_Xor(context->last_block,
-            context->current_cipher_block, sizeof(context->current_cipher_block),
+    // previous cipher block ^ i-th block.
+    // i-th block is last block for final block (not nth block).
+    BitOperation_Xor(context->current_cipher_block, context->last_block, 16,
             context->cipher_input_block);
     return 0;
 }
@@ -124,8 +125,6 @@ int CmacAesOps_ApplyCbcAes(CMAC_AES_CONTEXT *context)
     params.input = context->cipher_input_block;
     params.input_len = sizeof(context->cipher_input_block);
 
-    Aes128_Encrypt( &params,
-            context->current_cipher_block,
-            sizeof(context->current_cipher_block) );
+    Aes128_Encrypt( &params, context->current_cipher_block, sizeof(context->current_cipher_block) );
     return 0;
 }

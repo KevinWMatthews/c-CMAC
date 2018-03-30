@@ -75,14 +75,14 @@ int CmacAesOps_SetLastBlockForComplete(uint8_t M_n[16], uint8_t K1[16], uint8_t 
 int CmacAesOps_ApplyCbcMac(uint8_t aes_key[16], uint8_t *message, size_t n_blocks, uint8_t X[16], uint8_t Y[16]);
 
 /*TODO document properly
- * XOR to i-th block of message with the previous cipher block.
+ * XOR to i-th block of message with the cipher block.
  *
  * The last block is a special case: use M_last instead of M_n.
  */
 int CmacAesOps_ApplyCbcXor(CMAC_AES_CONTEXT *context);
 
 /*TODO document properly
- * Apply AES to CBC input.
+ * Apply AES to the cipher input block and store the results in the cipher block.
  */
 int CmacAesOps_ApplyCbcAes(CMAC_AES_CONTEXT *context);
 
