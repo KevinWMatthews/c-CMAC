@@ -55,7 +55,7 @@ TEST(ApplyCbcMac, apply_cbc_xor_to_empty_block)
     memset( context.current_cipher_block, 0, sizeof(context.current_cipher_block) );
     memset( context.last_block, 0, sizeof(context.last_block) );
 
-    ret = CmacAesOps_ApplyCbcMac1_(&context);
+    ret = CmacAesOps_ApplyCbcXor(&context);
 
     LONGS_EQUAL( 0, ret );
     MEMCMP_EQUAL( expected, context.cipher_input_block, sizeof(expected) );
@@ -70,7 +70,7 @@ TEST(ApplyCbcMac, apply_cbc_xor_to_block_of_ffs)
     memset( context.current_cipher_block, 0, sizeof(context.current_cipher_block) );
     memset( context.last_block, 0xff, sizeof(context.last_block) );
 
-    ret = CmacAesOps_ApplyCbcMac1_(&context);
+    ret = CmacAesOps_ApplyCbcXor(&context);
 
     LONGS_EQUAL( 0, ret );
     MEMCMP_EQUAL( expected, context.cipher_input_block, sizeof(expected) );

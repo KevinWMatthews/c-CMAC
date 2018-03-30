@@ -79,7 +79,7 @@ int CmacAesOps_ApplyCbcMac(uint8_t aes_key[16], uint8_t *message, size_t n_block
  * The last block is a special case: use M_last instead of M_n.
  */
 int CmacAesOps_ApplyCbcMac1(uint8_t M_last[16], uint8_t X[16], uint8_t Y[16]);
-int CmacAesOps_ApplyCbcMac1_(CMAC_AES_CONTEXT *context);
+int CmacAesOps_ApplyCbcXor(CMAC_AES_CONTEXT *context);
 
 /* Apply second finishing step of the CBC-MAC.
  *

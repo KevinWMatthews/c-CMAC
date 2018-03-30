@@ -114,7 +114,7 @@ int CmacAesOps_ApplyCbcMac1(uint8_t M_last[16], uint8_t X[16], uint8_t Y[16])
     return 0;
 }
 
-int CmacAesOps_ApplyCbcMac1_(CMAC_AES_CONTEXT *context)
+int CmacAesOps_ApplyCbcXor(CMAC_AES_CONTEXT *context)
 {
     BitOperation_Xor(context->last_block,
             context->current_cipher_block, sizeof(context->current_cipher_block),
