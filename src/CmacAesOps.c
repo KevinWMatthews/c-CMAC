@@ -114,6 +114,14 @@ int CmacAesOps_ApplyCbcMac1(uint8_t M_last[16], uint8_t X[16], uint8_t Y[16])
     return 0;
 }
 
+int CmacAesOps_ApplyCbcMac1_(CMAC_AES_CONTEXT *context)
+{
+    BitOperation_Xor(context->last_block,
+            context->current_cipher_block, sizeof(context->current_cipher_block),
+            context->cipher_input_block);
+    return 0;
+}
+
 int CmacAesOps_ApplyCbcMac2(AES128_HANDLE aes_handle, uint8_t Y[16], uint8_t T[16], size_t T_len)
 {
     AES128_CRYPTO_PARAMS params = {

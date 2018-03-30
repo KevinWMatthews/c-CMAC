@@ -18,6 +18,8 @@ typedef struct CMAC_AES_CONTEXT
     uint8_t nth_block[16];      // M_n
     size_t nth_block_len;       // Bytes in actually written; not buffer length
     uint8_t last_block[16];     // M_last
+    uint8_t current_cipher_block[16];   // X
+    uint8_t cipher_input_block[16];     // Y
 } CMAC_AES_CONTEXT;
 
 /*
@@ -77,6 +79,7 @@ int CmacAesOps_ApplyCbcMac(uint8_t aes_key[16], uint8_t *message, size_t n_block
  * The last block is a special case: use M_last instead of M_n.
  */
 int CmacAesOps_ApplyCbcMac1(uint8_t M_last[16], uint8_t X[16], uint8_t Y[16]);
+int CmacAesOps_ApplyCbcMac1_(CMAC_AES_CONTEXT *context);
 
 /* Apply second finishing step of the CBC-MAC.
  *

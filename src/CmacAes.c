@@ -39,6 +39,7 @@ int CmacAes_Calculate(CMAC_AES_CALCULATE_PARAMS *params, uint8_t aes_cmac[16], s
 
     // Step 5
     //TODO pull this into a function? It's part of the spec but is trivial
+    // Clear the cipher block in the context.
     unsigned char X[16] = {0};
 
     // Step 6

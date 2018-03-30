@@ -7,9 +7,11 @@ extern "C"
 
 #include "CppUTest/TestHarness.h"
 #include "CppUTestExt/MockSupport.h"
+#include <string.h>
 
 TEST_GROUP(ApplyCbcMac)
 {
+    CMAC_AES_CONTEXT context;
     size_t n_blocks;
     bool is_complete_block_flag;
     int ret;
@@ -45,17 +47,33 @@ TEST(ApplyCbcMac, apply_to_zero_length_message)
     MEMCMP_EQUAL( expected_Y, Y, sizeof(expected_Y) );
 }
 
-TEST(ApplyCbcMac, finish_zero_length_message_part_1)
+TEST(ApplyCbcMac, apply_cbc_xor_to_empty_block)
 {
-    uint8_t M_last[16] = {0x80};
-    uint8_t X[16] = {};
-    uint8_t Y[16] = {};
-    uint8_t expected[16] = {0x80};
+    // In reality there will never be an empty block or a key of 00's.
+    // However, this is useful for testing the algorithm.
+    uint8_t expected[16] = {};
+    memset( context.current_cipher_block, 0, sizeof(context.current_cipher_block) );
+    memset( context.last_block, 0, sizeof(context.last_block) );
 
-    ret = CmacAesOps_ApplyCbcMac1(M_last, X, Y);
+    ret = CmacAesOps_ApplyCbcMac1_(&context);
 
     LONGS_EQUAL( 0, ret );
-    MEMCMP_EQUAL( expected, Y, sizeof(expected) );
+    MEMCMP_EQUAL( expected, context.cipher_input_block, sizeof(expected) );
+}
+
+TEST(ApplyCbcMac, apply_cbc_xor_to_block_of_ffs)
+{
+    uint8_t expected[16] = {
+        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+    };
+    memset( context.current_cipher_block, 0, sizeof(context.current_cipher_block) );
+    memset( context.last_block, 0xff, sizeof(context.last_block) );
+
+    ret = CmacAesOps_ApplyCbcMac1_(&context);
+
+    LONGS_EQUAL( 0, ret );
+    MEMCMP_EQUAL( expected, context.cipher_input_block, sizeof(expected) );
 }
 
 TEST(ApplyCbcMac, finish_zero_length_message_part_2)
