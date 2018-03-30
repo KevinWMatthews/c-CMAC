@@ -45,10 +45,10 @@ int CmacAes_Calculate(CMAC_AES_CALCULATE_PARAMS *params, uint8_t aes_cmac[16], s
     //TODO Pull all of this into a function?
     unsigned char Y[16] = {0};
     ret = CmacAesOps_ApplyCbcMac(params->key, params->message, context.n_blocks, X, Y);
-    ret = CmacAesOps_FinishCbcMac1(context.last_block, X, Y);
+    ret = CmacAesOps_ApplyCbcMac1(context.last_block, X, Y);
 
     unsigned char T[16] = {0};
-    ret = CmacAesOps_FinishCbcMac2(context.aes_handle, Y, T, sizeof(T));
+    ret = CmacAesOps_ApplyCbcMac2(context.aes_handle, Y, T, sizeof(T));
 
     // Step 7
     memcpy(aes_cmac, T, 16);

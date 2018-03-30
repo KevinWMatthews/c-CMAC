@@ -52,7 +52,7 @@ TEST(ApplyCbcMac, finish_zero_length_message_part_1)
     uint8_t Y[16] = {};
     uint8_t expected[16] = {0x80};
 
-    ret = CmacAesOps_FinishCbcMac1(M_last, X, Y);
+    ret = CmacAesOps_ApplyCbcMac1(M_last, X, Y);
 
     LONGS_EQUAL( 0, ret );
     MEMCMP_EQUAL( expected, Y, sizeof(expected) );
@@ -91,7 +91,7 @@ TEST(ApplyCbcMac, finish_zero_length_message_part_2)
         .withParameter("output_len", sizeof(expected))
         .andReturnValue(AES128_SUCCESS);
 
-    ret = CmacAesOps_FinishCbcMac2(aes_handle, Y, T, sizeof(T));
+    ret = CmacAesOps_ApplyCbcMac2(aes_handle, Y, T, sizeof(T));
 
     LONGS_EQUAL( 0, ret );
     MEMCMP_EQUAL( expected, T, sizeof(expected) );
