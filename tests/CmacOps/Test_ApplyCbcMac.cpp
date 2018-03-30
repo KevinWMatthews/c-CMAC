@@ -76,32 +76,34 @@ TEST(ApplyCbcMac, apply_cbc_xor_to_block_of_ffs)
     MEMCMP_EQUAL( expected, context.cipher_input_block, sizeof(expected) );
 }
 
-TEST(ApplyCbcMac, finish_zero_length_message_part_2)
+TEST(ApplyCbcMac, apply_cbc_aes_to_empty_block_with_key_of_00s)
 {
-    // Calculated expected using online tool
+    // Calculated using online tool
     uint8_t expected[16] = {
-        0x3A, 0xD7, 0x8E, 0x72, 0x6C, 0x1E, 0xC0, 0x2B,
-        0x7E, 0xBF, 0xE9, 0x2B, 0x23, 0xD9, 0xEC, 0x34,
+        0x66, 0xE9, 0x4B, 0xD4, 0xEF, 0x8A, 0x2C, 0x3B,
+        0x88, 0x4C, 0xFA, 0x59, 0xCA, 0x34, 0x2B, 0x2E,
     };
+    memset( context.cipher_input_block, 0, sizeof(context.cipher_input_block) );
 
     uint8_t key[16] = {};
     uint8_t iv[16] = {};
-    uint8_t Y[16] = {0x80};
-    uint8_t T[16] = {};
 
     // Values for mocks
-    AES128_STRUCT aes_struct = {};
-    AES128_HANDLE aes_handle = &aes_struct;
+    AES128_HANDLE aes_handle = NULL;
+    AES128_CREATE_PARAMS create_params = {};
     AES128_CRYPTO_PARAMS crypto_params = {};
 
-    aes_struct.key = key;
-    aes_struct.key_len = sizeof(key);
-    aes_struct.iv = iv;
-    aes_struct.iv_len = sizeof(iv);
+    create_params.key = key;
+    create_params.key_len = sizeof(key);
+    create_params.iv = iv;
+    create_params.iv_len = sizeof(iv);
+    aes_handle = MockAes128_Create(&create_params);
+
+    context.aes_handle = aes_handle;
 
     crypto_params.aes_handle = aes_handle;
-    crypto_params.input = Y;
-    crypto_params.input_len = sizeof(Y);
+    crypto_params.input = context.cipher_input_block;
+    crypto_params.input_len = sizeof(context.cipher_input_block);
 
     mock().expectOneCall("Aes128_Encrypt")
         .withParameterOfType("AES128_CRYPTO_PARAMS", "params", &crypto_params)
@@ -109,8 +111,10 @@ TEST(ApplyCbcMac, finish_zero_length_message_part_2)
         .withParameter("output_len", sizeof(expected))
         .andReturnValue(AES128_SUCCESS);
 
-    ret = CmacAesOps_ApplyCbcMac2(aes_handle, Y, T, sizeof(T));
+    ret = CmacAesOps_ApplyCbcAes(&context);
 
     LONGS_EQUAL( 0, ret );
-    MEMCMP_EQUAL( expected, T, sizeof(expected) );
+    MEMCMP_EQUAL( expected, context.current_cipher_block, sizeof(expected) );
+
+    MockAes128_Destroy(aes_handle);
 }

@@ -192,6 +192,8 @@ TEST(CmacAesSubkeyOps, generate_L_from_input_key_all_zeros)
 
     LONGS_EQUAL( 0, ret );
     MEMCMP_EQUAL( expected, actual, sizeof(expected) );
+
+    MockAes128_Destroy(aes_handle);
 }
 
 TEST(CmacAesSubkeyOps, generate_L_using_rfc4933_example)
@@ -217,6 +219,8 @@ TEST(CmacAesSubkeyOps, generate_L_using_rfc4933_example)
     create_params.iv = iv;
     create_params.iv_len = sizeof(iv);
     aes_handle = MockAes128_Create(&create_params);
+
+    MockAes128_Destroy(aes_handle);
 
     crypto_params.aes_handle = aes_handle;
     crypto_params.input = input;

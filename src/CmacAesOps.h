@@ -87,5 +87,6 @@ int CmacAesOps_ApplyCbcMac1_(CMAC_AES_CONTEXT *context);
  * T is the CMC-MAC result.
  */
 int CmacAesOps_ApplyCbcMac2(AES128_HANDLE aes_handle, uint8_t Y[16], uint8_t T[16], size_t T_len);
+int CmacAesOps_ApplyCbcAes(CMAC_AES_CONTEXT *context);
 
 #endif

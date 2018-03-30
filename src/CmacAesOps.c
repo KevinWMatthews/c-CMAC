@@ -132,3 +132,17 @@ int CmacAesOps_ApplyCbcMac2(AES128_HANDLE aes_handle, uint8_t Y[16], uint8_t T[1
 
     return Aes128_Encrypt(&params, T, 16); //?
 }
+
+int CmacAesOps_ApplyCbcAes(CMAC_AES_CONTEXT *context)
+{
+    AES128_CRYPTO_PARAMS params = {};
+
+    params.aes_handle = context->aes_handle;
+    params.input = context->cipher_input_block;
+    params.input_len = sizeof(context->cipher_input_block);
+
+    Aes128_Encrypt( &params,
+            context->current_cipher_block,
+            sizeof(context->current_cipher_block) );
+    return 0;
+}
