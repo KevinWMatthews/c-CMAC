@@ -52,7 +52,7 @@ TEST(ApplyCbcMac, apply_cbc_xor_to_empty_block)
     // In reality there will never be an empty block or a key of 00's.
     // However, this is useful for testing the algorithm.
     uint8_t expected[16] = {};
-    memset( context.current_cipher_block, 0, sizeof(context.current_cipher_block) );
+    memset( context.cipher_output_block, 0, sizeof(context.cipher_output_block) );
     memset( context.last_block, 0, sizeof(context.last_block) );
 
     ret = CmacAesOps_ApplyCbcXor(&context);
@@ -67,7 +67,7 @@ TEST(ApplyCbcMac, apply_cbc_xor_to_block_of_ffs)
         0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
         0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
     };
-    memset( context.current_cipher_block, 0, sizeof(context.current_cipher_block) );
+    memset( context.cipher_output_block, 0, sizeof(context.cipher_output_block) );
     memset( context.last_block, 0xff, sizeof(context.last_block) );
 
     ret = CmacAesOps_ApplyCbcXor(&context);
@@ -115,7 +115,7 @@ TEST(ApplyCbcMac, apply_cbc_aes_to_empty_block_with_key_of_00s)
     ret = CmacAesOps_ApplyCbcAes(&context);
 
     LONGS_EQUAL( 0, ret );
-    MEMCMP_EQUAL( expected, context.current_cipher_block, sizeof(expected) );
+    MEMCMP_EQUAL( expected, context.cipher_output_block, sizeof(expected) );
 
     MockAes128_Destroy(aes_handle);
 }
@@ -159,7 +159,7 @@ TEST(ApplyCbcMac, apply_cbc_aes_to_block_of_ffs_with_key_of_00s)
     ret = CmacAesOps_ApplyCbcAes(&context);
 
     LONGS_EQUAL( 0, ret );
-    MEMCMP_EQUAL( expected, context.current_cipher_block, sizeof(expected) );
+    MEMCMP_EQUAL( expected, context.cipher_output_block, sizeof(expected) );
 
     MockAes128_Destroy(aes_handle);
 }

@@ -48,7 +48,7 @@ int CmacAes_Calculate(CMAC_AES_CALCULATE_PARAMS *params, uint8_t aes_cmac[16], s
     ret = CmacAesOps_ApplyCbcAes(&context);
 
     // Step 7
-    memcpy(aes_cmac, context.current_cipher_block, 16);
+    memcpy(aes_cmac, context.cipher_output_block, 16);
 
     //TODO Extract this into a CmacOps function?
     Aes128_Destroy(&context.aes_handle);
