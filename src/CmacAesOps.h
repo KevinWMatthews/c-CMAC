@@ -74,19 +74,16 @@ int CmacAesOps_SetLastBlockForComplete(uint8_t M_n[16], uint8_t K1[16], uint8_t 
  */
 int CmacAesOps_ApplyCbcMac(uint8_t aes_key[16], uint8_t *message, size_t n_blocks, uint8_t X[16], uint8_t Y[16]);
 
-/* Apply first finishing step of the CBC-MAC.
+/*TODO document properly
+ * XOR to i-th block of message with the previous cipher block.
  *
  * The last block is a special case: use M_last instead of M_n.
  */
-int CmacAesOps_ApplyCbcMac1(uint8_t M_last[16], uint8_t X[16], uint8_t Y[16]);
 int CmacAesOps_ApplyCbcXor(CMAC_AES_CONTEXT *context);
 
-/* Apply second finishing step of the CBC-MAC.
- *
- * Perform final AES-128 encryption.
- * T is the CMC-MAC result.
+/*TODO document properly
+ * Apply AES to CBC input.
  */
-int CmacAesOps_ApplyCbcMac2(AES128_HANDLE aes_handle, uint8_t Y[16], uint8_t T[16], size_t T_len);
 int CmacAesOps_ApplyCbcAes(CMAC_AES_CONTEXT *context);
 
 #endif
