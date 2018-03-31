@@ -47,6 +47,7 @@ TEST(ApplyCbcMac, apply_to_zero_length_message)
     MEMCMP_EQUAL( expected_Y, Y, sizeof(expected_Y) );
 }
 
+//TODO pull into apply cbc file?
 TEST(ApplyCbcMac, apply_cbc_xor_to_empty_block)
 {
     // In reality there will never be an empty block or a key of 00's.
@@ -76,6 +77,7 @@ TEST(ApplyCbcMac, apply_cbc_xor_to_block_of_ffs)
     MEMCMP_EQUAL( expected, context.cipher_input_block, sizeof(expected) );
 }
 
+//TODO pull into apply aes file?
 TEST(ApplyCbcMac, apply_cbc_aes_to_empty_block_with_key_of_00s)
 {
     // Calculated using online tool
