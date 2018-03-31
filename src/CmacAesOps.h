@@ -86,4 +86,8 @@ int CmacAesOps_ApplyCbcXor(CMAC_AES_CONTEXT *context);
  */
 int CmacAesOps_ApplyCbcAes(CMAC_AES_CONTEXT *context);
 
+/* Copy CMAC result into the given buffer.
+ */
+int CmacAesOps_CopyCmacOutput(CMAC_AES_CONTEXT *context, uint8_t *buffer, size_t buffer_len);
+
 #endif

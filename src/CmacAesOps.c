@@ -119,3 +119,9 @@ int CmacAesOps_ApplyCbcAes(CMAC_AES_CONTEXT *context)
     Aes128_Encrypt( &params, context->cipher_output_block, sizeof(context->cipher_output_block) );
     return 0;
 }
+
+int CmacAesOps_CopyCmacOutput(CMAC_AES_CONTEXT *context, uint8_t *buffer, size_t buffer_len)
+{
+    memcpy( buffer, context->cipher_output_block, sizeof(context->cipher_output_block) );
+    return 0;
+}
