@@ -38,9 +38,7 @@ int CmacAes_Calculate(CMAC_AES_CALCULATE_PARAMS *params, uint8_t aes_cmac[16], s
     ret = CmacAesOps_SetLastBlockFromNthBlock(&context);
 
     // Step 5
-    //TODO pull this into a function? It's part of the spec but is trivial
-    // Clear the cipher block in the context.
-    unsigned char X[16] = {0};
+    ret = CmacAesOps_InitializeCipherOutputBlock(&context);
 
     // Step 6
     //TODO Pull all of this into a function?

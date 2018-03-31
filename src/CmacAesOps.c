@@ -108,6 +108,12 @@ int CmacAesOps_ApplyCbcMac(uint8_t aes_key[16], uint8_t *message, size_t n_block
     return 0;
 }
 
+int CmacAesOps_InitializeCipherOutputBlock(CMAC_AES_CONTEXT *context)
+{
+    memset(context->cipher_output_block, 0x00, sizeof(context->cipher_output_block) );
+    return 0;
+}
+
 int CmacAesOps_ApplyCbcXor(CMAC_AES_CONTEXT *context)
 {
     // previous cipher block ^ i-th block.

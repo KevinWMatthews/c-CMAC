@@ -9,6 +9,7 @@ add_executable(UnitTests_CmacOps
     Test_GetNthBlock.cpp
     Test_SetLastBlockIncomplete.cpp
     Test_SetLastBlockComplete.cpp
+    Test_InitializeCipherOutputBlock.cpp
     Test_ApplyCbcMac.cpp
 )
 

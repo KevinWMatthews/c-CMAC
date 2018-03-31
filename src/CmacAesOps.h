@@ -17,9 +17,9 @@ typedef struct CMAC_AES_CONTEXT
     bool is_nth_block_complete;
     uint8_t nth_block[16];      // M_n
     size_t nth_block_len;       // Bytes in actually written; not buffer length
-    uint8_t last_block[16];     // M_last
-    uint8_t cipher_output_block[16];    // X
+    uint8_t last_block[16];     // Final block; M_last
     uint8_t cipher_input_block[16];     // Y
+    uint8_t cipher_output_block[16];    // X
 } CMAC_AES_CONTEXT;
 
 /*
@@ -66,6 +66,10 @@ int CmacAesOps_SetLastBlockFromNthBlock(CMAC_AES_CONTEXT *context);
 int CmacAesOps_SetLastBlockForIncomplete(uint8_t M_n[16], uint8_t K2[16], uint8_t M_last[16]);
 
 int CmacAesOps_SetLastBlockForComplete(uint8_t M_n[16], uint8_t K1[16], uint8_t M_last[16]);
+
+/* Set up the cipher output block for applying the CBC-MAC.
+ */
+int CmacAesOps_InitializeCipherOutputBlock(CMAC_AES_CONTEXT *context);
 
 /* Apply the basic CMC-MAC algorithm to all but the last block of the message.
  *
