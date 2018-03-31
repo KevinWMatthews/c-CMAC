@@ -63,10 +63,6 @@ int CmacAesOps_GetNthBlock(uint8_t *msg, size_t bytes_in_msg, CMAC_AES_CONTEXT *
  */
 int CmacAesOps_SetLastBlockFromNthBlock(CMAC_AES_CONTEXT *context);
 
-int CmacAesOps_SetLastBlockForIncomplete(uint8_t M_n[16], uint8_t K2[16], uint8_t M_last[16]);
-
-int CmacAesOps_SetLastBlockForComplete(uint8_t M_n[16], uint8_t K1[16], uint8_t M_last[16]);
-
 /* Set up the cipher output block for applying the CBC-MAC.
  */
 int CmacAesOps_InitializeCipherOutputBlock(CMAC_AES_CONTEXT *context);
