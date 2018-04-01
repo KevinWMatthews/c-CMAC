@@ -5,6 +5,19 @@
 
 static uint8_t const_Zero[16];
 
+int CmacAesOps_Initialize(CMAC_AES_CONTEXT *context, uint8_t *key, size_t key_len)
+{
+    AES128_CREATE_PARAMS params = {0};
+    params.key = key;
+    params.key_len = key_len;
+    params.iv = const_Zero;
+    params.iv_len = sizeof(const_Zero);
+
+    Aes128_Initialize();
+    Aes128_Create(&params, &context->aes_handle);
+    return 0;
+}
+
 int CmacAesOps_GenerateSubkeys(CMAC_AES_CONTEXT *context)
 {
     uint8_t L[16] = {0};

@@ -21,7 +21,6 @@ target_link_libraries(MockAes128
 )
 add_library(MockAes128::MockAes128 ALIAS MockAes128)
 
-
 add_library(MockAes128Comparators
     "Aes128CreateParamsComparator.h"
     "Aes128CryptoParamsComparator.h"

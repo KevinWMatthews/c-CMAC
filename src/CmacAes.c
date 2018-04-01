@@ -17,12 +17,8 @@ int CmacAes_Calculate(CMAC_AES_CALCULATE_PARAMS *params, uint8_t aes_cmac[16], s
         .iv_len = sizeof(iv),
     };
 
-    //TODO extract this into a CmacOps function.
-    // We need to make it obvious that you must do this.
-    // This function will accept only the key and the key length.
-    // It will set the IV (note the comment on IV above - code smell).
-    Aes128_Initialize();
-    Aes128_Create(&create_params, &context.aes_handle);
+    // Setup
+    ret = CmacAesOps_Initialize(&context, params->key, params->key_len);
 
     // Step 1
     ret = CmacAesOps_GenerateSubkeys(&context);

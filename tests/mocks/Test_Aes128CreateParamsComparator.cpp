@@ -33,6 +33,7 @@ TEST(Aes128_CreateParamsComparator, create_and_install_comparator)
     mock().removeAllComparatorsAndCopiers();
 }
 
+// These tests are all very brittle
 TEST(Aes128_CreateParamsComparator, object_to_string_shows_key_and_iv)
 {
     simple_string = comparator.valueToString(&params);
@@ -61,11 +62,15 @@ TEST(Aes128_CreateParamsComparator, object_to_string_will_not_segfault_with_null
 
 TEST(Aes128_CreateParamsComparator, object_to_string_will_not_segfault_with_null_pointer)
 {
+    uint8_t iv[16] = {};
     params.key = NULL;
     params.key_len = 1;
+    params.iv = iv;
+    params.iv_len = sizeof(iv);
 
     simple_string = comparator.valueToString(&params);
     string = simple_string.asCharString();
+    STRCMP_CONTAINS("HexContents = (null)", string);
 }
 
 TEST(Aes128_CreateParamsComparator, object_to_string_shows_size_and_contents_of_iv)
@@ -88,6 +93,7 @@ TEST(Aes128_CreateParamsComparator, compare_with_null_pointers)
 
 TEST(Aes128_CreateParamsComparator, compare_true_with_empty_params)
 {
+    // All internal pointers are NULL.
     CHECK_TRUE( comparator.isEqual(&params, &params2) );
 }
 

@@ -23,6 +23,11 @@ typedef struct CMAC_AES_CONTEXT
 } CMAC_AES_CONTEXT;
 
 /*
+ * Initialize AES library and create crypto handle.
+ */
+int CmacAesOps_Initialize(CMAC_AES_CONTEXT *context, uint8_t *key, size_t key_len);
+
+/*
  * Calculates subkeys and stores them in the context.
  */
 int CmacAesOps_GenerateSubkeys(CMAC_AES_CONTEXT *context);
