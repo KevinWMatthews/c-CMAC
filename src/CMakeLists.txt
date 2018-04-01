@@ -6,6 +6,10 @@ target_include_directories(ByteArrayOps
     PUBLIC
         "${CMAKE_HOME_DIRECTORY}/src"
 )
+target_compile_options(ByteArrayOps
+    PRIVATE
+        "-Wall"
+)
 add_library(ByteArrayOpsLib::ByteArrayOpsLib ALIAS ByteArrayOps)
 
 #TODO this needs to link against libgcrypt
@@ -26,6 +30,10 @@ target_link_libraries(CmacOps
     PRIVATE
         ByteArrayOpsLib::ByteArrayOpsLib
 )
+target_compile_options(CmacOps
+    PRIVATE
+        "-Wall"
+)
 if(COMPILE_TESTS)
     target_include_directories(CmacOps
         PUBLIC
@@ -45,6 +53,10 @@ target_include_directories(Cmac
 )
 target_link_libraries(Cmac
     CmacOpsLib::CmacOpsLib
+)
+target_compile_options(Cmac
+    PRIVATE
+        "-Wall"
 )
 if(COMPILE_TESTS)
     target_include_directories(Cmac
