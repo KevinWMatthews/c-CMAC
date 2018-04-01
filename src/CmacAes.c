@@ -44,8 +44,8 @@ int CmacAes_Calculate(CMAC_AES_CALCULATE_PARAMS *params, uint8_t aes_cmac[16], s
     // Step 7
     ret = CmacAesOps_CopyCmacOutput(&context, aes_cmac, aes_cmac_len);
 
-    //TODO Extract this into a CmacOps function?
-    Aes128_Destroy(&context.aes_handle);
+    // Teardown
+    ret = CmacAesOps_Unitialize(&context);
 
     return 0;
 }

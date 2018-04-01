@@ -18,6 +18,12 @@ int CmacAesOps_Initialize(CMAC_AES_CONTEXT *context, uint8_t *key, size_t key_le
     return 0;
 }
 
+int CmacAesOps_Unitialize(CMAC_AES_CONTEXT *context)
+{
+    Aes128_Destroy(&context->aes_handle);
+    return 0;
+}
+
 int CmacAesOps_GenerateSubkeys(CMAC_AES_CONTEXT *context)
 {
     uint8_t L[16] = {0};

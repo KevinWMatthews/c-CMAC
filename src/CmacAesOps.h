@@ -28,6 +28,11 @@ typedef struct CMAC_AES_CONTEXT
 int CmacAesOps_Initialize(CMAC_AES_CONTEXT *context, uint8_t *key, size_t key_len);
 
 /*
+ * Uninitialize AES library and destroy crypto handle.
+ */
+int CmacAesOps_Unitialize(CMAC_AES_CONTEXT *context);
+
+/*
  * Calculates subkeys and stores them in the context.
  */
 int CmacAesOps_GenerateSubkeys(CMAC_AES_CONTEXT *context);

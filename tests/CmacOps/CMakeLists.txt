@@ -13,6 +13,7 @@ add_executable(UnitTests_CmacOps
     Test_InitializeCipherOutputBlock.cpp
     Test_ApplyCbcMac.cpp
     Test_CopyCmacOutput.cpp
+    Test_Uninitialize.cpp
 )
 
 target_include_directories(UnitTests_CmacOps

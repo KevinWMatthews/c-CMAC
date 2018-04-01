@@ -28,6 +28,13 @@ AES128_RETURN_CODE Aes128_Initialize(void)
     return (AES128_RETURN_CODE)mock().intReturnValue();
 }
 
+void Aes128_Destroy(AES128_HANDLE *self)
+{
+    mock().actualCall("Aes128_Destroy");
+        // .withParameterOfType("AES128_HANDLE", "self", self);
+    return;
+}
+
 AES128_RETURN_CODE Aes128_Create(AES128_CREATE_PARAMS *params, AES128_HANDLE *aes_handle)
 {
     mock().actualCall("Aes128_Create")
