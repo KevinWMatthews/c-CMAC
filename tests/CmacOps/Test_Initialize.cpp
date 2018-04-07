@@ -29,6 +29,7 @@ TEST_GROUP(Initialize)
 TEST(Initialize, initialize_with_key_of_00s)
 {
     memset(key, 0x00, sizeof(key));
+    memset(iv, 0x00, sizeof(iv));   // Required by spec
 
     params.key = key;
     params.key_len = sizeof(key);
@@ -39,7 +40,10 @@ TEST(Initialize, initialize_with_key_of_00s)
         .andReturnValue(AES128_SUCCESS);
     mock().expectOneCall("Aes128_Create")
         .withParameterOfType("AES128_CREATE_PARAMS", "params", &params)
-        // Hack until I figure out how to use a copier
+        // Probably skip the copier and fill the struct manually.
+        // If we do this, we can't specify the parameter at all - the mock would check pointer addresses
+        // Do we need to malloc or destroy something?
+        // .withOutputParameter("aes_handle",
         .withOutputParameterReturning("aes_handle", NULL, 0) ;
     ret = CmacAesOps_Initialize( &context, key, sizeof(key) );
 
