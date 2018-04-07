@@ -39,7 +39,7 @@ AES128_RETURN_CODE Aes128_Create(AES128_CREATE_PARAMS *params, AES128_HANDLE *ae
 {
     mock().actualCall("Aes128_Create")
         .withParameterOfType("AES128_CREATE_PARAMS", "params", params)
-        .withOutputParameterOfType("AES128_HANDLE", "aes_handle", aes_handle);
+        .withOutputParameterOfType("AES128_HANDLE", "aes_handle", *aes_handle);
     return (AES128_RETURN_CODE)0;
 }
 
