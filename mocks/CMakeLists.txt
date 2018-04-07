@@ -24,10 +24,10 @@ add_library(MockAes128::MockAes128 ALIAS MockAes128)
 add_library(MockAes128Comparators
     "Aes128CreateParamsComparator.h"
     "Aes128CryptoParamsComparator.h"
-    "Aes128HandleComparator.h"
+    "Aes128Comparator.h"
     "Aes128CreateParamsComparator.cpp"
     "Aes128CryptoParamsComparator.cpp"
-    "Aes128HandleComparator.cpp"
+    "Aes128Comparator.cpp"
 )
 target_include_directories(MockAes128Comparators
     PUBLIC

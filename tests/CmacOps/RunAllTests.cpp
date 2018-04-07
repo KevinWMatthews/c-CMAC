@@ -2,13 +2,13 @@
 #include "CppUTest/TestPlugin.h"
 #include "CppUTest/TestRegistry.h"
 #include "CppUTestExt/MockSupportPlugin.h"
-#include "Aes128HandleComparator.h"
+#include "Aes128Comparator.h"
 #include "Aes128CreateParamsComparator.h"
 #include "Aes128CryptoParamsComparator.h"
 
 int main(int ac, char **av)
 {
-    Aes128HandleComparator handle_comparator;
+    Aes128Comparator handle_comparator;
     Aes128CreateParamsComparator create_comparator;
     Aes128CryptoParamsComparator crypto_comparator;
     MockSupportPlugin mockPlugin;

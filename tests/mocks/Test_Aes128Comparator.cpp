@@ -6,11 +6,11 @@ extern "C"
 
 #include "CppUTest/TestHarness.h"
 #include "CppUTestExt/MockSupport.h"
-#include "Aes128HandleComparator.h"
+#include "Aes128Comparator.h"
 
-TEST_GROUP(Aes128_HandleComparator)
+TEST_GROUP(Aes128Comparator)
 {
-    Aes128HandleComparator comparator;
+    Aes128Comparator comparator;
     AES128_HANDLE handle;
     AES128_HANDLE handle2;
     AES128_STRUCT aes_struct;
@@ -31,21 +31,21 @@ TEST_GROUP(Aes128_HandleComparator)
     }
 };
 
-TEST(Aes128_HandleComparator, create_and_install_comparator)
+TEST(Aes128Comparator, create_and_install_comparator)
 {
     mock().installComparator("AES128_HANDLE", comparator);
     mock().checkExpectations();
     mock().removeAllComparatorsAndCopiers();
 }
 
-TEST(Aes128_HandleComparator, object_to_string_shows_null_handle)
+TEST(Aes128Comparator, object_to_string_shows_null_handle)
 {
     simple_string = comparator.valueToString(NULL);
     string = simple_string.asCharString();
     STRCMP_CONTAINS("AES128_HANDLE: NULL", string);
 }
 
-TEST(Aes128_HandleComparator, object_to_string_will_not_segfault_with_null_key)
+TEST(Aes128Comparator, object_to_string_will_not_segfault_with_null_key)
 {
     uint8_t iv[16] = {};
     handle->key = NULL;
@@ -59,7 +59,7 @@ TEST(Aes128_HandleComparator, object_to_string_will_not_segfault_with_null_key)
     STRCMP_CONTAINS("iv: ", string);
 }
 
-TEST(Aes128_HandleComparator, object_to_string_will_not_segfault_with_null_iv)
+TEST(Aes128Comparator, object_to_string_will_not_segfault_with_null_iv)
 {
     uint8_t key[16] = {};
     handle->key = key;
@@ -73,7 +73,7 @@ TEST(Aes128_HandleComparator, object_to_string_will_not_segfault_with_null_iv)
     STRCMP_CONTAINS("iv: ", string);
 }
 
-TEST(Aes128_HandleComparator, object_to_string_shows_key_and_iv)
+TEST(Aes128Comparator, object_to_string_shows_key_and_iv)
 {
     uint8_t key[16] = {0x88};
     uint8_t iv[16] = {0x99};
@@ -91,19 +91,19 @@ TEST(Aes128_HandleComparator, object_to_string_shows_key_and_iv)
     STRCMP_CONTAINS(" 99 ", string)
 }
 
-TEST(Aes128_HandleComparator, compare_with_null_pointers)
+TEST(Aes128Comparator, compare_with_null_pointers)
 {
     CHECK_TRUE( comparator.isEqual(NULL, NULL) );
     CHECK_FALSE( comparator.isEqual(NULL, handle2) );
     CHECK_FALSE( comparator.isEqual(handle, NULL) );
 }
 
-TEST(Aes128_HandleComparator, compare_true_with_empty_handle)
+TEST(Aes128Comparator, compare_true_with_empty_handle)
 {
     CHECK_TRUE( comparator.isEqual(handle, handle2) );
 }
 
-TEST(Aes128_HandleComparator, compare_true_with_null_and_zero_length_key_and_iv)
+TEST(Aes128Comparator, compare_true_with_null_and_zero_length_key_and_iv)
 {
     handle->key_len = 0;
     handle->iv_len = 0;
@@ -112,7 +112,7 @@ TEST(Aes128_HandleComparator, compare_true_with_null_and_zero_length_key_and_iv)
     CHECK_TRUE( comparator.isEqual(handle, handle2) );
 }
 
-TEST(Aes128_HandleComparator, compare_true_with_actual_key_and_iv)
+TEST(Aes128Comparator, compare_true_with_actual_key_and_iv)
 {
     uint8_t key[16] = {};
     uint8_t iv[16] = {};
@@ -129,7 +129,7 @@ TEST(Aes128_HandleComparator, compare_true_with_actual_key_and_iv)
     CHECK_TRUE( comparator.isEqual(handle, handle2) );
 }
 
-TEST(Aes128_HandleComparator, compare_false_if_key_len_is_different)
+TEST(Aes128Comparator, compare_false_if_key_len_is_different)
 {
     uint8_t key[16] = {};
     uint8_t key2[15] = {};
@@ -143,7 +143,7 @@ TEST(Aes128_HandleComparator, compare_false_if_key_len_is_different)
     CHECK_FALSE( comparator.isEqual(handle, handle2) );
 }
 
-TEST(Aes128_HandleComparator, compare_false_if_iv_len_is_different)
+TEST(Aes128Comparator, compare_false_if_iv_len_is_different)
 {
     uint8_t iv[16] = {};
     uint8_t iv2[15] = {};
@@ -157,7 +157,7 @@ TEST(Aes128_HandleComparator, compare_false_if_iv_len_is_different)
     CHECK_FALSE( comparator.isEqual(handle, handle2) );
 }
 
-TEST(Aes128_HandleComparator, compare_false_if_key_content_is_different)
+TEST(Aes128Comparator, compare_false_if_key_content_is_different)
 {
     uint8_t key[16] = {0x00};
     uint8_t key2[16] = {0x01};
@@ -171,7 +171,7 @@ TEST(Aes128_HandleComparator, compare_false_if_key_content_is_different)
     CHECK_FALSE( comparator.isEqual(handle, handle2) );
 }
 
-TEST(Aes128_HandleComparator, compare_false_if_iv_content_is_different)
+TEST(Aes128Comparator, compare_false_if_iv_content_is_different)
 {
     uint8_t iv[16] = {0x00};
     uint8_t iv2[16] = {0x01};
@@ -185,7 +185,7 @@ TEST(Aes128_HandleComparator, compare_false_if_iv_content_is_different)
     CHECK_FALSE( comparator.isEqual(handle, handle2) );
 }
 
-TEST(Aes128_HandleComparator, example_use_case)
+TEST(Aes128Comparator, example_use_case)
 {
     uint8_t key[16] = {};
     uint8_t iv[16] = {};

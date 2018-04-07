@@ -4,9 +4,9 @@ extern "C"
 #include "MockAes128.h"
 }
 
-#include "Aes128HandleComparator.h"
+#include "Aes128Comparator.h"
 
-bool Aes128HandleComparator::isEqual(const void* object1, const void* object2)
+bool Aes128Comparator::isEqual(const void* object1, const void* object2)
 {
     const AES128_HANDLE params1 = (const AES128_HANDLE)object1;
     const AES128_HANDLE params2 = (const AES128_HANDLE)object2;
@@ -31,7 +31,7 @@ bool Aes128HandleComparator::isEqual(const void* object1, const void* object2)
     return true;
 }
 
-SimpleString Aes128HandleComparator::valueToString(const void* object)
+SimpleString Aes128Comparator::valueToString(const void* object)
 {
     const AES128_HANDLE params = (const AES128_HANDLE)object;
 

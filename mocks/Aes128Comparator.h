@@ -1,5 +1,5 @@
-#ifndef AES128_HANDLE_COMPARATOR_INCLUDED
-#define AES128_HANDLE_COMPARATOR_INCLUDED
+#ifndef AES128_COMPARATOR_INCLUDED
+#define AES128_COMPARATOR_INCLUDED
 
 #include "CppUTestExt/MockSupport.h"
 
@@ -11,7 +11,7 @@
 // Production code may not contain the struct elements required for this to work -
 // the key and IV are passed to the production code library to manage.
 
-class Aes128HandleComparator : public MockNamedValueComparator
+class Aes128Comparator : public MockNamedValueComparator
 {
 public:
     virtual bool isEqual(const void* object1, const void* object2);
