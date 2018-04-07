@@ -1,6 +1,10 @@
 #ifndef MOCKAES128_INCLUDED
 #define MOCKAES128_INCLUDED
 
+#include <stdint.h>
+#include <stddef.h>
+#include "Aes128.h"
+
 // For testing we can treat the AES128_STRUCT as its creation parameters.
 // If two structs are created with identical parameters, they will be functionally equivalent.
 // Expose the struct details to make verification simple.
