@@ -41,3 +41,29 @@ TEST(Aes128Copier, can_copy_mock_aes128_struct)
     MEMCMP_EQUAL(iv, aes128_out.iv, sizeof(iv));
     LONGS_EQUAL(sizeof(iv), aes128_out.iv_len);
 }
+
+TEST(Aes128Copier, null_output_object_does_not_segfault)
+{
+    local_copier.copy(NULL, &aes128_in);
+}
+
+TEST(Aes128Copier, null_input_object_does_not_segfault)
+{
+    local_copier.copy(&aes128_out, NULL);
+}
+
+TEST(Aes128Copier, null_input_key_does_not_segfault)
+{
+    aes128_in.key = NULL;
+    local_copier.copy(&aes128_out, &aes128_in);
+
+    POINTERS_EQUAL( NULL, aes128_out.key );
+}
+
+TEST(Aes128Copier, null_input_iv_does_not_segfault)
+{
+    aes128_in.iv = NULL;
+    local_copier.copy(&aes128_out, &aes128_in);
+
+    POINTERS_EQUAL( NULL, aes128_out.iv );
+}

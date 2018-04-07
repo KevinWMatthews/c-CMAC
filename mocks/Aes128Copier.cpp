@@ -11,6 +11,11 @@ void Aes128Copier::copy(void* out, const void* in)
     AES128_STRUCT* aes128_out = (AES128_STRUCT *)out;
     const AES128_STRUCT* aes128_in = (const AES128_STRUCT *)in;
 
+    if (out == NULL)
+        return;
+    if (in == NULL)
+        return;
+
     aes128_out->key = aes128_in->key;
     aes128_out->key_len = aes128_in->key_len;
     aes128_out->iv = aes128_in->iv;
