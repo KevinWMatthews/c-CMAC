@@ -1,5 +1,55 @@
 enable_language(CXX)
 
+
+# AES struct comparator
+add_executable(UnitTests_Aes128Comparator
+    AllTests.cpp
+    Test_Aes128Comparator.cpp
+    "${CMAKE_HOME_DIRECTORY}/mocks/Aes128Comparator.h"
+    "${CMAKE_HOME_DIRECTORY}/mocks/Aes128Comparator.cpp"
+)
+
+target_link_libraries(UnitTests_Aes128Comparator
+    PRIVATE
+        CppUTest
+        CppUTestExt
+        MockAes128::MockAes128
+)
+
+target_include_directories(UnitTests_Aes128Comparator
+    PRIVATE
+        "${CMAKE_HOME_DIRECTORY}/mocks"
+)
+
+add_test(
+    NAME Test_Aes128Comparator
+    COMMAND UnitTests_Aes128Comparator
+)
+
+# AES struct copier
+add_executable(UnitTests_Aes128Copier
+    AllTests.cpp
+    Test_Aes128Copier.cpp
+    "${CMAKE_HOME_DIRECTORY}/mocks/Aes128Copier.h"
+    "${CMAKE_HOME_DIRECTORY}/mocks/Aes128Copier.cpp"
+    )
+target_link_libraries(UnitTests_Aes128Copier
+    PRIVATE
+        CppUTest
+        CppUTestExt
+        MockAes128::MockAes128
+)
+target_include_directories(UnitTests_Aes128Copier
+    PRIVATE
+        "${CMAKE_HOME_DIRECTORY}/mocks"
+)
+add_test(
+    NAME Test_Aes128Copier
+    COMMAND UnitTests_Aes128Copier
+)
+
+
+
 # AES Create params comparator
 add_executable(UnitTests_Aes128CreateParamsComparator
     AllTests.cpp
@@ -23,32 +73,6 @@ target_include_directories(UnitTests_Aes128CreateParamsComparator
 add_test(
     NAME Test_Aes128CreateParamsComparator
     COMMAND UnitTests_Aes128CreateParamsComparator
-)
-
-
-# AES handle comparator
-add_executable(UnitTests_Aes128Comparator
-    AllTests.cpp
-    Test_Aes128Comparator.cpp
-    "${CMAKE_HOME_DIRECTORY}/mocks/Aes128Comparator.h"
-    "${CMAKE_HOME_DIRECTORY}/mocks/Aes128Comparator.cpp"
-)
-
-target_link_libraries(UnitTests_Aes128Comparator
-    PRIVATE
-        CppUTest
-        CppUTestExt
-        MockAes128::MockAes128
-)
-
-target_include_directories(UnitTests_Aes128Comparator
-    PRIVATE
-        "${CMAKE_HOME_DIRECTORY}/mocks"
-)
-
-add_test(
-    NAME Test_Aes128Comparator
-    COMMAND UnitTests_Aes128Comparator
 )
 
 
