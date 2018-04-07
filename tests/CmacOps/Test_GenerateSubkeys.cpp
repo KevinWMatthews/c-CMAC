@@ -46,6 +46,8 @@ TEST(GenerateSubkeys, generate_subkeys_for_rfc_examples)
 
     // Values for mocks
     AES128_CREATE_PARAMS create_params = {};
+    AES128_STRUCT mock_aes_struct = {};
+
     AES128_CRYPTO_PARAMS crypto_params = {};
     uint8_t iv[16] = {};            // All zeros, from RFC
 
@@ -55,10 +57,23 @@ TEST(GenerateSubkeys, generate_subkeys_for_rfc_examples)
         0x3e, 0x42, 0xf0, 0x47, 0xb9, 0x1b, 0x54, 0x6f,
     };
 
+    int ret;
+
     create_params.key = key;
     create_params.key_len = sizeof(key);
     create_params.iv = iv;
     create_params.iv_len = sizeof(iv);
+
+    mock_aes_struct.key = key;
+    mock_aes_struct.key_len = sizeof(key);
+    mock_aes_struct.iv = iv;
+    mock_aes_struct.iv_len = sizeof(iv);
+
+    mock().expectOneCall("Aes128_Create")
+        .withParameterOfType("AES128_CREATE_PARAMS", "params", &create_params)
+        .withOutputParameterOfTypeReturning("AES128_HANDLE", "aes_handle", &mock_aes_struct);
+
+    ret = Aes128_Create(&create_params, &context.aes_handle);
     context.aes_handle = MockAes128_Create(&create_params);
 
     crypto_params.aes_handle = context.aes_handle;
