@@ -2,7 +2,7 @@ enable_language(CXX)
 
 # AES Create params comparator
 add_executable(UnitTests_Aes128CreateParamsComparator
-    RunAllTests.cpp
+    AllTests.cpp
     Test_Aes128CreateParamsComparator.cpp
     "${CMAKE_HOME_DIRECTORY}/mocks/Aes128CreateParamsComparator.h"
     "${CMAKE_HOME_DIRECTORY}/mocks/Aes128CreateParamsComparator.cpp"
@@ -28,7 +28,7 @@ add_test(
 
 # AES handle comparator
 add_executable(UnitTests_Aes128Comparator
-    RunAllTests.cpp
+    AllTests.cpp
     Test_Aes128Comparator.cpp
     "${CMAKE_HOME_DIRECTORY}/mocks/Aes128Comparator.h"
     "${CMAKE_HOME_DIRECTORY}/mocks/Aes128Comparator.cpp"
@@ -54,7 +54,7 @@ add_test(
 
 # AES crypto params comparator
 add_executable(UnitTests_Aes128CryptoParamsComparator
-    RunAllTests.cpp
+    AllTests.cpp
     Test_Aes128CryptoParamsComparator.cpp
     "${CMAKE_HOME_DIRECTORY}/mocks/Aes128Comparator.h"
     "${CMAKE_HOME_DIRECTORY}/mocks/Aes128Comparator.cpp"

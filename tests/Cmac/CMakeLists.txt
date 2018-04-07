@@ -1,7 +1,7 @@
 enable_language(CXX)
 
 add_executable(UnitTests_Cmac
-    RunAllTests.cpp
+    AllTests.cpp
     Test_CmacAes.cpp
 )
 

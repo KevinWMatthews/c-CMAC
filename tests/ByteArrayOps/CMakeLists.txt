@@ -1,7 +1,7 @@
 enable_language(CXX)
 
 add_executable(UnitTests_ByteArrayOps
-    RunAllTests.cpp
+    AllTests.cpp
     Test_CircularShiftLeftOne.cpp
     Test_LogicalShiftLeftOne.cpp
     Test_Xor.cpp

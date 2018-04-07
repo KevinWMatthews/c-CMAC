@@ -1,7 +1,7 @@
 enable_language(CXX)
 
 add_executable(UnitTests_Aes128Libgcrypt
-    RunAllTests.cpp
+    AllTests.cpp
     Test_Aes128Libgcrypt.cpp
 )
 
