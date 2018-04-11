@@ -71,3 +71,9 @@ TEST(Libgcrypt_CreateCipherHandle, invalid_cipher_flags_fail)
 
     CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_INV_CIPHER_MODE, gcrypt_ret );
 }
+
+TEST(Libgcrypt_CreateCipherHandle, can_close_null_cipher_handle)
+{
+    gcrypt_handle = NULL;
+    gcry_cipher_close(gcrypt_handle);
+}
