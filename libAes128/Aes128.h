@@ -47,7 +47,7 @@ AES128_RETURN_CODE Aes128_Create(AES128_CREATE_PARAMS *params, AES128_HANDLE *ae
 /*
  * Destroy an AES128 crypto handle and set the pointer to NULL.
  */
-void Aes128_Destroy(AES128_HANDLE *self);
+void Aes128_Destroy(AES128_HANDLE *pointer);
 
 
 /*

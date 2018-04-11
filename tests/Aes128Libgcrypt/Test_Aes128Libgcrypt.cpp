@@ -1,7 +1,6 @@
 extern "C"
 {
 #include "Aes128.h"
-#include <gcrypt.h>
 }
 
 // Test the wrapper with the actual gcrypt library.
@@ -28,6 +27,8 @@ TEST(Aes128Libgcrypt_Initialize, initialize)
     LONGS_EQUAL( AES128_SUCCESS, ret );
 }
 
+//TODO fail if invalid library version is installed
+
 
 
 TEST_GROUP(Aes128Libgcrypt_Create)
@@ -44,6 +45,24 @@ TEST_GROUP(Aes128Libgcrypt_Create)
     {
     }
 };
+
+TEST(Aes128Libgcrypt_Create, create_and_destroy_aes_handle)
+{
+    uint8_t key[AES128_KEY_LEN] = {};
+    uint8_t iv[AES128_IV_LEN] = {};
+    create_params.key = key;
+    create_params.key_len = sizeof(key);
+    create_params.iv = iv;
+    create_params.iv_len = sizeof(iv);
+
+    ret = Aes128_Create(&create_params, &aes_handle);
+
+    LONGS_EQUAL( AES128_SUCCESS, ret );
+    CHECK_TRUE( aes_handle != NULL );
+
+    Aes128_Destroy(&aes_handle);
+    CHECK_TRUE( aes_handle == NULL );
+}
 
 TEST(Aes128Libgcrypt_Create, create_fails_with_null_params)
 {
@@ -113,25 +132,15 @@ TEST(Aes128Libgcrypt_Create, create_fails_with_invalid_iv_length)
     LONGS_EQUAL( AES128_INVALID_IV_LENGTH, ret );
 }
 
-TEST(Aes128Libgcrypt_Create, create_aes_handle)
+TEST(Aes128Libgcrypt_Create, can_destroy_null_pointer)
 {
-    uint8_t key[AES128_KEY_LEN] = {};
-    uint8_t iv[AES128_IV_LEN] = {};
-    create_params.key = key;
-    create_params.key_len = sizeof(key);
-    create_params.iv = iv;
-    create_params.iv_len = sizeof(iv);
-
-    ret = Aes128_Create(&create_params, &aes_handle);
-
-    LONGS_EQUAL( AES128_SUCCESS, ret );
-    CHECK_TRUE( aes_handle != NULL );
+    Aes128_Destroy(NULL);
 }
 
-TEST(Aes128Libgcrypt_Create, destroy_aes_handle)
+TEST(Aes128Libgcrypt_Create, can_destroy_null_aes_handle)
 {
+    aes_handle = NULL;
     Aes128_Destroy(&aes_handle);
-    CHECK_TRUE( aes_handle == NULL );
 }
 
 

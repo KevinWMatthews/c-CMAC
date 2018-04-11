@@ -62,8 +62,24 @@ AES128_RETURN_CODE Aes128_Create(AES128_CREATE_PARAMS *params, AES128_HANDLE * a
     return AES128_SUCCESS;
 }
 
-void Aes128_Destroy(AES128_HANDLE * self)
+void Aes128_Destroy(AES128_HANDLE * pointer)
 {
+    AES128_HANDLE aes_handle;
+
+    // Is the pointer to a handle null?
+    if (pointer == NULL)
+        return;
+
+    aes_handle = *pointer;
+
+    // Is the handle itself null?
+    if (aes_handle == NULL)
+        return;
+
+    // Does this fail if the gcrypt handle is null?
+    gcry_cipher_close(aes_handle->gcrypt_handle);
+
+    *pointer = NULL;
     return;
 }
 
