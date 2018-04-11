@@ -62,6 +62,11 @@ AES128_RETURN_CODE Aes128_Create(AES128_CREATE_PARAMS *params, AES128_HANDLE * a
     return AES128_SUCCESS;
 }
 
+AES128_HANDLE Aes128_Create2(AES128_CREATE_PARAMS *params)
+{
+    return NULL;
+}
+
 void Aes128_Destroy(AES128_HANDLE * self)
 {
     return;

@@ -47,8 +47,7 @@ TEST_GROUP(Aes128Libgcrypt_Create)
 
 TEST(Aes128Libgcrypt_Create, create_fails_with_null_params)
 {
-    ret = Aes128_Create(NULL, &aes_handle);
-    LONGS_EQUAL( AES128_NULL_POINTER, ret );
+    aes_handle = Aes128_Create2(NULL);
     CHECK_TRUE( aes_handle == NULL );
 }
 
