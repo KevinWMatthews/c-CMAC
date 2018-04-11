@@ -6,7 +6,7 @@ add_executable(UnitTests_Libgcrypt
     AllTests.cpp
     Test_Libgcrypt_Init.cpp
     Libgcrypt_TestHelper.h
-    Test_Libgcrypt_CreateCipherHandle.cpp
+    Test_Libgcrypt_AesCipherHandle.cpp
     Test_Libgcrypt_AesEncrypt.cpp
 )
 

@@ -8,7 +8,7 @@ extern "C"
 
 #define LIBGCRYPT_REQURIED_VERSION      "1.8.2"
 
-TEST_GROUP(Libgcrypt_CreateCipherHandle)
+TEST_GROUP(Libgcrypt_AesCipherHandle)
 {
     gcry_error_t gcrypt_ret;
     gcry_cipher_hd_t gcrypt_handle;
@@ -25,7 +25,7 @@ TEST_GROUP(Libgcrypt_CreateCipherHandle)
     }
 };
 
-TEST(Libgcrypt_CreateCipherHandle, open_and_close_cipher_handle)
+TEST(Libgcrypt_AesCipherHandle, open_and_close_cipher_handle)
 {
     /*
      * gcry_error_t gcry_cipher_open (gcry_cipher_hd_t *hd, int algo, int mode, unsigned int flags)
@@ -52,27 +52,27 @@ TEST(Libgcrypt_CreateCipherHandle, open_and_close_cipher_handle)
 }
 
 #if 0
-TEST(Libgcrypt_CreateCipherHandle, null_cipher_handle_will_segfault)
+TEST(Libgcrypt_AesCipherHandle, null_cipher_handle_will_segfault)
 {
     gcrypt_ret = gcry_cipher_open(NULL, GCRY_CIPHER_AES128, GCRY_CIPHER_MODE_CBC, 0);
 }
 #endif
 
-TEST(Libgcrypt_CreateCipherHandle, invalid_cipher_mode_fails)
+TEST(Libgcrypt_AesCipherHandle, invalid_cipher_mode_fails)
 {
     gcrypt_ret = gcry_cipher_open(&gcrypt_handle, 255, GCRY_CIPHER_MODE_CBC, 0);
 
     CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_CIPHER_ALGO, gcrypt_ret );
 }
 
-TEST(Libgcrypt_CreateCipherHandle, invalid_cipher_flags_fail)
+TEST(Libgcrypt_AesCipherHandle, invalid_cipher_flags_fail)
 {
     gcrypt_ret = gcry_cipher_open(&gcrypt_handle, GCRY_CIPHER_AES128, 255, 0);
 
     CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_INV_CIPHER_MODE, gcrypt_ret );
 }
 
-TEST(Libgcrypt_CreateCipherHandle, can_close_null_cipher_handle)
+TEST(Libgcrypt_AesCipherHandle, can_close_null_cipher_handle)
 {
     gcrypt_handle = NULL;
     gcry_cipher_close(gcrypt_handle);
