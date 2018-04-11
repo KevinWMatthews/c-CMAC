@@ -156,7 +156,6 @@ TEST_GROUP(Aes128Libgcrypt_Encrypt)
 
     void setup()
     {
-        // Clear zeros array?
         create_params.key = zeros;
         create_params.key_len = sizeof(zeros);
         create_params.iv = zeros;
@@ -168,10 +167,54 @@ TEST_GROUP(Aes128Libgcrypt_Encrypt)
 
     void teardown()
     {
-        //TODO close handle
         Aes128_Destroy(&aes_handle);
     }
 };
+
+TEST(Aes128Libgcrypt_Encrypt, encrypt_message_0_key_0_iv_0)
+{
+    uint8_t expected[AES128_BLOCK_LEN] = {
+        0x66, 0xE9, 0x4B, 0xD4, 0xEF, 0x8A, 0x2C, 0x3B,
+        0x88, 0x4C, 0xFA, 0x59, 0xCA, 0x34, 0x2B, 0x2E,
+    };
+    uint8_t input[AES128_BLOCK_LEN] = {0};
+
+    encrypt_params.aes_handle = aes_handle;
+    encrypt_params.input = input;
+    encrypt_params.input_len = sizeof(input);
+
+    // Encrypt
+    ret = Aes128_Encrypt( &encrypt_params, output, sizeof(output) );
+
+    // Check against value calculated from a known-good source.
+    LONGS_EQUAL( AES128_SUCCESS, ret );
+    MEMCMP_EQUAL( expected, output, sizeof(expected) );
+}
+
+TEST(Aes128Libgcrypt_Encrypt, encrypt_message_0_key_0_iv_0_twice)
+{
+    uint8_t expected[AES128_BLOCK_LEN] = {
+        0x66, 0xE9, 0x4B, 0xD4, 0xEF, 0x8A, 0x2C, 0x3B,
+        0x88, 0x4C, 0xFA, 0x59, 0xCA, 0x34, 0x2B, 0x2E,
+    };
+    uint8_t input[AES128_BLOCK_LEN] = {};
+    uint8_t output2[AES128_BLOCK_LEN] = {};
+    int ret2;
+
+    encrypt_params.aes_handle = aes_handle;
+    encrypt_params.input = input;
+    encrypt_params.input_len = sizeof(input);
+
+    // Encrypt
+    ret = Aes128_Encrypt( &encrypt_params, output, sizeof(output) );
+    ret2 = Aes128_Encrypt( &encrypt_params, output2, sizeof(output2) );
+
+    // Check against value calculated from a known-good source.
+    LONGS_EQUAL( AES128_SUCCESS, ret );
+    MEMCMP_EQUAL( expected, output, sizeof(expected) );
+    LONGS_EQUAL( AES128_SUCCESS, ret2 );
+    MEMCMP_EQUAL( expected, output2, sizeof(expected) );
+}
 
 TEST(Aes128Libgcrypt_Encrypt, encrypt_fails_with_null_params)
 {
@@ -236,51 +279,6 @@ TEST(Aes128Libgcrypt_Encrypt, encrypt_fails_with_output_shorter_than_input)
     ret = Aes128_Encrypt( &encrypt_params, short_output, sizeof(short_output) );
 
     LONGS_EQUAL( AES128_INVALID_OUTPUT_LENGTH, ret );
-}
-
-TEST(Aes128Libgcrypt_Encrypt, encrypt_message_0_key_0_iv_0)
-{
-    uint8_t expected[AES128_BLOCK_LEN] = {
-        0x66, 0xE9, 0x4B, 0xD4, 0xEF, 0x8A, 0x2C, 0x3B,
-        0x88, 0x4C, 0xFA, 0x59, 0xCA, 0x34, 0x2B, 0x2E,
-    };
-    uint8_t input[AES128_BLOCK_LEN] = {0};
-
-    encrypt_params.aes_handle = aes_handle;
-    encrypt_params.input = input;
-    encrypt_params.input_len = sizeof(input);
-
-    // Encrypt
-    ret = Aes128_Encrypt( &encrypt_params, output, sizeof(output) );
-
-    // Check against value calculated from a known-good source.
-    LONGS_EQUAL( AES128_SUCCESS, ret );
-    MEMCMP_EQUAL( expected, output, sizeof(expected) );
-}
-
-TEST(Aes128Libgcrypt_Encrypt, encrypt_message_0_key_0_iv_0_twice)
-{
-    uint8_t expected[AES128_BLOCK_LEN] = {
-        0x66, 0xE9, 0x4B, 0xD4, 0xEF, 0x8A, 0x2C, 0x3B,
-        0x88, 0x4C, 0xFA, 0x59, 0xCA, 0x34, 0x2B, 0x2E,
-    };
-    uint8_t input[AES128_BLOCK_LEN] = {};
-    uint8_t output2[AES128_BLOCK_LEN] = {};
-    int ret2;
-
-    encrypt_params.aes_handle = aes_handle;
-    encrypt_params.input = input;
-    encrypt_params.input_len = sizeof(input);
-
-    // Encrypt
-    ret = Aes128_Encrypt( &encrypt_params, output, sizeof(output) );
-    ret2 = Aes128_Encrypt( &encrypt_params, output2, sizeof(output2) );
-
-    // Check against value calculated from a known-good source.
-    LONGS_EQUAL( AES128_SUCCESS, ret );
-    MEMCMP_EQUAL( expected, output, sizeof(expected) );
-    LONGS_EQUAL( AES128_SUCCESS, ret2 );
-    MEMCMP_EQUAL( expected, output2, sizeof(expected) );
 }
 
 
