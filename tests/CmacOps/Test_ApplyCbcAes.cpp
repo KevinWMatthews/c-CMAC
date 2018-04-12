@@ -12,17 +12,41 @@ extern "C"
 TEST_GROUP(ApplyCbcAes)
 {
     CMAC_AES_CONTEXT context;
+    AES128_STRUCT mock_aes_struct;
+    AES128_HANDLE mock_aes_handle;
+    AES128_CREATE_PARAMS aes_create_params;
     int ret;
 
     void setup()
     {
         mock().strictOrder();
+        mock_aes_handle = &mock_aes_struct;
     }
 
     void teardown()
     {
     }
 };
+
+// Not sure if filling create params is too magical
+void expect_cmac_init(AES128_HANDLE handle, AES128_CREATE_PARAMS *params)
+{
+    params->key = handle->key;
+    params->key_len = handle->key_len;
+    params->iv = handle->iv;
+    params->iv_len = handle->iv_len;
+
+    mock().expectOneCall("Aes128_Initialize")
+        .andReturnValue(AES128_SUCCESS);
+    mock().expectOneCall("Aes128_Create")
+        .withParameterOfType("AES128_CREATE_PARAMS", "params", params)
+        .withOutputParameterOfTypeReturning("AES128_HANDLE", "aes_handle", &handle);
+}
+
+void expect_cmac_uninit(void)
+{
+    mock().expectOneCall("Aes128_Destroy");
+}
 
 TEST(ApplyCbcAes, apply_cbc_aes_to_empty_block_with_key_of_00s_2)
 {
@@ -32,32 +56,17 @@ TEST(ApplyCbcAes, apply_cbc_aes_to_empty_block_with_key_of_00s_2)
         0x88, 0x4C, 0xFA, 0x59, 0xCA, 0x34, 0x2B, 0x2E,
     };
 
-    AES128_STRUCT mock_aes_struct;
-    AES128_HANDLE mock_aes_handle;
     uint8_t key[16] = {};
     uint8_t iv[16] = {};
 
     memset(key, 0x00, sizeof(key));
     memset(iv, 0x00, sizeof(iv));
 
-    // Values for mocks
-    mock_aes_struct.key = key;
-    mock_aes_struct.key_len = sizeof(key);
-    mock_aes_struct.iv = iv;
-    mock_aes_struct.iv_len = sizeof(iv);
-    mock_aes_handle = &mock_aes_struct;
-
-    AES128_CREATE_PARAMS aes_create_params = {};
-    aes_create_params.key = key;
-    aes_create_params.key_len = sizeof(key);
-    aes_create_params.iv = iv;
-    aes_create_params.iv_len = sizeof(iv);
-
-    mock().expectOneCall("Aes128_Initialize")
-        .andReturnValue(AES128_SUCCESS);
-    mock().expectOneCall("Aes128_Create")
-        .withParameterOfType("AES128_CREATE_PARAMS", "params", &aes_create_params)
-        .withOutputParameterOfTypeReturning("AES128_HANDLE", "aes_handle", &mock_aes_handle);
+    mock_aes_handle->key = key;
+    mock_aes_handle->key_len = sizeof(key);
+    mock_aes_handle->iv = iv;
+    mock_aes_handle->iv_len = sizeof(iv);
+    expect_cmac_init(mock_aes_handle, &aes_create_params);
 
     CmacAesOps_Initialize( &context, key, sizeof(key) );
 
@@ -80,8 +89,7 @@ TEST(ApplyCbcAes, apply_cbc_aes_to_empty_block_with_key_of_00s_2)
     LONGS_EQUAL( 0, ret );
     MEMCMP_EQUAL( expected, context.cipher_output_block, sizeof(expected) );
 
-    mock().expectOneCall("Aes128_Destroy");
-
+    expect_cmac_uninit();
     CmacAesOps_Unitialize(&context);
 }
 
