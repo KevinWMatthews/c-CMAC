@@ -11,6 +11,7 @@ add_executable(UnitTests_CmacOps
     Test_SetLastBlockIncomplete.cpp
     Test_SetLastBlockComplete.cpp
     Test_InitializeCipherOutputBlock.cpp
+    Test_ApplyCbcXor.cpp
     Test_ApplyCbcMac.cpp
     Test_CopyCmacOutput.cpp
     Test_Uninitialize.cpp
