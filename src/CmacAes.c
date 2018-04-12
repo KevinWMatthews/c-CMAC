@@ -19,6 +19,7 @@ int CmacAes_Calculate(CMAC_AES_CALCULATE_PARAMS *params, uint8_t aes_cmac[16], s
     CmacAesOps_GetIsCompleteBlock(params->message_len, &context);
 
     // Step 4
+    // Change signature to pass in N
     CmacAesOps_GetNthBlock(params->message, params->message_len, &context);
     CmacAesOps_SetLastBlockFromNthBlock(&context);
 
@@ -27,6 +28,15 @@ int CmacAes_Calculate(CMAC_AES_CALCULATE_PARAMS *params, uint8_t aes_cmac[16], s
 
     // Step 6
     //TODO Pull all of this into a function?
+    // for i = 0 to n-1,
+    //   get nth block
+    //   apply cbc xor
+    //   apply cbc aes
+    //   loop
+    // for i = n,
+    //   get last block (not nth block)
+    //   apply cbc xor
+    //   apply cbc aes
     CmacAesOps_ApplyCbcXor(&context);
     CmacAesOps_ApplyCbcAes(&context);
 
