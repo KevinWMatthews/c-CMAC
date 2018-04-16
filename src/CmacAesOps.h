@@ -63,13 +63,15 @@ int CmacAesOps_GetIsCompleteBlock(size_t bytes_in_msg, CMAC_AES_CONTEXT *context
  *
  * For the given message M, get nth block where n is given by the (1-indexed!) block number.
  * Stores the nth block and its length in the context.
+ *
+ * If the Nth block is incomplete, extend the buffer with 0x00's.
  */
 int CmacAesOps_GetNthBlock(uint8_t *msg, size_t bytes_in_msg, CMAC_AES_CONTEXT *context);
 
 /* Calculate the "last block" (M_last) from the Nth block (M_n) and store this in the context.
  *
  * The last block is used as a special input for the final step of the CMAC calculation.
- * It is derived from the Nth block by padding (if necessary) and XOR with one of teh subkeys.
+ * It is derived from the Nth block by padding (if necessary) and XOR with one of the subkeys.
  */
 int CmacAesOps_SetLastBlockFromNthBlock(CMAC_AES_CONTEXT *context);
 
