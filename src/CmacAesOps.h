@@ -90,7 +90,7 @@ int CmacAesOps_GetBlockByNumber(CMAC_AES_CONTEXT *context);
  * XORs and AES-128 encrypts each block (according to the CBC-MAC spec?).
  * The AES-CMAC is still incomplete; the two finishing steps must be applied.
  */
-int CmacAesOps_ApplyCbcMac(uint8_t aes_key[16], uint8_t *message, size_t n_blocks, uint8_t X[16], uint8_t Y[16]);
+int CmacAesOps_ApplyCbcMac(CMAC_AES_CONTEXT *context, uint8_t *message, size_t message_len);
 
 /*TODO document properly
  * XOR to i-th block of message with the cipher block.

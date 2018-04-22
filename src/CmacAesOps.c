@@ -107,7 +107,7 @@ int CmacAesOps_SetLastBlockFromNthBlock(CMAC_AES_CONTEXT *context)
     return 0;
 }
 
-int CmacAesOps_ApplyCbcMac(uint8_t aes_key[16], uint8_t *message, size_t n_blocks, uint8_t X[16], uint8_t Y[16])
+int CmacAesOps_ApplyCbcMac(CMAC_AES_CONTEXT *context, uint8_t *message, size_t message_len)
 {
     return 0;
 }
