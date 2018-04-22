@@ -18,6 +18,8 @@ typedef struct CMAC_AES_CONTEXT
     uint8_t nth_block[16];      // M_n
     size_t nth_block_len;       // Bytes in actually written; not buffer length
     uint8_t last_block[16];     // Final block; M_last
+
+    uint8_t current_block_number;
     uint8_t cipher_input_block[16];     // Y
     uint8_t cipher_output_block[16];    // X
 } CMAC_AES_CONTEXT;

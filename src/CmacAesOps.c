@@ -115,12 +115,15 @@ int CmacAesOps_ApplyCbcMac(uint8_t aes_key[16], uint8_t *message, size_t n_block
 int CmacAesOps_InitializeCipherOutputBlock(CMAC_AES_CONTEXT *context)
 {
     memset(context->cipher_output_block, 0x00, sizeof(context->cipher_output_block) );
+    context->current_block_number = 0;
     return 0;
 }
 
 bool CmacAesOps_IsBlockRemaining(CMAC_AES_CONTEXT *context)
 {
-    return false;
+    // The last block is handled separately.
+    uint8_t blocks_before_last = context->n_blocks - 1;
+    return context->current_block_number < blocks_before_last;
 }
 
 int CmacAesOps_ApplyCbcXor(CMAC_AES_CONTEXT *context)
