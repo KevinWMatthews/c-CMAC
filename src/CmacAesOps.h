@@ -79,6 +79,8 @@ int CmacAesOps_SetLastBlockFromNthBlock(CMAC_AES_CONTEXT *context);
  */
 int CmacAesOps_InitializeCipherOutputBlock(CMAC_AES_CONTEXT *context);
 
+bool CmacAesOps_IsBlockRemaining(CMAC_AES_CONTEXT *context);
+
 /* Apply the basic CMC-MAC algorithm to all but the last block of the message.
  *
  * XORs and AES-128 encrypts each block (according to the CBC-MAC spec?).

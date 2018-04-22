@@ -41,7 +41,7 @@ int CmacAes_Calculate(CMAC_AES_CALCULATE_PARAMS *params, uint8_t aes_cmac[16], s
     //   apply cbc xor
     //   apply cbc aes
 
-    // while (CmacAesOps_IsBlockRemaining(&context))        // Get this from the context.
+    while ( CmacAesOps_IsBlockRemaining(&context) )
     {
         // Fill message input block with block number
         // CmacAesOps_GetBlockByNumber(&context);   // Pass in block number?
