@@ -118,10 +118,20 @@ int CmacAesOps_InitializeCipherOutputBlock(CMAC_AES_CONTEXT *context)
     return 0;
 }
 
+bool CmacAesOps_IsBlockRemaining(CMAC_AES_CONTEXT *context)
+{
+    return false;
+}
+
 int CmacAesOps_ApplyCbcXor(CMAC_AES_CONTEXT *context)
 {
     // previous cipher block ^ i-th block.
     // i-th block is last block for final block (not nth block).
+
+    // set previous block before calling
+    // set message block before calling
+    // xor(previous_block, message_block, cipher_input_block)
+
     BitOperation_Xor(context->cipher_output_block, context->last_block, 16,
             context->cipher_input_block);
     return 0;
