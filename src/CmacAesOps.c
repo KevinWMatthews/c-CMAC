@@ -126,6 +126,11 @@ bool CmacAesOps_IsBlockRemaining(CMAC_AES_CONTEXT *context)
     return context->current_block_number < blocks_before_last;
 }
 
+int CmacAesOps_GetBlockByNumber(CMAC_AES_CONTEXT *context)
+{
+    return 0;
+}
+
 int CmacAesOps_ApplyCbcXor(CMAC_AES_CONTEXT *context)
 {
     // previous cipher block ^ i-th block.

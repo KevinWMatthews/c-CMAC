@@ -12,6 +12,7 @@ add_executable(UnitTests_CmacOps
     Test_SetLastBlockComplete.cpp
     Test_InitializeCipherOutputBlock.cpp
     Test_IsBlockRemaining.cpp
+    Test_GetBlockByNumber.cpp
     Test_ApplyCbcXor.cpp
     Test_ApplyCbcAes.cpp
     Test_ApplyCbcMac.cpp
