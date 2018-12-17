@@ -29,14 +29,14 @@ TEST_GROUP(Libgcrypt_AesEncrypt)
 
 TEST(Libgcrypt_AesEncrypt, encrypt)
 {
-    char expected[16] = {
+    unsigned char expected[16] = {
         0x66, 0xE9, 0x4B, 0xD4, 0xEF, 0x8A, 0x2C, 0x3B,
         0x88, 0x4C, 0xFA, 0x59, 0xCA, 0x34, 0x2B, 0x2E,
     };
-    char actual[16] = {};
-    char key[16] = {};
-    char iv[16] = {};
-    char input[16] = {};
+    unsigned char actual[16] = {};
+    unsigned char key[16] = {};
+    unsigned char iv[16] = {};
+    unsigned char input[16] = {};
 
     gcry_cipher_setkey( gcrypt_handle, key, sizeof(key) );
     gcry_cipher_setiv( gcrypt_handle, iv, sizeof(iv) );
@@ -57,16 +57,16 @@ TEST(Libgcrypt_AesEncrypt, encrypt)
 
 TEST(Libgcrypt_AesEncrypt, encrypt_data_twice)
 {
-    char expected[16] = {
+    unsigned char expected[16] = {
         0x66, 0xE9, 0x4B, 0xD4, 0xEF, 0x8A, 0x2C, 0x3B,
         0x88, 0x4C, 0xFA, 0x59, 0xCA, 0x34, 0x2B, 0x2E,
     };
-    char actual[16] = {};
-    char actual2[16] = {};
+    unsigned char actual[16] = {};
+    unsigned char actual2[16] = {};
 
-    char key[16] = {};
-    char iv[16] = {};
-    char input[16] = {};
+    unsigned char key[16] = {};
+    unsigned char iv[16] = {};
+    unsigned char input[16] = {};
     gcry_error_t gcrypt_ret2;
 
     gcry_cipher_setkey( gcrypt_handle, key, sizeof(key) );
@@ -86,20 +86,20 @@ TEST(Libgcrypt_AesEncrypt, encrypt_data_twice)
 
 TEST(Libgcrypt_AesEncrypt, encrypt_non_zero_data)
 {
-    char expected[16] = {
+    unsigned char expected[16] = {
         0xBB, 0x83, 0x8C, 0x98, 0x03, 0xBD, 0x17, 0x40,
         0xF8, 0x69, 0x49, 0x8D, 0x47, 0xD5, 0x26, 0x59,
     };
-    char actual[16] = {};
-    char key[16] = {
+    unsigned char actual[16] = {};
+    unsigned char key[16] = {
         0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
         0x88, 0x99, 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff,
     };
-    char iv[16] = {
+    unsigned char iv[16] = {
         0xff, 0xee, 0xdd, 0xcc, 0xbb, 0xaa, 0x99, 0x88,
         0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11, 0x00,
     };
-    char input[16] = {
+    unsigned char input[16] = {
         0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef,
         0xfe, 0xdc, 0xba, 0x98, 0x76, 0x54, 0x32, 0x10,
     };
@@ -127,7 +127,7 @@ TEST(Libgcrypt_AesEncrypt, encrypt_non_zero_data)
  */
 TEST(Libgcrypt_AesEncrypt, set_key)
 {
-    char key[16] = {};
+    unsigned char key[16] = {};
 
     /*
      * gcry_error_t gcry_cipher_setkey (gcry_cipher_hd_t h, const void *k, size_t l)
@@ -143,14 +143,14 @@ TEST(Libgcrypt_AesEncrypt, set_key)
 
 TEST(Libgcrypt_AesEncrypt, set_key_too_short_fails)
 {
-    char key[15] = {};
+    unsigned char key[15] = {};
     gcrypt_ret = gcry_cipher_setkey(gcrypt_handle, key, sizeof(key));
     CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_INV_KEYLEN, gcrypt_ret );
 }
 
 TEST(Libgcrypt_AesEncrypt, set_key_too_long_fails)
 {
-    char key[17] = {};
+    unsigned char key[17] = {};
     gcrypt_ret = gcry_cipher_setkey(gcrypt_handle, key, sizeof(key));
     CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_INV_KEYLEN, gcrypt_ret );
 }
@@ -160,7 +160,7 @@ TEST(Libgcrypt_AesEncrypt, set_key_too_long_fails)
  */
 TEST(Libgcrypt_AesEncrypt, set_iv)
 {
-    char iv[16] = {};
+    unsigned char iv[16] = {};
 
     /*
      * gcry_error_t gcry_cipher_setiv (gcry_cipher_hd_t h, const void *k, size_t l)
@@ -179,14 +179,14 @@ TEST(Libgcrypt_AesEncrypt, set_iv)
 #if 0
 TEST(Libgcrypt_AesEncrypt, set_iv_too_short_prints_warning)
 {
-    char iv[15] = {};
+    unsigned char iv[15] = {};
     gcrypt_ret = gcry_cipher_setiv(gcrypt_handle, iv, sizeof(iv));
     CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_NO_ERROR, gcrypt_ret );
 }
 
 TEST(Libgcrypt_AesEncrypt, set_iv_too_long_prints_warning)
 {
-    char iv[17] = {};
+    unsigned char iv[17] = {};
     gcrypt_ret = gcry_cipher_setiv(gcrypt_handle, iv, sizeof(iv));
     CHECK_LIBGCRYPT_RETURN_CODE( GPG_ERR_NO_ERROR, gcrypt_ret );
 }
