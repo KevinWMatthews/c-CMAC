@@ -2,7 +2,7 @@ enable_language(C)
 enable_language(CXX)
 
 # Add unit tests
-add_executable(UnitTests_Libgcrypt
+add_executable(Test_Libgcrypt
     RunAllTests.cpp
     Test_Libgcrypt_Init.cpp
     Libgcrypt_TestHelper.h
@@ -10,7 +10,7 @@ add_executable(UnitTests_Libgcrypt
     Test_Libgcrypt_AesEncrypt.cpp
 )
 
-target_link_libraries(UnitTests_Libgcrypt
+target_link_libraries(Test_Libgcrypt
     PRIVATE
         CppUTest
         CppUTestExt
@@ -19,7 +19,7 @@ target_link_libraries(UnitTests_Libgcrypt
 
 add_test(
     NAME Test_Libgcrypt
-    COMMAND UnitTests_Libgcrypt
+    COMMAND Test_Libgcrypt
 )
 
 

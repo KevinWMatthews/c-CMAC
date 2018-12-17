@@ -1,11 +1,11 @@
 enable_language(CXX)
 
-add_executable(UnitTests_Aes128Libgcrypt
+add_executable(Test_Aes128Libgcrypt
     RunAllTests.cpp
     Test_Aes128Libgcrypt.cpp
 )
 
-target_link_libraries(UnitTests_Aes128Libgcrypt
+target_link_libraries(Test_Aes128Libgcrypt
     PRIVATE
         CppUTest
         CppUTestExt
@@ -14,5 +14,5 @@ target_link_libraries(UnitTests_Aes128Libgcrypt
 
 add_test(
     NAME Test_Aes128Libgcrypt
-    COMMAND UnitTests_Aes128Libgcrypt
+    COMMAND Test_Aes128Libgcrypt
 )

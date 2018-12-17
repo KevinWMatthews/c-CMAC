@@ -1,6 +1,6 @@
 enable_language(CXX)
 
-add_executable(UnitTests_CmacOps
+add_executable(Test_CmacOps
     RunAllTests.cpp
     Test_GenerateSubkeys.cpp
     Test_SubkeyOps.cpp
@@ -12,12 +12,12 @@ add_executable(UnitTests_CmacOps
     Test_ApplyCbcMac.cpp
 )
 
-target_include_directories(UnitTests_CmacOps
+target_include_directories(Test_CmacOps
     PRIVATE
         "${CMAKE_HOME_DIRECTORY}/mocks"
 )
 
-target_link_libraries(UnitTests_CmacOps
+target_link_libraries(Test_CmacOps
     PRIVATE
         CppUTest
         CppUTestExt
@@ -28,5 +28,5 @@ target_link_libraries(UnitTests_CmacOps
 
 add_test(
     NAME Test_CmacOps
-    COMMAND UnitTests_CmacOps
+    COMMAND Test_CmacOps
 )

@@ -1,11 +1,11 @@
 enable_language(CXX)
 
-add_executable(UnitTests_Cmac
+add_executable(Test_Cmac
     RunAllTests.cpp
     Test_CmacAes.cpp
 )
 
-target_link_libraries(UnitTests_Cmac
+target_link_libraries(Test_Cmac
     PRIVATE
         CppUTest
         CppUTestExt
@@ -14,5 +14,5 @@ target_link_libraries(UnitTests_Cmac
 
 add_test(
     NAME Test_Cmac
-    COMMAND UnitTests_Cmac
+    COMMAND Test_Cmac
 )
